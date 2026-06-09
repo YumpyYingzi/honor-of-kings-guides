@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chano — Packleader · Guide Script &amp; Screenplay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#05060b;
+    --ink:#0b0e1a;
+    --panel:#10142400;
+    --panel-solid:#0e1326;
+    --edge:#26304f;
+    --edge-soft:#1a2138;
+    --bolt:#6ea8ff;
+    --bolt-bright:#a9ccff;
+    --volt:#8f6dff;
+    --gold:#e7b75a;
+    --gold-soft:#c9a25a;
+    --paper:#e9ecf5;
+    --paper-dim:#9aa3bd;
+    --paper-faint:#69718e;
+    --danger:#ff7a8a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Spectral',Georgia,serif;
+    background:
+      radial-gradient(1200px 700px at 50% -10%, rgba(143,109,255,.18), transparent 60%),
+      radial-gradient(900px 600px at 85% 8%, rgba(110,168,255,.14), transparent 55%),
+      linear-gradient(180deg,#05060b 0%, #070912 45%, #05060b 100%);
+    color:var(--paper);
+    line-height:1.7;
+    min-height:100vh;
+    padding:0 0 80px;
+  }
+  /* faint grain + electric grid texture */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+    background-image:
+      linear-gradient(rgba(110,168,255,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(110,168,255,.035) 1px, transparent 1px);
+    background-size:46px 46px;
+    mask-image:radial-gradient(1000px 800px at 50% 0%, #000 30%, transparent 80%);
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+  /* ---------- MASTHEAD ---------- */
+  header.mast{
+    text-align:center;padding:64px 0 30px;position:relative;
+  }
+  .kicker{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.42em;
+    text-transform:uppercase;color:var(--bolt);opacity:.85;margin-bottom:22px;
+  }
+  .mast h1{
+    font-family:'Cinzel',serif;font-weight:900;line-height:.98;
+    font-size:clamp(48px,11vw,104px);letter-spacing:.02em;
+    background:linear-gradient(180deg,#fff 0%, var(--bolt-bright) 38%, var(--volt) 105%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 60px rgba(143,109,255,.25);
+  }
+  .mast .epithet{
+    font-family:'Cinzel',serif;font-weight:600;font-size:clamp(15px,3.6vw,22px);
+    letter-spacing:.5em;text-transform:uppercase;color:var(--gold);
+    margin-top:10px;padding-left:.5em;
+  }
+  .mast .sub{
+    margin-top:20px;color:var(--paper-dim);font-style:italic;font-size:16px;
+    max-width:560px;margin-left:auto;margin-right:auto;
+  }
+  .bolt-rule{
+    width:120px;height:2px;margin:30px auto 0;
+    background:linear-gradient(90deg,transparent,var(--bolt),var(--volt),transparent);
+    box-shadow:0 0 18px rgba(110,168,255,.7);
+  }
+  .runtime{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--paper-faint);
+    letter-spacing:.2em;margin-top:18px;
+  }
+
+  /* ---------- TABS ---------- */
+  .tabs{
+    position:sticky;top:0;z-index:20;display:flex;gap:8px;justify-content:center;
+    padding:14px 0 12px;margin:18px 0 8px;
+    background:linear-gradient(180deg,#05060bef 60%, transparent);
+    backdrop-filter:blur(4px);
+  }
+  .tab{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;
+    letter-spacing:.18em;text-transform:uppercase;cursor:pointer;
+    color:var(--paper-dim);background:var(--panel-solid);
+    border:1px solid var(--edge);padding:11px 20px;border-radius:2px;
+    transition:.22s;
+  }
+  .tab:hover{color:var(--paper);border-color:var(--bolt)}
+  .tab.active{
+    color:#060912;background:linear-gradient(180deg,var(--bolt-bright),var(--bolt));
+    border-color:var(--bolt);box-shadow:0 0 22px rgba(110,168,255,.45);
+  }
+  .view{display:none;animation:fade .4s ease}
+  .view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ---------- SCRIPT BLOCKS ---------- */
+  .block{
+    position:relative;margin:30px 0;padding:26px 28px 26px 30px;
+    background:linear-gradient(180deg,rgba(14,19,38,.72),rgba(8,11,22,.72));
+    border:1px solid var(--edge-soft);border-left:none;border-radius:3px;
+    overflow:hidden;
+  }
+  .block::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:linear-gradient(180deg,var(--bolt),var(--volt));
+    box-shadow:0 0 16px rgba(110,168,255,.55);
+  }
+  .block .ts{
+    display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:12px;letter-spacing:.12em;color:#060912;
+    background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+    padding:4px 12px;border-radius:2px;margin-bottom:6px;
+  }
+  .block h2{
+    font-family:'Cinzel',serif;font-weight:700;font-size:clamp(20px,4vw,28px);
+    color:var(--bolt-bright);letter-spacing:.04em;margin:8px 0 4px;line-height:1.15;
+    text-shadow:0 0 30px rgba(110,168,255,.2);
+  }
+  .block h2 .tail{font-size:.62em;color:var(--gold);letter-spacing:.08em;font-weight:600}
+  .vo{color:var(--paper);font-size:17px}
+  .vo p{margin:0 0 2px}
+  .vo .quote{display:block;margin:6px 0;padding-left:2px}
+  .skill{
+    font-family:'Cinzel',serif;font-weight:600;color:var(--gold);
+    letter-spacing:.03em;display:block;margin:14px 0 1px;font-size:16px;
+  }
+  .subhead{
+    font-family:'Cinzel',serif;font-weight:600;color:var(--bolt);
+    letter-spacing:.05em;display:block;margin:20px 0 4px;font-size:17px;
+    border-bottom:1px solid var(--edge-soft);padding-bottom:5px;
+  }
+  .lead{font-weight:600;color:var(--bolt-bright)}
+  .vo .spacer{height:9px}
+  .vo ul{list-style:none;margin:6px 0;padding:0}
+  .vo ul li{
+    position:relative;padding-left:20px;margin:7px 0;
+  }
+  .vo ul li::before{
+    content:"🐾";position:absolute;left:0;top:0;font-size:11px;
+    filter:drop-shadow(0 0 4px rgba(110,168,255,.7));
+  }
+  em.note{color:var(--paper-dim)}
+
+  /* ---------- SCREENPLAY ---------- */
+  .sp-intro{
+    margin:26px 0 8px;color:var(--paper-dim);font-style:italic;font-size:15px;
+    border-left:2px solid var(--edge);padding-left:16px;
+  }
+  .scene{
+    margin:22px 0;border:1px solid var(--edge-soft);border-radius:3px;overflow:hidden;
+    background:linear-gradient(180deg,rgba(12,16,32,.7),rgba(7,10,20,.7));
+  }
+  .scene-head{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:12px 18px;background:rgba(110,168,255,.07);
+    border-bottom:1px solid var(--edge-soft);
+  }
+  .scene-head .ts{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;
+    color:#060912;background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+    padding:4px 11px;border-radius:2px;letter-spacing:.08em;
+  }
+  .scene-head .title{
+    font-family:'Cinzel',serif;font-weight:600;font-size:15px;color:var(--bolt-bright);
+    letter-spacing:.06em;text-transform:uppercase;
+  }
+  .scene-body{padding:6px 18px 16px}
+  .row{display:flex;gap:0;border-bottom:1px dashed var(--edge-soft);padding:12px 0}
+  .row:last-child{border-bottom:none}
+  .row .lab{
+    flex:0 0 116px;font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    padding-top:3px;
+  }
+  .row.visual .lab{color:var(--bolt)}
+  .row.fx .lab{color:var(--volt)}
+  .row.ost .lab{color:var(--gold)}
+  .row .val{flex:1;font-size:15.5px;color:var(--paper)}
+  .row .val .ost-text{
+    font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--bolt-bright);
+    background:rgba(110,168,255,.08);border:1px solid var(--edge-soft);
+    padding:2px 8px;border-radius:2px;display:inline-block;margin:2px 4px 2px 0;
+  }
+  .row .val .none{color:var(--paper-faint);font-style:italic}
+
+  /* ---------- NOTE BAR ---------- */
+  footer{
+    text-align:center;margin-top:50px;color:var(--paper-faint);
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;
+  }
+
+  /* ---------- PRINT ---------- */
+  @media print{
+    body{background:#fff;color:#111}
+    body::before{display:none}
+    .tabs{display:none}
+    .view{display:block!important}
+    .view + .view{page-break-before:always}
+    .mast h1{color:#1a2350;-webkit-text-fill-color:#1a2350}
+    .mast .epithet{color:#8a6a14}
+    .block,.scene{background:#fff;border-color:#bbb;break-inside:avoid}
+    .block h2,.scene-head .title{color:#1a2350}
+    .vo,.row .val{color:#111}
+    .skill{color:#8a6a14}
+    .block .ts,.scene-head .ts{background:#1a2350;color:#fff}
+  }
+  @media (max-width:600px){
+    .row{flex-direction:column;gap:3px}
+    .row .lab{flex:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker">Honor of Kings · Global · Hero Guide</div>
+    <h1>CHANO</h1>
+    <div class="epithet">The Packleader</div>
+    <p class="sub">"They call him the lone wolf. They're wrong — Chano never fights alone."</p>
+    <div class="bolt-rule"></div>
+    <div class="runtime">FULL RUNTIME · 0:00 — 5:00</div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-view="script">📜 Full Script</button>
+    <button class="tab" data-view="screenplay">🎬 Screenplay + FX</button>
+  </nav>
+
+  <!-- ============================== FULL SCRIPT ============================== -->
+  <section class="view active" id="script">
+
+    <div class="block">
+      <span class="ts">0:00 – 0:12</span>
+      <h2>Hook &amp; Identity</h2>
+      <div class="vo">
+        <span class="quote">"They call him the lone wolf of the Northlands. They're wrong.</span>
+        <span class="quote">Chano never fights alone — he hunts with a pack, and the whole battlefield is his grass.</span>
+        <span class="quote">Slip through the brush, summon the wolves, and let the arrows fall like rain.</span>
+        <span class="quote">In this guide, I'll show you how to turn a scattered archer into the Packleader."</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">0:12 – 1:00</span>
+      <h2>Skill Showcase</h2>
+      <div class="vo">
+        <p>"Every part of Chano's kit feeds off one thing: the brush.</p>
+        <span class="skill">Passive – Hunting</span>
+        <p>While he's in a bush, Chano gains movement speed and builds <b>Concealment</b>, which caps after about a second. Leaving the bush spends that Concealment on a leap — the more he banked, the farther he jumps. Entering a bush also charges his next basic into a <b>double shot</b> that counts as a single attack, on a short cooldown. And he deals extra damage to monsters while he's in the grass. The brush isn't cover for Chano — it's ammunition.</p>
+        <span class="skill">Skill 1 – Soaring Signal</span>
+        <p>Chano leaps into the air, speeds up, and flies clean over terrain. While airborne, his basic becomes a powerful long-range arrow that knocks enemies back — no stun, just distance — and extends his air time. The more attack speed you have, the harder that arrow hits. If you don't fire it in the air, you store a normal-range enhanced shot for a few seconds on landing. And if you loose it while dragging the move-wheel <em>away</em> from your target, Chano back-dashes a short distance. Your engage, your execute, and your escape — all in one button.</p>
+        <span class="skill">Skill 2 – Lupine Trap</span>
+        <p>Throw a wolf-spirit trap at a spot. When an enemy trips it, they're exposed, take damage, and a wolf spirit spawns to hunt them. Traps cloak a couple of seconds after landing, and you can have up to four out at once. The spirits borrow a slice of your stats and your crit, and every hit they land slows the target — stacking. It's vision, chip damage, and a leash, all on a tiny cooldown.</p>
+        <span class="skill">Ultimate – Leader Stance</span>
+        <p>Chano calls the pack: he summons two wolf spirits plus one for every Skill 2 charge he's banked, sending them charging in a direction and triggering every nearby trap at once. He gains <b>Mounted Archery</b> — he can move while attacking, with bonus movement speed, attack, and attack speed for the duration. And every basic he fires pulls idle wolves into the attack. This is the lone archer becoming a whole pack."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">1:00 – 1:45</span>
+      <h2>Core Resource &amp; Combo</h2>
+      <div class="vo">
+        <p>"Here's the first thing that separates a beginner Chano from a feared one: <b>Concealment is the engine</b>, and most players never feed it.</p>
+        <p>Beginners walk through a bush. Good Chanos <em>live</em> in them. Every time you weave through the grass you bank two things at once — a leap on the way out, and a refreshed double shot on the way in. So the rule is simple: never fight in a straight line. Fight in and out of the brush.</p>
+        <p>That single habit is what makes the difference between an archer who runs out of steam and one who reloads mid-fight. The double shot counts as one basic, so it slots straight into your attack rhythm — bush, double-shot, keep firing.</p>
+        <p>For skill priority: max your Ultimate first, then Soaring Signal (Skill 1), and leave Lupine Trap (Skill 2) for last — though you'll often take a point in the trap at level one for the lane control. For your Summoner Spell, Flash is the safe default — the extra repositioning is gold on a hero this fragile.</p>
+        <p>Build-wise, Chano lives and dies on three stats: <b>attack speed, crit, and movement speed</b>. Prioritize those when you pick emblems and items.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">1:45 – 4:10</span>
+      <h2>Advanced Mechanics <span class="tail">— Tech, Tempo &amp; Combos</span></h2>
+      <div class="vo">
+        <p>"This is where most guides stop. We're just getting warmed up.</p>
+
+        <span class="subhead">Brush-Weaving — The Signature Kite</span>
+        <p>Chano's whole skill ceiling is movement, and it starts here. In a fight, don't stand and trade. Fire, cut into the nearest bush, pop out the other side — leap plus a fresh double shot — then re-engage, and back to the grass. You're building Concealment, refreshing your double shots, and you're almost impossible to pin down. The rule: <b>always keep one foot in the grass.</b> This is exactly how top players turn a losing duel around — they drag the fight through brush after brush until the diver gives up or dies chasing.</p>
+
+        <span class="subhead">The Super-Jump (Brush Leap → Skill 1)</span>
+        <p>Leave a bush with full Concealment for the passive leap, then immediately chain Soaring Signal — the two stack into a long double-jump. It's your fastest gap-close <em>and</em> your best escape, and Skill 1 can clear almost any wall on the map. One catch: start the jump tucked tight against the wall, or you'll clip it and stall.</p>
+
+        <span class="subhead">The Power Arrow — Snipe, Dash, Steal</span>
+        <p>Soaring Signal's airborne arrow is a long-range, high-damage execute — the cleanest way to finish a runner from a screen away. Fire it with the move-wheel pulled away from your target and you back-dash on release, so the same button that lands the kill also pulls you out of danger. It's also an objective tool: from the brush behind Lord or the Tyrant pit you can leap and snipe a steal — and if it fails, the back-dash carries you clear. Scout the pit brush with a trap first so you don't get jumped mid-cast.</p>
+
+        <span class="subhead">Reverse-Ult — The Pro Tech</span>
+        <p>Here's the one that looks like a misclick and isn't. Chano's wolves spawn from the <em>far end</em> of the ult indicator and run inward, which takes time. Cast the ult <b>reversed</b> — indicator pointed behind you — and the wolves spawn right in front of you, landing on a pinned target instantly with no run-up. So:</p>
+        <ul>
+          <li><span class="lead">Reverse it</span> when the enemy is in front of you and already locked down by your team — the wolves hit immediately.</li>
+          <li><span class="lead">Cast it forward, toward them,</span> when enemies are closing on <em>you</em> — they collide with the incoming pack as they approach. Direction is read off where the danger is, not habit.</li>
+        </ul>
+
+        <span class="subhead">Trap Vision &amp; Anti-Gank</span>
+        <p>Lupine Trap is your early-warning system. The moment you hit lane, seed traps at the river choke and the dangerous bushes — dragon brush, mid brush, buff back-brush — before you ever rotate through them. A tripped trap exposes the enemy and buys you time to leave. It's why Chano bullies flank mages like Mai Shiranui, and why stealth threats like Arke and Prince of Lanling can't sneak up on him. When you scout a bush yourself, curve your approach — don't eat a gank during the throw animation.</p>
+
+        <span class="subhead">Steal Through Walls &amp; the Wolf Tower-Tank</span>
+        <p>Skill 2 throws over terrain, so you can drop it onto a neutral camp from the safe side of a wall and let the wolf spirit chip or steal it. Stack traps and triggering them spawns a small pack — a mini-ult on demand. And because wolf spirits have health and attack structures, they tank turret shots like Milady's robots: you can dive a tower or push with no minion wave behind the pack. One caution — the enemy gets gold for killing your wolves, so don't fling them away and become their piggy bank.</p>
+
+        <span class="subhead">Offensive Rhythm</span>
+        <ul>
+          <li><span class="lead">Early (1–4):</span> open with a trap to clear and zone, grab lane priority, then use the timing window while the enemy marksman is stuck clearing to slip away and steal a camp. The brush damage bonus helps you contest neutrals.</li>
+          <li><span class="lead">Mid (4–10):</span> once your ult is up you have a real burst. Trade health as you near level four, then all-in for a solo kill — and even a failed one zones them off farm and opens a tower or an invade. Snowball with rotations and tower pushes; your wolves tank the turret.</li>
+          <li><span class="lead">Late (10+):</span> secure brush vision, weave the grass for constant double shots, glue yourself to your frontline, and delete the backline once your engage lands.</li>
+        </ul>
+
+        <span class="subhead">Defensive Rhythm</span>
+        <ul>
+          <li><span class="lead">Traps before you're caught.</span> River and choke-point traps tell you a gank is coming before it lands — that warning is the whole reason fragile Chano survives the laning phase.</li>
+          <li><span class="lead">Brush-weave and back-dash out.</span> When an assassin like Han Xin, Lam, or Jing lands on you, kite through grass and use the Skill 1 back-dash to break the chase.</li>
+          <li><span class="lead">Don't group for a losing fight.</span> Behind? Farm a side lane and push instead. Play the edge of every teamfight and let your range do the work — you only deal damage if you're alive.</li>
+        </ul>
+
+        <span class="subhead">Read the Battlefield</span>
+        <ul>
+          <li><span class="lead">Wait for the CC.</span> Don't be first in from the river. Sit in the tower-side brush, let their lockdown — a Guiguzi, a Sun Ce, a Jing — get spent, then step in for a clean, full-damage window.</li>
+          <li><span class="lead">The two-trap setup.</span> Before a fight, drop one trap on the enemy's likely flank route to stop a backline pick on you, and a second on your own path for vision so you don't walk into an ambush. Two traps, two different jobs.</li>
+          <li><span class="lead">Avoid the danger target.</span> Don't tunnel the first enemy you see. Focus the one with skills down — a Jing with no escape — and stay away from a threat mid-ult like Diaochan. When the danger shifts onto you, jump a wall and reset.</li>
+        </ul>
+
+        <span class="subhead">Split-Push (When You're Ahead)</span>
+        <p>The wolf tower-tank plus Soaring Signal's mobility make Chano a strong side-laner. With a lead, shove a lane, let the pack soak tower shots while you melt it, and bail with Skill 1 and a brush leap the moment the enemy collapses on you. You stretch the map and choke their farm without risking a 5-v-5.</p>
+
+        <span class="skill">Key Combo 1 — Poke (Bush → 2 → 1)</span>
+        <p>Step through a bush to bank your double shot → drop Lupine Trap at their feet to trigger it instantly and summon a wolf → fire the double shot → Soaring Signal up for the long-range power arrow. Land to chase, or back-dash to disengage on their state.</p>
+        <span class="skill">Key Combo 2 — Cleanup (Bush → 2 → Ult → 1)</span>
+        <p>Bush double shot to close → trap at their feet → Ultimate to call the full pack and trigger the trap → basics while the wolves slow them → Soaring Signal power arrow to finish from range. Your bread-and-butter pickup once your ult is online.</p>
+        <span class="skill">Key Combo 3 — Burst Ambush (Pre-trap → Bush → 2 → Ult → 1)</span>
+        <p>This one's a setup, not a poke. From the brush, pre-place traps along their path and bank a double shot. When they walk in, drop a fresh trap at their feet to leash them, fire the double shot, then Ultimate to detonate <em>every</em> trap at once — maxing the wolf count — and chase with Mounted Archery into the Soaring Signal power arrow for the burst. Lay the trap, then close it."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">4:10 – 4:40</span>
+      <h2>Best Teammates &amp; Tough Matchups</h2>
+      <div class="vo">
+        <ul>
+          <li><span class="lead">Lock-them-down partners</span> — Chano has burst and mobility but no hard lockdown of his own, so he wants teammates who hold the enemy still for him. Heavy-engage and CC heroes like <b>Guiguzi</b>, <b>Lapu Lapu</b>, <b>Ziya</b>, and <b>Princess Frost</b> pin targets so his pack and arrows can't miss.</li>
+          <li><span class="lead">Enablers &amp; sustain</span> — <b>Ming</b> accelerates his scaling and adds burst; <b>Sakeer</b> hands him bushes and healing — perfect fuel for a brush-dependent hero; <b>Dolia</b> and <b>Cai Yan</b> add the sustain to keep him fighting.</li>
+          <li><span class="lead">He preys on</span> — immobile, stand-still marksmen like <b>Lu Ban</b> and <b>Hou Yi</b> (his mobility runs circles on them), and flank/stealth threats like <b>Mai Shiranui</b>, <b>Arke</b>, and <b>Prince of Lanling</b>, whose ganks his traps reveal.</li>
+          <li><span class="lead">Tough matchups</span> — high-burst mobile assassins like <b>Han Xin</b>, <b>Lam</b>, and <b>Jing</b> can blow up his fragile frame before he reacts; durable bruisers like <b>Kaiser</b> and <b>Dian Wei</b> survive his first burst and punish him during the cooldown gap. Don't duel these — kite, poke, and let the fight come to you.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">4:40 – 5:00</span>
+      <h2>Closing &amp; Retention Hook</h2>
+      <div class="vo">
+        <span class="quote">"The lone wolf was never alone — and neither are you.</span>
+        <span class="quote">Live in the grass. Bank the brush. Summon the pack, and strike from every direction at once.</span>
+        <span class="quote">Do that, and the scattered archer everyone underestimated becomes the Packleader who ends the game.</span>
+        <span class="quote">Those who strive for their faith have nothing to fear. Now go lead the hunt — and I'll see you in the next episode."</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================== SCREENPLAY + FX ============================== -->
+  <section class="view" id="screenplay">
+
+    <p class="sp-intro">Shooting screenplay broken into production beats inside the same timestamp windows as the script. <b>Visual</b> = exactly what to record/match. <b>FX</b> = post / motion graphics. <b>On-Screen Text</b> = burned-in overlays.</p>
+
+    <!-- HOOK -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:00 – 0:12</span><span class="title">Hook &amp; Identity</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Cold open: a single arrow loosed across a dark grassland at dusk. On "he hunts with a pack," cut to Chano bursting out of a bush as wolf spirits surge around him — full-speed Leader Stance with the pack charging. Match the lone-archer → pack-swarm beat of the VO. End on a hero portrait / splash-art freeze of Chano on the black wolf.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Grass-rustle whip-pans between bushes; low wolf-howl swell under the music. Desaturate-to-electric-blue grade. Title card animates in: name materializes out of drifting grass with a howl sting.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">CHANO</span><span class="ost-text">THE PACKLEADER</span><span class="ost-text">Full Hero Guide</span></div></div>
+      </div>
+    </div>
+
+    <!-- SKILL SHOWCASE -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:12 – 0:30</span><span class="title">Passive — Hunting</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Practice-range clip: walk into a bush and hold — show the move-speed buff and the Concealment meter filling. Leave the bush to trigger the leap (show a short vs long jump to make "more banked = farther" read). Then fire the enhanced double shot on exit and let both arrows land. Add a quick clip of attacking a jungle camp from inside a bush to show the bonus monster damage.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Circle-highlight the Concealment meter and the MS icon. Two stacked jump-distance markers (short / long). Twin arrow-trail VFX on the double shot; "+25% vs monsters" tag on the camp clip.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">PASSIVE · Hunting</span><span class="ost-text">Brush = +MSPD &amp; Concealment → leap on exit</span><span class="ost-text">Enter brush = double shot (counts as 1 AA, 4s CD)</span><span class="ost-text">+25% dmg to monsters in brush</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:30 – 0:42</span><span class="title">Skill 1 — Soaring Signal</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Show Chano leaping airborne and flying over a wall, then firing the long-range power arrow — capture the knockback (no stun) and the extended air time. Then two extras: (1) land without firing → the stored normal-range enhanced shot icon; (2) fire airborne with the move-wheel pulled away → the short back-dash on release.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Slow-mo the airborne arrow 50% then snap to speed; long streak trail. Knockback motion-line on the enemy. "STORED SHOT (3s)" tag on the no-fire landing; back-dash direction arrow on the away-wheel cast.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">SKILL 1 · Soaring Signal · CD 7.5→6s</span><span class="ost-text">Leap + traverse terrain · power arrow knocks back</span><span class="ost-text">Move-wheel away = back-dash</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:42 – 0:52</span><span class="title">Skill 2 — Lupine Trap</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Throw a trap; an enemy walks over it → exposed (vision flash) + damage + a wolf spirit spawns and chases, slowing them. Show traps cloaking ~2s after landing, and up to four placed around a choke. Capture a wolf landing a crit so the inherited-crit point reads.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Reveal-ping on the tripped enemy; stacking "SLOW x1…x5" counter on the chased target. Fade traps to a faint outline at the cloak moment; "MAX 4" tag near the trap cluster.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">SKILL 2 · Lupine Trap · CD 2s</span><span class="ost-text">Exposes + dmg + summons wolf · slow stacks (5)</span><span class="ost-text">Cloaks after 2s · up to 4 traps</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:52 – 1:00</span><span class="title">Ultimate — Leader Stance</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Full ult sequence: cast with several Skill 2 charges banked → a big pack of wolves charges out and all nearby traps detonate at once. Then 2–3s of Mounted Archery — Chano moving while attacking, and each basic pulling idle wolves into the target. Keep the buff icons (MS / ATK / ASPD) in frame.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">"(2 + Skill 2 charges) WOLVES" counter as the pack spawns; trap-detonation flashes. "MOUNTED ARCHERY · 8s" buff banner; arrows linking Chano's basics to the wolves joining in.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">ULTIMATE · Leader Stance · CD 50→40s</span><span class="ost-text">Summon 2 + S2 charges · triggers all traps</span><span class="ost-text">Mounted Archery 8s: move + shoot, +MS/ATK/ASPD</span></div></div>
+      </div>
+    </div>
+
+    <!-- CORE RESOURCE -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:00 – 1:25</span><span class="title">Concealment — Brush Is Ammo</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Play TWO clips back to back of the same trade: one labelled WRONG — Chano fighting in a straight line, running dry; one labelled RIGHT — Chano weaving through bushes, popping out with a leap + fresh double shot each time, never losing momentum. Make the difference felt before it's explained.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Red "✗ STRAIGHT LINE" vs green "✓ BRUSH-WEAVE" tags. Pulse the Concealment meter + double-shot refresh on every bush entry in the RIGHT clip.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">CONCEALMENT IS THE ENGINE</span><span class="ost-text">Brush = leap (out) + double shot (in)</span><span class="ost-text">Rule: never fight in a straight line</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:25 – 1:45</span><span class="title">Skill Priority · Summoner · Build</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Skill-up menu recording: level Ultimate first, then Skill 1, then Skill 2 (note the level-1 trap point for lane control). Cut to Summoner select on Flash. Then a clean stat card emphasising attack speed, crit, movement speed.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Leveling-order graphic (R &gt; 1 &gt; 2). Flash icon badge. Three-stat priority card with icons.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">PRIORITY: Ult &gt; Soaring Signal &gt; Lupine Trap</span><span class="ost-text">Summoner: FLASH (default)</span><span class="ost-text">Key stats: Attack Speed · Crit · Move Speed</span></div></div>
+      </div>
+    </div>
+
+    <!-- ADVANCED -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:45 – 1:55</span><span class="title">Advanced — Intro / Skill Ceiling</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Punchy montage of high-level Chano plays — brush-weave kites, super-jumps over walls, reverse-ult pickups, long-range power-arrow snipes — to signal "advanced section starts here." End on a clip emphasising movement, not raw autos.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Chapter-break wipe with a wolf-howl sting. "ADVANCED" stamp slams in. Slight speed-ramp on the montage.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">🐾 ADVANCED MECHANICS</span><span class="ost-text">His skill ceiling is movement</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:55 – 2:08</span><span class="title">Brush-Weaving Kite</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Demonstrate slowly first: fire → cut into a bush → pop out (leap + refreshed double shot) → re-engage → back to grass, repeating while a diver chases. Then show it at full speed turning a losing duel — kite a Diaochan/assassin through bush after bush until the reversal kill.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Movement-trail dots through each bush; "double shot refreshed" pulse on every exit. Green "ONE FOOT IN THE GRASS" reminder banner.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">BRUSH-WEAVING</span><span class="ost-text">Fire → bush → exit (leap + double shot) → repeat</span><span class="ost-text">Rule: always keep one foot in the grass</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:08 – 2:18</span><span class="title">The Super-Jump</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Leave a bush with full Concealment for the passive leap, then instantly chain Soaring Signal for the long double-jump over a wall. Show one clean rep as engage, one as escape. Then a "WRONG" clip starting too far from the wall → clips it and stalls.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Two-stage arc overlay (leap → S1) tracing the double-jump path. Green "✓ tight to wall" vs red "✗ too far" on the two attempts.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">SUPER-JUMP · Brush leap → Skill 1</span><span class="ost-text">Start tight against the wall</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:18 – 2:30</span><span class="title">The Power Arrow — Snipe · Dash · Steal</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Three quick clips: (1) snipe a fleeing low-HP enemy from long range with the airborne arrow; (2) fire it move-wheel-away to back-dash out of a collapse; (3) from the brush behind the Tyrant/Lord pit, leap and snipe the objective for a steal — show a trap scouting the pit first.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Range ruler on the snipe; back-dash direction arrow on clip 2; "STEAL!" pop + smite/number compare on clip 3. "Scout pit first" trap-ping.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">POWER ARROW = snipe · back-dash · objective steal</span><span class="ost-text">Move-wheel away = escape on the same shot</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:30 – 2:45</span><span class="title">Reverse-Ult vs Forward-Ult</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">A/B the ult: (A) FORWARD cast at a far target — wolves spawn at the indicator's far end and run in (slow). (B) REVERSE cast — indicator behind Chano — wolves spawn in front of him onto a pinned enemy instantly. Then show the read: reverse onto a CC'd target in front; cast forward into enemies closing on him so they collide with the pack.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Spawn-point marker + travel-path arrows for both casts; stopwatch comparing wolf arrival time. "REVERSE = instant" vs "FORWARD = collision wall" callouts.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">REVERSE-ULT: wolves spawn in front, instant</span><span class="ost-text">Reverse = enemy pinned ahead · Forward = enemy closing in</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:45 – 2:58</span><span class="title">Trap Vision &amp; Anti-Gank</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Lane clip: seed traps at the river choke and a dangerous bush right after hitting lane. A roaming mage / stealth assassin (Mai Shiranui, Arke) trips one → revealed → Chano backs off safely. Then show scouting a bush yourself with a curved approach so you're not caught in the throw animation.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Minimap trap icons at choke points; "ENEMY SPOTTED" reveal popup on the trip. Curved-path arrow on the self-scout; red "don't cast in a straight walk-up" flag.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">TRAPS = EARLY WARNING</span><span class="ost-text">Seed river + dangerous bushes before rotating</span><span class="ost-text">Beats flank mages &amp; stealth (Mai Shiranui · Arke · Pr. of Lanling)</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:58 – 3:08</span><span class="title">Steal Through Walls &amp; Wolf Tower-Tank</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">(1) Throw Skill 2 over a wall onto a neutral camp; the wolf chips/steals it. (2) Stack traps and trigger them → a small wolf pack spawns (mini-ult). (3) Wolves tanking tower shots while Chano dives / pushes with no minion wave. Quick caution beat: a wolf dies to an enemy → gold pops to them.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Over-wall throw arc; "STEAL" tag. "MINI-PACK" label on the stacked-trap trigger. Tower-aggro lines onto the wolves; small red "enemy gains gold" warning on the wolf death.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">S2 over walls = steal camps</span><span class="ost-text">Stacked traps = mini-pack · Wolves tank towers</span><span class="ost-text">Caution: dead wolves feed gold</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">3:08 – 3:22</span><span class="title">Offensive Rhythm</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Early: open with a trap to clear/zone and grab priority, then slip to steal a camp while the enemy marksman clears. Mid: hit 4, trade down, all-in for a solo kill with ult + traps; if it fails, zone them and take the tower (wolves tanking). Late: weave brush for double shots and follow the frontline to delete the backline.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Phase cards "EARLY / MID / LATE." Minimap rotation arrows on the camp steal; tower-HP melt counter mid; "DELETE BACKLINE" tag late.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">EARLY: trap, zone, steal camps</span><span class="ost-text">MID: lvl 4 burst → solo kill / take tower</span><span class="ost-text">LATE: weave brush · kill the backline</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">3:22 – 3:34</span><span class="title">Defensive Rhythm</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Three survival clips: (1) river-choke trap trips → Chano sees the gank coming and leaves early. (2) An assassin (Han Xin / Lam / Jing) lands on him → brush-weave + Skill 1 back-dash breaks the chase. (3) Behind? Chano farms a side lane / pushes instead of forcing a losing 5-v-5; in a fight he plays the very edge with his range.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">"GANK INCOMING" popup on the trap trip; back-dash arrow on the escape; "PLAY THE EDGE" banner on the teamfight-positioning clip.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">Traps warn you BEFORE the gank</span><span class="ost-text">Brush-weave + back-dash to escape divers</span><span class="ost-text">Behind? Don't group — farm &amp; push</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">3:34 – 3:48</span><span class="title">Read the Battlefield</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">(1) Teamfight breaks out — Chano waits in tower-side brush, lets enemy CC (Guiguzi / Sun Ce / Jing) get spent, then enters for clean damage. (2) The two-trap setup: one on the enemy's flank route, one on his own path for vision (reveals a lurking Diaochan). (3) He skips the dangerous ulting target and focuses the one with no skills up, then walls away when danger turns on him.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">"WAIT FOR CC" countdown over the brush hold. Two color-coded trap markers (flank route vs own path). "DANGER" tag on the ulting target vs "FOCUS" tag on the skill-less one; wall-jump escape arrow.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">WAIT FOR CC · enter second</span><span class="ost-text">TWO TRAPS: flank route + your own path</span><span class="ost-text">Avoid the danger target — focus skills-down</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">3:48 – 3:58</span><span class="title">Split-Push (When Ahead)</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Chano shoving a side lane with the wolf pack tanking tower shots, melting the tower fast, then bailing with Skill 1 + a brush leap when the enemy team collapses. Show the map stretched / enemies forced to answer.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Minimap "SPLIT" pressure diagram; tower-HP melt counter; escape-route arrow over the wall on the bail.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">SPLIT-PUSH · wolves tank tower</span><span class="ost-text">Shove → melt tower → bail. Stretch the map.</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">3:58 – 4:10</span><span class="title">Key Combos 1 · 2 · 3</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Rapid combo montage, one clean rep each, clearly labelled. <b>Combo 1 (Poke):</b> bush double-shot → trap at feet → basic → Skill 1 power arrow. <b>Combo 2 (Cleanup):</b> bush double-shot → trap → Ult (full pack + trap trigger) → basics → Skill 1 power arrow. <b>Combo 3 (Burst Ambush):</b> pre-place traps from brush → bank double-shot → fresh trap on them → double-shot → Ult to detonate all traps (max wolves) → Mounted-Archery chase → Skill 1 power arrow.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Per-combo input-sequence overlay (icon chain). Numbered "COMBO 1/2/3" cards. For Combo 3, a "PRE-TRAP → DETONATE ALL" two-beat callout.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">COMBO 1 · Poke (Bush→2→1)</span><span class="ost-text">COMBO 2 · Cleanup (Bush→2→Ult→1)</span><span class="ost-text">COMBO 3 · Burst Ambush (Pre-trap→Bush→2→Ult→1)</span></div></div>
+      </div>
+    </div>
+
+    <!-- TEAMMATES & MATCHUPS -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">4:10 – 4:25</span><span class="title">Best Teammates</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Synergy clips: a hard-engage/CC partner (Guiguzi, Lapu Lapu, Ziya, Princess Frost) pins a target → Chano's pack + arrows land freely. Then enablers: Ming buffing him, Sakeer dropping a bush + heal beside him (highlight the brush fuel), Dolia / Cai Yan sustaining. Pair portraits slide in.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Hero portrait pairings (Chano + partner) with "SYNERGY" tag. Spotlight the pinned target getting swarmed.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">LOCKDOWN: Guiguzi · Lapu Lapu · Ziya · Princess Frost</span><span class="ost-text">ENABLERS: Ming · Sakeer · Dolia · Cai Yan</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">4:25 – 4:40</span><span class="title">Tough Matchups</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Two halves. PREYS ON: Chano kiting immobile marksmen (Lu Ban / Hou Yi) and revealing flank/stealth threats (Mai Shiranui, Arke, Prince of Lanling) with traps. COUNTERED BY: a mobile assassin (Han Xin / Lam / Jing) bursting him down, and a bruiser (Kaiser / Dian Wei) surviving his burst then punishing — paired with the correct response (kite &amp; poke, don't duel).</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Green "PREYS ON" vs red "COUNTERS" portrait rows. "DON'T DUEL → KITE &amp; POKE" reminder banner.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">PREYS ON: Lu Ban · Hou Yi · Mai Shiranui · Arke · Pr. of Lanling</span><span class="ost-text">COUNTERS: Han Xin · Lam · Jing · Kaiser · Dian Wei</span><span class="ost-text">Don't duel — kite &amp; poke</span></div></div>
+      </div>
+    </div>
+
+    <!-- CLOSING -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">4:40 – 5:00</span><span class="title">Closing &amp; Retention Hook</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Triumphant outro montage: Chano weaving brush, summoning the pack, and cleaning up a teamfight with the long-range arrow. Land on a heroic hold of Chano on the black wolf as the grass settles and wolves gather. Leave room for an end-screen / subscribe + next-episode card.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Warm-to-electric grade; distant wolf-howl fading to calm. Recap lower-thirds (Live in the grass · Bank the brush · Summon the pack). Animate the end-screen card + subscribe prompt; tease next hero.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">Live in the grass · Bank the brush · Summon the pack</span><span class="ost-text">▶ SUBSCRIBE</span><span class="ost-text">Next episode →</span></div></div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>CHANO · THE PACKLEADER — HOK GLOBAL HERO GUIDE</footer>
+
+</div>
+
+<script>
+  const tabs=document.querySelectorAll('.tab');
+  const views=document.querySelectorAll('.view');
+  tabs.forEach(t=>t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    views.forEach(v=>v.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.view).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }));
+</script>
+</body>
+</html>
