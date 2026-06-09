@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Devara — Thunderlord · Guide Script & Screenplay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#05060b;
+    --ink:#0b0e1a;
+    --panel:#10142400;
+    --panel-solid:#0e1326;
+    --edge:#26304f;
+    --edge-soft:#1a2138;
+    --bolt:#6ea8ff;
+    --bolt-bright:#a9ccff;
+    --volt:#8f6dff;
+    --gold:#e7b75a;
+    --gold-soft:#c9a25a;
+    --paper:#e9ecf5;
+    --paper-dim:#9aa3bd;
+    --paper-faint:#69718e;
+    --danger:#ff7a8a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Spectral',Georgia,serif;
+    background:
+      radial-gradient(1200px 700px at 50% -10%, rgba(143,109,255,.18), transparent 60%),
+      radial-gradient(900px 600px at 85% 8%, rgba(110,168,255,.14), transparent 55%),
+      linear-gradient(180deg,#05060b 0%, #070912 45%, #05060b 100%);
+    color:var(--paper);
+    line-height:1.7;
+    min-height:100vh;
+    padding:0 0 80px;
+  }
+  /* faint grain + electric grid texture */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+    background-image:
+      linear-gradient(rgba(110,168,255,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(110,168,255,.035) 1px, transparent 1px);
+    background-size:46px 46px;
+    mask-image:radial-gradient(1000px 800px at 50% 0%, #000 30%, transparent 80%);
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+  /* ---------- MASTHEAD ---------- */
+  header.mast{
+    text-align:center;padding:64px 0 30px;position:relative;
+  }
+  .kicker{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.42em;
+    text-transform:uppercase;color:var(--bolt);opacity:.85;margin-bottom:22px;
+  }
+  .mast h1{
+    font-family:'Cinzel',serif;font-weight:900;line-height:.98;
+    font-size:clamp(48px,11vw,104px);letter-spacing:.02em;
+    background:linear-gradient(180deg,#fff 0%, var(--bolt-bright) 38%, var(--volt) 105%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 60px rgba(143,109,255,.25);
+  }
+  .mast .epithet{
+    font-family:'Cinzel',serif;font-weight:600;font-size:clamp(15px,3.6vw,22px);
+    letter-spacing:.5em;text-transform:uppercase;color:var(--gold);
+    margin-top:10px;padding-left:.5em;
+  }
+  .mast .sub{
+    margin-top:20px;color:var(--paper-dim);font-style:italic;font-size:16px;
+    max-width:560px;margin-left:auto;margin-right:auto;
+  }
+  .bolt-rule{
+    width:120px;height:2px;margin:30px auto 0;
+    background:linear-gradient(90deg,transparent,var(--bolt),var(--volt),transparent);
+    box-shadow:0 0 18px rgba(110,168,255,.7);
+  }
+  .runtime{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--paper-faint);
+    letter-spacing:.2em;margin-top:18px;
+  }
+
+  /* ---------- TABS ---------- */
+  .tabs{
+    position:sticky;top:0;z-index:20;display:flex;gap:8px;justify-content:center;
+    padding:14px 0 12px;margin:18px 0 8px;
+    background:linear-gradient(180deg,#05060bef 60%, transparent);
+    backdrop-filter:blur(4px);
+  }
+  .tab{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;
+    letter-spacing:.18em;text-transform:uppercase;cursor:pointer;
+    color:var(--paper-dim);background:var(--panel-solid);
+    border:1px solid var(--edge);padding:11px 20px;border-radius:2px;
+    transition:.22s;
+  }
+  .tab:hover{color:var(--paper);border-color:var(--bolt)}
+  .tab.active{
+    color:#06media;color:#060912;background:linear-gradient(180deg,var(--bolt-bright),var(--bolt));
+    border-color:var(--bolt);box-shadow:0 0 22px rgba(110,168,255,.45);
+  }
+  .view{display:none;animation:fade .4s ease}
+  .view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ---------- SCRIPT BLOCKS ---------- */
+  .block{
+    position:relative;margin:30px 0;padding:26px 28px 26px 30px;
+    background:linear-gradient(180deg,rgba(14,19,38,.72),rgba(8,11,22,.72));
+    border:1px solid var(--edge-soft);border-left:none;border-radius:3px;
+    overflow:hidden;
+  }
+  .block::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:linear-gradient(180deg,var(--bolt),var(--volt));
+    box-shadow:0 0 16px rgba(110,168,255,.55);
+  }
+  .block .ts{
+    display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:12px;letter-spacing:.12em;color:#060912;
+    background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+    padding:4px 12px;border-radius:2px;margin-bottom:6px;
+  }
+  .block h2{
+    font-family:'Cinzel',serif;font-weight:700;font-size:clamp(20px,4vw,28px);
+    color:var(--bolt-bright);letter-spacing:.04em;margin:8px 0 4px;line-height:1.15;
+    text-shadow:0 0 30px rgba(110,168,255,.2);
+  }
+  .block h2 .tail{font-size:.62em;color:var(--gold);letter-spacing:.08em;font-weight:600}
+  .vo{color:var(--paper);font-size:17px}
+  .vo p{margin:0 0 2px}
+  .vo .quote{display:block;margin:6px 0;padding-left:2px}
+  .skill{
+    font-family:'Cinzel',serif;font-weight:600;color:var(--gold);
+    letter-spacing:.03em;display:block;margin:14px 0 1px;font-size:16px;
+  }
+  .subhead{
+    font-family:'Cinzel',serif;font-weight:600;color:var(--bolt);
+    letter-spacing:.05em;display:block;margin:20px 0 4px;font-size:17px;
+    border-bottom:1px solid var(--edge-soft);padding-bottom:5px;
+  }
+  .lead{font-weight:600;color:var(--bolt-bright)}
+  .vo .spacer{height:9px}
+  .vo ul{list-style:none;margin:6px 0;padding:0}
+  .vo ul li{
+    position:relative;padding-left:20px;margin:7px 0;
+  }
+  .vo ul li::before{
+    content:"⚡";position:absolute;left:0;top:0;font-size:12px;color:var(--bolt);
+    filter:drop-shadow(0 0 4px rgba(110,168,255,.7));
+  }
+  em.note{color:var(--paper-dim)}
+
+  /* ---------- SCREENPLAY ---------- */
+  .sp-intro{
+    margin:26px 0 8px;color:var(--paper-dim);font-style:italic;font-size:15px;
+    border-left:2px solid var(--edge);padding-left:16px;
+  }
+  .scene{
+    margin:22px 0;border:1px solid var(--edge-soft);border-radius:3px;overflow:hidden;
+    background:linear-gradient(180deg,rgba(12,16,32,.7),rgba(7,10,20,.7));
+  }
+  .scene-head{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:12px 18px;background:rgba(110,168,255,.07);
+    border-bottom:1px solid var(--edge-soft);
+  }
+  .scene-head .ts{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;
+    color:#060912;background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+    padding:4px 11px;border-radius:2px;letter-spacing:.08em;
+  }
+  .scene-head .title{
+    font-family:'Cinzel',serif;font-weight:600;font-size:15px;color:var(--bolt-bright);
+    letter-spacing:.06em;text-transform:uppercase;
+  }
+  .scene-body{padding:6px 18px 16px}
+  .row{display:flex;gap:0;border-bottom:1px dashed var(--edge-soft);padding:12px 0}
+  .row:last-child{border-bottom:none}
+  .row .lab{
+    flex:0 0 116px;font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    padding-top:3px;
+  }
+  .row.visual .lab{color:var(--bolt)}
+  .row.fx .lab{color:var(--volt)}
+  .row.ost .lab{color:var(--gold)}
+  .row .val{flex:1;font-size:15.5px;color:var(--paper)}
+  .row .val .ost-text{
+    font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--bolt-bright);
+    background:rgba(110,168,255,.08);border:1px solid var(--edge-soft);
+    padding:2px 8px;border-radius:2px;display:inline-block;margin:2px 4px 2px 0;
+  }
+  .row .val .none{color:var(--paper-faint);font-style:italic}
+
+  /* ---------- NOTE BAR ---------- */
+  .notebar{
+    margin:34px 0 0;padding:16px 20px;border:1px dashed var(--edge);border-radius:3px;
+    background:rgba(231,183,90,.05);color:var(--paper-dim);font-size:14px;
+  }
+  .notebar b{color:var(--gold);font-family:'Cinzel',serif;letter-spacing:.04em}
+  footer{
+    text-align:center;margin-top:50px;color:var(--paper-faint);
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;
+  }
+
+  /* ---------- PRINT ---------- */
+  @media print{
+    body{background:#fff;color:#111}
+    body::before{display:none}
+    .tabs{display:none}
+    .view{display:block!important}
+    .view + .view{page-break-before:always}
+    .mast h1{color:#1a2350;-webkit-text-fill-color:#1a2350}
+    .mast .epithet{color:#8a6a14}
+    .block,.scene{background:#fff;border-color:#bbb;break-inside:avoid}
+    .block h2,.scene-head .title{color:#1a2350}
+    .vo,.row .val{color:#111}
+    .skill{color:#8a6a14}
+    .block .ts,.scene-head .ts{background:#1a2350;color:#fff}
+  }
+  @media (max-width:600px){
+    .row{flex-direction:column;gap:3px}
+    .row .lab{flex:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker">Honor of Kings · Global · Hero Guide</div>
+    <h1>DEVARA</h1>
+    <div class="epithet">The Thunderlord</div>
+    <p class="sub">"Thunder doesn't ask for permission. It builds — then it strikes."</p>
+    <div class="bolt-rule"></div>
+    <div class="runtime">FULL RUNTIME · 0:00 — 4:50</div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-view="script">📜 Full Script</button>
+    <button class="tab" data-view="screenplay">🎬 Screenplay + FX</button>
+  </nav>
+
+  <!-- ============================== FULL SCRIPT ============================== -->
+  <section class="view active" id="script">
+
+    <div class="block">
+      <span class="ts">0:00 – 0:12</span>
+      <h2>Hook &amp; Identity</h2>
+      <div class="vo">
+        <span class="quote">"Thunder doesn't ask for permission. It builds — then it strikes.</span>
+        <span class="quote">Devara doesn't force the fight; he outlasts it, and becomes the storm.</span>
+        <span class="quote">In this guide, I'll show you how to channel the rage of a thousand tempests — and turn Devara into the Thunderlord."</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">0:12 – 0:55</span>
+      <h2>Skill Showcase</h2>
+      <div class="vo">
+        <p>"Devara's power grows with every swing.</p>
+        <span class="skill">Passive – Wish of the Living</span>
+        <p>Basic attacks deal physical damage — and at close range they become melee attacks with a reduced interval between hits. Basic attacks stock Energy; at full Energy, thunder triggers – you gain an extra charge of any basic skill. Enhanced basic attacks after any skill deal bonus magic damage and heal you.</p>
+        <span class="skill">Skill 1 – Thunderblaze</span>
+        <p>Transform into a lightning bolt, dash forward, damage enemies, and gain a shield. Your gap closer and survival tool.</p>
+        <span class="skill">Skill 2 – Divine Judgment</span>
+        <p>Fire a thunder blast that explodes on contact, knocking enemies back – the closer they are, the farther they fly. Your disengage and peel.</p>
+        <span class="skill">Ultimate – Millennium Echo</span>
+        <p>Devara ascends, gaining crowd-control immunity for the 1.5-second rise and ignoring terrain — he flies clean over walls. As he rises, he randomly strikes nearby enemies with lightning, gaining Energy and a shield with each hit. On landing, he deals area magic damage. For 8 seconds, his basic-attack range increases, his Energy stocks faster, and his ranged basic attacks chain lightning between foes. This is your all‑in form."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">0:55 – 1:40</span>
+      <h2>Core Resource &amp; Combo</h2>
+      <div class="vo">
+        <p>"Here's the first thing that separates a beginner Devara from a feared one: the 1-Auto-1-Auto combo. Skill, basic attack, skill, basic attack — on repeat.</p>
+        <p>Sounds simple. It isn't.</p>
+        <p>There are actually two versions of this combo, and most players never notice the difference. It all comes down to your Energy.</p>
+        <p>The full-Energy combo is buttery smooth. The low-Energy combo feels sluggish, clunky — and players blame their hand speed. That's the wrong diagnosis.</p>
+        <p>The real reason is the skill-refresh mechanism. At full Energy, your enhanced skill refreshes instantly — there's no cooldown gap. You fire the refreshed skill, then the basic skill, back to back. So the faster your hands, the faster the combo. No ceiling.</p>
+        <p>When you're below the cap, there is a cooldown gap between casts. And here's the trap: fast players tap the skill while it's still on cooldown — it doesn't fire, and you're forced into a wasted extra basic attack. That single dead input is what makes the low-Energy combo feel broken.</p>
+        <p>For skill priority: max your Ultimate first, then Thunderblaze (Skill 1), and leave Divine Judgment (Skill 2) for last. For your Summoner Spell, Flash is the standard pick — the extra repositioning is gold on a hero this fragile — with Frenzy as a strong lane-bully alternative when you want more attack speed and sustain."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">1:40 – 4:00</span>
+      <h2>Advanced Mechanics <span class="tail">— Offense, Defense &amp; Combos</span></h2>
+      <div class="vo">
+        <p>"This is where most guides stop. We're just getting warmed up.</p>
+
+        <span class="subhead">Master the Basic Attack</span>
+        <p>Most of Devara's damage flows through his attacks, not his cooldowns — so this is the real skill ceiling.</p>
+        <div class="spacer"></div>
+        <p><span class="lead">Cancel-step kiting.</span> His ranged attack has a long recovery animation. After every shot, flick the move stick for a half-step, then stop and fire again — that cancels the back-swing and raises your attack frequency. The rule: never stand still to attack. A stationary Devara does less damage and dies for free. Not comfortable yet? Just attack-on-the-move until it's muscle memory.</p>
+        <p><span class="lead">The control-fist target swap.</span> His melee enhanced attack hits an area, ignores damage falloff, and can proc your item passives more than once. When an enemy tucks behind their frontline, tap your attack-turret button to snap onto the nearest unit so the splash still clips them — or tap last-hit to attack a minion and land the splash on whoever's hiding right behind it, all while you stay at range.</p>
+        <p><span class="lead">Bank a charge.</span> Your enhanced skill has no expiry timer. While clearing waves or farming, keep one stored — so you always have a burst cast ready for a fight or an anti-gank.</p>
+
+        <span class="subhead">Recommended Settings</span>
+        <p>The toggles that make the above possible:</p>
+        <ul>
+          <li>Attack-turret + last-hit buttons ON.</li>
+          <li>Basic attack → "Precise" — switch targets fast and land the exact enhanced hit you want.</li>
+          <li>"Move-to-chase" OFF / auto-attack nearest — stops long-range and dash-heavy enemies from kiting you into bad spots.</li>
+          <li>Skill-aim default → toward enemy — so Thunderblaze closes onto your target instead of mis-firing away.</li>
+        </ul>
+
+        <span class="subhead">Offensive Rhythm</span>
+        <ul>
+          <li><span class="lead">Strong matchup:</span> bully the lane with your ranged charged attacks and choke the enemy's farm. This is your matchup against short-range, walk-up fighters like Arthur, Wuyan, or Fuzi — they can't do anything without stepping into your range.</li>
+          <li><span class="lead">Weak matchup:</span> don't trade blows. Kite, dodge, and farm on the time difference — take resources while the enemy is busy elsewhere. Staying healthy is winning. Long-range, sustain-heavy laners like Mi Yue, or beefy tanks like Bai Qi you simply can't burst, are exactly when you switch to this mode.</li>
+          <li><span class="lead">Never open the fight.</span> Devara is too fragile to lead, and leading with your ult just draws focus and gets you bursted. Poke from the edge with ranged attacks and Divine Judgment until the enemy dumps a wave of skills — then flow in second and ult to harvest.</li>
+          <li><span class="lead">Don't waste your ultimate</span> on a target that can escape. If they've got a dash or an untargetable, hold it — think Mi Yue going untargetable, or a dash-happy Prince of Lanling.</li>
+          <li><span class="lead">Split their formation.</span> Use Divine Judgment to knock one enemy back into your team, then follow Thunderblaze and your ultimate through the wall to flank, isolate, and clean up the stragglers.</li>
+        </ul>
+
+        <span class="subhead">Defensive Rhythm</span>
+        <ul>
+          <li><span class="lead">Always keep an exit.</span> Thunderblaze dashes you out through a small wall and hands you a shield on the way — and at full Energy you get a second dash, so a second shield. It's your get-out the moment an assassin like Prince of Lanling or Han Xin lands on you.</li>
+          <li><span class="lead">Use the ult as an escape.</span> Ascending grants crowd-control immunity and lets you ignore terrain — pop it to shrug off a Bai Qi grab or a Zhang Fei knock-up and fly out over a wall when Thunderblaze is down.</li>
+          <li><span class="lead">A skill spent to survive is never wasted.</span> Sometimes you burn a cast just to live through a lockdown or a burst — blowing Thunderblaze to dodge a telegraphed Lu Bu ult is a trade you take every time. Devara's whole creed is to take the hit and keep going.</li>
+        </ul>
+
+        <span class="subhead">Read the Battlefield</span>
+        <ul>
+          <li><span class="lead">Jungler tell:</span> if your jungler opens on the opposite side of the map, expect a level-4 gank in your lane — so play aggressive at level 3 to set it up. If they open near you, no help is coming — play safe.</li>
+          <li><span class="lead">Bush check:</span> a ranged enhanced attack — or Divine Judgment — thrown into an unseen bush will trigger certain item passives. If they light up, someone's in there. Scout the choke points without ever stepping in.</li>
+          <li><span class="lead">Backline patience:</span> when a fight breaks out, don't tunnel the frontline. Predict where the enemy carries will rotate in from, sit in the fog, and intercept them.</li>
+        </ul>
+
+        <span class="subhead">Split-Push (When You're Ahead)</span>
+        <p>Devara's fast tower damage and mobility make him a brutal side-laner. With a lead, you don't have to group — run a 4-1 split: shove a side lane, take the tower if only one or two answer, and bail with your escape tools if the whole team collapses on you. You stretch the map, choke their farm, and win without ever risking a 5-v-5.</p>
+
+        <span class="skill">Key Combo 1 — Long-Range Cleanup</span>
+        <p>Basic-attack to top up your Energy → Ultimate while stepping backward to hold distance → chase with the chaining thunder bolts → Thunderblaze (Skill 1) to dash in → enhanced basic attack to finish the runner. Perfect for hunting fleeing enemies.</p>
+        <span class="skill">Key Combo 2 — Backline Dive</span>
+        <p>This one's a commitment, not a poke — only pull the trigger once your frontline has already absorbed the enemy's key skills. Ultimate to ascend and clear the wall, drop onto the carry, and burst it down before help arrives. Then immediately look for the way out — if the dive stalls, your second dash and crowd-control immunity are your ticket back to safety.</p>
+        <span class="skill">Key Combo 3 — Bait &amp; Punish ("Feign Weakness")</span>
+        <p>The exception to "don't waste your ult on escapers": against slippery, untargetable heroes, do the opposite. Open with your Ultimate to force out their escape — then retreat, even though you're ahead. Sell the weakness. Make them think they can beat you. Bait them into committing without their escape… and then turn and collapse on them. Lure the tiger out of the mountain."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">4:00 – 4:30</span>
+      <h2>Lineup Dynamics &amp; Counters</h2>
+      <div class="vo">
+        <ul>
+          <li><span class="lead">Lock-and-clump partners</span> — heroes like Lam and Guiguzi bunch enemies together with AoE crowd control, turning your thunder chains and melee splash into multi-target damage. Zhang Fei and Lapu Lapu peel and lock down the enemy so you can wreak havoc safely. That's the dream draft.</li>
+          <li><span class="lead">Tough matchups</span> — anyone who closes the gap and sticks to you, like Dian Wei: he charges straight onto you, cleanses your crowd control, and is persistent enough to ride out your damage and take you down. Sustain tanks like Bai Qi and Dun simply out-last your damage too. Don't try to win these duels — kite, poke, and let the fight come to you.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">4:30 – 4:50</span>
+      <h2>Closing &amp; Retention Hook</h2>
+      <div class="vo">
+        <span class="quote">"The storm was never in a hurry — and neither is Devara.</span>
+        <span class="quote">Bank your Energy. Strike second. Take every punch the game throws at you.</span>
+        <span class="quote">Do that, and the lazy elder everyone wrote off becomes the Thunderlord who ends the game.</span>
+        <span class="quote">Now go make the sky break. And I'll see you in the next episode."</span>
+      </div>
+    </div>
+
+
+
+  </section>
+
+  <!-- ============================== SCREENPLAY + FX ============================== -->
+  <section class="view" id="screenplay">
+
+    <p class="sp-intro">Shooting screenplay broken into production beats inside the same timestamp windows as the script. <b>Visual</b> = exactly what to record/match. <b>FX</b> = post / motion graphics. <b>On-Screen Text</b> = burned-in overlays.</p>
+
+    <!-- HOOK -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:00 – 0:12</span><span class="title">Hook &amp; Identity</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Cold open on a dark battlefield. Hold on Devara standing still while a teamfight rages around him in slow-mo; on the line "then it strikes," cut to a full-speed Ultimate descent — lightning crashing down. Match the storm-building → explosion beat of the VO. End on a hero portrait / splash-art freeze of Devara.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Heavy lightning flash transitions; screen-shake + bass hit on "strikes." Desaturate-to-electric-blue color grade. Title card animates in: name strikes like a bolt with a thunderclap.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">DEVARA</span><span class="ost-text">THE THUNDERLORD</span><span class="ost-text">Full Hero Guide</span></div></div>
+      </div>
+    </div>
+
+    <!-- SKILL SHOWCASE -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:12 – 0:20</span><span class="title">Passive — Wish of the Living</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Practice-range clip: land basic attacks (show them turning into faster melee swings at close range) and let the Energy meter fill to full. Trigger the thunder proc, then immediately cast an enhanced basic to show the heal numbers and bonus magic damage. Keep the Energy UI clearly in frame.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Zoom + circle-highlight on the Energy bar; arrow pointer to the heal pop-up. Subtle electric pulse each Energy gain.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">PASSIVE · Wish of the Living</span><span class="ost-text">Physical AA · melee at close range</span><span class="ost-text">Energy full = Thunder · +1 skill charge</span><span class="ost-text">Enhanced AA = bonus dmg + heal</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:20 – 0:28</span><span class="title">Skill 1 — Thunderblaze</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Show Devara dashing forward as a lightning bolt through a small wall, hitting enemies and gaining the shield. Capture one clean dash from a side angle so the gap-close distance and shield bubble both read.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Slow-mo the dash 50% then snap to full speed; trail/streak on the bolt. Glow-outline the shield gain.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">SKILL 1 · Thunderblaze</span><span class="ost-text">Dash + Shield</span><span class="ost-text">Gap-closer / Escape</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:28 – 0:38</span><span class="title">Skill 2 — Divine Judgment</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Two side-by-side clips: (1) blast hits an enemy at max range → small knockback; (2) blast hits a point-blank enemy → big knockback. Make the distance difference obvious so the "closer = farther" rule lands.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Split-screen or quick A/B cut with a distance ruler graphic; motion-line on the knockback arc.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">SKILL 2 · Divine Judgment</span><span class="ost-text">Closer = bigger knockback</span><span class="ost-text">Disengage / Peel</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:38 – 0:55</span><span class="title">Ultimate — Millennium Echo</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Full ultimate sequence: Devara ascends (show the CC-immune window), flies over a wall, lightning strikes nearby enemies stacking shields, then the landing AoE slam. Follow with 2–3s of the enhanced state — basic attacks chaining lightning between multiple foes at extended range.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Brief "1.5s CC-IMMUNE" timer overlay during ascent; mark the lightning strikes with on-hit ticks. Big screen-shake on landing. Highlight the lightning chains linking enemies; show the increased attack-range ring.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">ULTIMATE · Millennium Echo</span><span class="ost-text">1.5s CC-immune · ignores terrain</span><span class="ost-text">lightning strikes → shields + Energy</span><span class="ost-text">8s: chain lightning + range up</span></div></div>
+      </div>
+    </div>
+
+    <!-- CORE RESOURCE -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:55 – 1:15</span><span class="title">The 1-Auto-1-Auto Combo</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">On-screen input/finger-cam (or button-press overlay) showing the rhythm: Skill → Basic → Skill → Basic on a dummy. Then play TWO clips back to back of the same combo — one labelled smooth, one labelled clunky — so the viewer feels the difference before it's explained.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Animated button-tap overlay synced to inputs; metronome/beat ticks. Green "SMOOTH" vs red "CLUNKY" tags on the two clips.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">THE 1-AUTO-1-AUTO COMBO</span><span class="ost-text">Skill · Basic · Skill · Basic</span><span class="ost-text">Two versions → it's about ENERGY</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:15 – 1:30</span><span class="title">The Skill-Refresh Trap</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Full-Energy clip: enhanced skill refreshes instantly, no gap — fire refreshed skill then basic skill back-to-back. Then a low-Energy clip where a fast tap during cooldown fails to fire and forces a wasted extra basic. Keep the Energy bar + skill cooldown clearly visible in both.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Highlight the Energy bar (full vs not). Flash a red "DEAD INPUT — wasted" callout on the failed tap. Slow-mo the cooldown gap.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">Full Energy = instant refresh, no ceiling</span><span class="ost-text">Below cap = cooldown gap → dead input</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:30 – 1:40</span><span class="title">Skill Priority &amp; Summoner</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Skill-up menu screen recording: level Ultimate first, then Skill 1, then Skill 2. Cut to the Summoner Spell select showing Flash, then a quick clip of Frenzy as the alternative.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Clean info-card / leveling-order graphic (R &gt; 1 &gt; 2). Icon badges for Flash &amp; Frenzy.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">PRIORITY: Ult &gt; Thunderblaze &gt; Divine Judgment</span><span class="ost-text">Summoner: FLASH (standard) · Frenzy (lane bully)</span></div></div>
+      </div>
+    </div>
+
+    <!-- ADVANCED -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:40 – 1:50</span><span class="title">Advanced — Intro / Skill Ceiling</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Punchy montage of high-level Devara plays (kites, dives, escapes) to signal "advanced section starts here." End on a clip emphasising basic-attack damage rather than skills.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Chapter-break wipe with thunderclap. "ADVANCED" stamp slams in. Slight speed-ramp on the montage.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">⚡ ADVANCED MECHANICS</span><span class="ost-text">Most of his damage = basic attacks</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:50 – 2:05</span><span class="title">Cancel-Step Kiting</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Demonstrate the technique slowly first: shot → flick move-stick a half-step → stop → fire again, repeating while retreating from an enemy. Then show it at full speed kiting a chaser. Contrast with a clip of standing still attacking (slower / takes damage).</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Movement-trail dots marking each half-step; attack-frequency counter comparing moving vs stationary. Red flag on the stand-still clip.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">CANCEL-STEP KITING</span><span class="ost-text">Shot → half-step → fire (cancels back-swing)</span><span class="ost-text">Rule: never stand still to attack</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:05 – 2:20</span><span class="title">Control-Fist Target Swap</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Show the melee enhanced attack's AoE splash hitting an area and proccing item passives multiple times. Then the key trick: enemy hides behind their frontline → tap attack-turret to snap to nearest unit so splash clips the hidden enemy; alternative — tap last-hit on a minion to land splash on whoever's behind it, all while staying at range.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Outline the splash radius; arrow showing the target snap. Highlight the hidden enemy taking the splash damage. Button-press overlay for attack-turret / last-hit taps.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">CONTROL-FIST TARGET SWAP</span><span class="ost-text">Melee splash · ignores falloff · multi-proc</span><span class="ost-text">Tap turret / last-hit to clip the hidden carry</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:20 – 2:28</span><span class="title">Bank a Charge</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Farming clip where Devara keeps one enhanced skill charge stored (show the charge icon held) instead of dumping it on minions, then instantly uses it the moment a ganker appears.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Glow/pulse on the stored charge icon with a "no expiry" tag; quick zoom when it's spent on the gank.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">BANK A CHARGE</span><span class="ost-text">Enhanced skill never expires — keep 1 ready</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:28 – 2:40</span><span class="title">Recommended Settings</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Screen-record the in-game Settings / Controls menus. Show toggling each option exactly: Attack-turret + last-hit buttons ON; Basic attack set to "Precise"; "Move-to-chase" OFF / auto-attack nearest; Skill-aim default → toward enemy.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Zoom + circle each toggle as it's changed; checkmark animation per setting. Build a tidy settings checklist card on screen.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">SETTINGS CHECKLIST</span><span class="ost-text">Turret + Last-hit: ON</span><span class="ost-text">Basic attack: Precise</span><span class="ost-text">Move-to-chase: OFF</span><span class="ost-text">Skill-aim: toward enemy</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:40 – 2:55</span><span class="title">Offensive Rhythm — Matchups</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Strong matchup clip: poke a short-range walk-up fighter, zoning them off farm with ranged charged attacks. Weak matchup clip: facing Mi Yue / Bai Qi — kite, dodge, and farm sidelanes rather than trading. Show staying high-HP as the win condition.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Green "BULLY" vs amber "DON'T TRADE" banners. Hero portraits of named matchups slide in. Highlight HP bar staying full on the weak-matchup clip.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">STRONG: bully short-range walk-ups (Arthur · Wuyan · Fuzi)</span><span class="ost-text">WEAK: vs Mi Yue / Bai Qi → kite + farm</span><span class="ost-text">Staying healthy = winning</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:55 – 3:08</span><span class="title">Never Open · Don't Waste Ult</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Bad example: Devara opens a fight / leads with ult → gets focused and bursted (clearly marked WRONG). Good example: poke from the edge with ranged attacks + Divine Judgment, wait for the enemy to dump skills, then flow in second and ult to clean up. Add a clip of holding ult vs Mi Yue untargetable / dashing Prince of Lanling.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Red "✗ WRONG" / green "✓ RIGHT" stamps. Slow-mo the moment the enemy dumps skills before Devara engages. "HOLD ULT" flag over the escaping target.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">NEVER open the fight — flow in second</span><span class="ost-text">Don't ult a target that can escape</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">3:08 – 3:18</span><span class="title">Split Their Formation</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Use Divine Judgment to knock one enemy back into your team, then Thunderblaze + Ultimate through a wall to flank, isolate and finish the stragglers. Capture the whole sequence as one continuous play if possible.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Arrow tracing the knockback direction; flank-path line over the wall. Isolate-target spotlight on the picked-off enemy.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">SPLIT THEIR FORMATION</span><span class="ost-text">S2 knock-in → S1 + Ult flank → isolate</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">3:18 – 3:32</span><span class="title">Defensive Rhythm</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Three quick survival clips: (1) Thunderblaze dash out through a wall + shield, and at full Energy a second dash/second shield, escaping an assassin (Prince of Lanling / Han Xin). (2) Ult used purely to escape — CC-immunity shrugging off a Bai Qi grab or Zhang Fei knock-up, flying over a wall. (3) Burning Thunderblaze to dodge a telegraphed Lu Bu ult.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">"SHIELD x2" callout on the double-dash; "CC IMMUNE" flash during the ult escape; freeze-frame the telegraphed Lu Bu ult before the dodge.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">ALWAYS keep an exit</span><span class="ost-text">Ult = escape (CC immune, ignore terrain)</span><span class="ost-text">A skill spent to survive is never wasted</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">3:32 – 3:45</span><span class="title">Read the Battlefield</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Minimap-focused clips: (1) jungler opens opposite side → predict the level-4 gank; play aggressive at lvl 3 to set it up. (2) Throw a ranged enhanced attack / Divine Judgment into a bush to trigger item passive and reveal a hidden enemy. (3) Sit in fog and intercept a rotating enemy carry instead of tunnelling the frontline.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Minimap zoom + jungle-path arrows. "BUSH CHECK ✓ — enemy spotted" popup on the passive trigger. Fog-of-war highlight on the intercept clip.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">JUNGLER TELL · BUSH CHECK · BACKLINE PATIENCE</span><span class="ost-text">Throw into bush → passive lights = someone's there</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">3:45 – 3:52</span><span class="title">Split-Push (When Ahead)</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Devara shoving a side lane fast, taking a tower when only 1–2 enemies answer, then using escape tools to bail when the whole team collapses. Show the map stretched / enemies forced to respond.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">"4-1 SPLIT" diagram on the minimap; tower-HP melt counter; escape-route arrow on the bail.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">SPLIT-PUSH · run a 4-1</span><span class="ost-text">Shove → take tower → bail. Win without 5v5</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">3:52 – 4:00</span><span class="title">Key Combos 1 · 2 · 3</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Rapid combo montage, one clean rep each, each clearly labelled. <b>Combo 1 (Cleanup):</b> Basic → Ult while stepping back → chase with chain bolts → Thunderblaze in → enhanced basic to finish a runner. <b>Combo 2 (Dive):</b> after frontline absorbs skills, Ult over wall onto the carry, burst, then look for the exit (2nd dash / CC-immunity out). <b>Combo 3 (Bait):</b> open Ult to force the enemy's escape, retreat to sell weakness, then turn and collapse when they over-commit.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Per-combo input sequence overlay (icon chain). Numbered "COMBO 1/2/3" cards. For Combo 3, a "FEIGN WEAKNESS → PUNISH" two-beat callout.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">COMBO 1 · Long-Range Cleanup</span><span class="ost-text">COMBO 2 · Backline Dive</span><span class="ost-text">COMBO 3 · Bait &amp; Punish ("Feign Weakness")</span></div></div>
+      </div>
+    </div>
+
+    <!-- LINEUP -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">4:00 – 4:15</span><span class="title">Lock-and-Clump Partners</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Synergy clips: Lam / Guiguzi bunching enemies with AoE CC while Devara's thunder chains + melee splash hit the whole group for multi-target damage. Show Zhang Fei / Lapu Lapu peeling and CC-ing for him so he wrecks the team safely.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Hero portrait pairings slide in (Devara + partner). Highlight the clumped enemies + chain-lightning links jumping between them. "SYNERGY" tag.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">BEST WITH: Lam · Guiguzi · Zhang Fei · Lapu Lapu</span><span class="ost-text">AoE CC → multi-target thunder</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">4:15 – 4:30</span><span class="title">Tough Matchups</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Clips of the hard counters in action: a sticky gap-closer like Dian Wei charging straight onto Devara, shrugging off his crowd control, and refusing to die; and sustain tanks like Bai Qi / Dun out-lasting his damage. Pair each with the correct response — Devara kiting and poking instead of trying to duel.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Red "COUNTER" tag + portraits (Dian Wei, Bai Qi, Dun). "DON'T DUEL → KITE &amp; POKE" reminder banner.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">COUNTERS: Dian Wei · Bai Qi · Dun</span><span class="ost-text">Don't duel — kite, poke, let it come to you</span></div></div>
+      </div>
+    </div>
+
+    <!-- CLOSING -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">4:30 – 4:50</span><span class="title">Closing &amp; Retention Hook</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Slow, triumphant outro montage of Devara taking hits and surviving, then turning a fight and getting the game-ending kills. Land on a heroic hold of Devara (or his splash art) as the storm settles. Leave room for an end-screen / subscribe + next-episode card.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Warm-to-electric grade; rolling distant thunder fading to calm. Recap lower-thirds (Bank Energy · Strike Second · Take the hit). Animate the end-screen card + subscribe prompt; tease next hero.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">Bank your Energy · Strike second · Take the hit</span><span class="ost-text">▶ SUBSCRIBE</span><span class="ost-text">Next episode →</span></div></div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>DEVARA · THE THUNDERLORD — HOK GLOBAL HERO GUIDE</footer>
+
+</div>
+
+<script>
+  const tabs=document.querySelectorAll('.tab');
+  const views=document.querySelectorAll('.view');
+  tabs.forEach(t=>t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    views.forEach(v=>v.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.view).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }));
+</script>
+</body>
+</html>
