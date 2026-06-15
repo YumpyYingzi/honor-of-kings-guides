@@ -125,6 +125,17 @@
       0 0 0 1px rgba(110,168,255,.1);
   }
 
+  /* Episode number badge */
+  .card-ep {
+    position: absolute; top: 10px; left: 10px; z-index: 3;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: .15em; text-transform: uppercase; font-weight: 700;
+    color: var(--paper-faint);
+    background: rgba(5,6,11,.65);
+    padding: 2px 7px; border-radius: 20px;
+    border: 1px solid var(--edge-soft);
+  }
+
   /* NEW badge */
   .card-new-badge {
     position: absolute; top: 10px; right: 10px; z-index: 3;
@@ -147,7 +158,6 @@
     background: radial-gradient(ellipse at 50% 0%, rgba(143,109,255,.32), transparent 70%);
   }
 
-  /* Drop an <img class="hero-portrait"> inside .card-banner to replace the emoji */
   .card-banner img.hero-portrait {
     position: absolute; inset: 0; width: 100%; height: 100%;
     object-fit: cover; object-position: top center;
@@ -174,7 +184,6 @@
   .badge-assassin { color: #ff7a8a; border-color: rgba(255,122,138,.3); background: rgba(255,122,138,.07); }
   .badge-marksman { color: #4fc8e8; border-color: rgba(79,200,232,.3); background: rgba(79,200,232,.07); }
   .badge-support  { color: #5de8b4; border-color: rgba(93,232,180,.3); background: rgba(93,232,180,.07); }
-  .badge-tank     { color: #94b8ff; border-color: rgba(148,184,255,.3); background: rgba(148,184,255,.07); }
   .badge-tank     { color: var(--bolt); border-color: rgba(110,168,255,.35); background: rgba(110,168,255,.07); }
   .badge-lane     { color: var(--paper-faint); border-color: var(--edge-soft); background: transparent; }
 
@@ -202,14 +211,13 @@
 
   /* ── COMING SOON CARD ────────────────────────── */
   .card--soon { cursor: default; opacity: .55; pointer-events: none; }
-  .card--soon .card-banner {
-    background: rgba(14,19,38,.6);
-  }
+  .card--soon .card-banner { background: rgba(14,19,38,.6); }
   .card--soon .hero-icon { font-size: 30px; opacity: .25; }
   .card--soon .card-name {
     font-size: clamp(17px, 2.4vw, 22px); letter-spacing: .06em;
     color: var(--paper-dim); margin-top: 4px; line-height: 1;
   }
+  .card--soon .card-ep { opacity: .5; }
   .cs-label {
     font-family: 'JetBrains Mono', monospace; font-size: 9px;
     letter-spacing: .25em; text-transform: uppercase;
@@ -235,27 +243,21 @@
     <div class="epithet">Hero Guide Library</div>
     <div class="sub">In-depth hero guides for the HOK Global community — kit breakdowns, advanced mechanics, and high-level strategy.</div>
     <div class="bolt-rule"></div>
-    <div class="guide-meta"><span class="live">2</span> guides live &nbsp;·&nbsp; <span class="live">16</span> in production</div>
+    <div class="guide-meta"><span class="live">3</span> guides live &nbsp;·&nbsp; <span class="live">15</span> in production</div>
     <!--
       HOW TO UPDATE: when you publish a new guide, change the live count above
       and replace one of the "Coming Soon" cards below with a live card.
+      Move the NEW badge to the most recently published card.
     -->
   </header>
 
   <!-- ── HERO CARD GRID ── -->
-  <!--
-    TO PUBLISH A NEW GUIDE:
-    1. Upload the guide HTML (e.g. chano.html) to your repo
-    2. Find the hero's card below
-    3. Change <div class="card card--soon"> to <a class="card" href="chano.html">
-    4. Remove class--soon from the class list
-    5. Close with </a> instead of </div>
-    6. Update the live-count in the masthead
-  -->
   <div class="grid">
 
     <!-- ═══ DEVARA — LIVE ═══════════════════════════ -->
     <a class="card" href="devara.html">
+      <span class="card-ep">Ep. 21</span>
+      <span class="card-new-badge">NEW</span>
       <div class="card-banner">
         <!-- Replace with: <img class="hero-portrait" src="devara-portrait.jpg" alt="DEVARA"> -->
         <span class="hero-icon">⚡</span>
@@ -273,8 +275,30 @@
       </div>
     </a>
 
+    <!-- ═══ BIRON — LIVE ═══════════════════════════ -->
+    <a class="card" href="biron.html">
+      <span class="card-ep">Ep. 22</span>
+      <span class="card-new-badge">NEW</span>
+      <div class="card-banner">
+        <!-- Replace with: <img class="hero-portrait" src="biron-portrait.jpg" alt="BIRON"> -->
+        <span class="hero-icon">🔩</span>
+      </div>
+      <div class="card-body">
+        <div class="card-badges">
+          <span class="badge badge-fighter">Fighter</span>
+          <span class="badge badge-lane">Solo Lane</span>
+        </div>
+        <div class="card-name">BIRON</div>
+        <div class="card-epithet">The Sparkmace</div>
+        <div class="card-rule"></div>
+        <div class="card-desc">He doesn't rush the fight — he builds pressure until the enemy runs out of room to breathe, then brings the thunder.</div>
+        <div class="card-cta">View Full Guide &#8594;</div>
+      </div>
+    </a>
+
     <!-- ═══ CHANO — LIVE ═══════════════════════════ -->
     <a class="card" href="chano.html">
+      <span class="card-ep">Ep. 23</span>
       <span class="card-new-badge">NEW</span>
       <div class="card-banner">
         <!-- Replace with: <img class="hero-portrait" src="chano-portrait.jpg" alt="CHANO"> -->
@@ -296,6 +320,7 @@
 
     <!-- ZHOU YU -->
     <div class="card card--soon">
+      <span class="card-ep">Ep. 24</span>
       <div class="card-banner">
         <span class="hero-icon">🔥</span>
       </div>
@@ -313,6 +338,7 @@
 
     <!-- FEYD -->
     <div class="card card--soon">
+      <span class="card-ep">Ep. 25</span>
       <div class="card-banner">
         <span class="hero-icon">🪶</span>
       </div>
@@ -330,6 +356,7 @@
 
     <!-- FLOWBORN -->
     <div class="card card--soon">
+      <span class="card-ep">Ep. 26</span>
       <div class="card-banner">
         <span class="hero-icon">🛡</span>
       </div>
@@ -347,13 +374,14 @@
 
     <!-- JING -->
     <div class="card card--soon">
+      <span class="card-ep">Ep. 27</span>
       <div class="card-banner">
         <span class="hero-icon">🪞</span>
       </div>
       <div class="card-body">
         <div class="card-badges">
           <span class="badge badge-assassin">Assassin</span>
-		  <span class="badge badge-lane">Jungle</span>
+          <span class="badge badge-lane">Jungle</span>
         </div>
         <div class="card-name">JING</div>
         <div class="card-epithet">The Broken Mirage</div>
@@ -364,6 +392,7 @@
 
     <!-- SAKEER -->
     <div class="card card--soon">
+      <span class="card-ep">Ep. 28</span>
       <div class="card-banner">
         <span class="hero-icon">🖌</span>
       </div>
@@ -381,6 +410,7 @@
 
     <!-- GARO -->
     <div class="card card--soon">
+      <span class="card-ep">Ep. 29</span>
       <div class="card-banner">
         <span class="hero-icon">🏹</span>
       </div>
@@ -398,6 +428,7 @@
 
     <!-- MILADY -->
     <div class="card card--soon">
+      <span class="card-ep">Ep. 30</span>
       <div class="card-banner">
         <span class="hero-icon">🤖</span>
       </div>
@@ -415,6 +446,7 @@
 
     <!-- FATIH -->
     <div class="card card--soon">
+      <span class="card-ep">Ep. 31</span>
       <div class="card-banner">
         <span class="hero-icon">⚔</span>
       </div>
@@ -433,6 +465,7 @@
 
     <!-- DYADIA -->
     <div class="card card--soon">
+      <span class="card-ep">Ep. 32</span>
       <div class="card-banner">
         <span class="hero-icon">🔗</span>
       </div>
@@ -450,6 +483,7 @@
 
     <!-- LIBAI -->
     <div class="card card--soon">
+      <span class="card-ep">Ep. 33</span>
       <div class="card-banner">
         <span class="hero-icon">📜</span>
       </div>
@@ -467,14 +501,15 @@
 
     <!-- YUHUAN -->
     <div class="card card--soon">
+      <span class="card-ep">Ep. 34</span>
       <div class="card-banner">
         <span class="hero-icon">🎵</span>
       </div>
       <div class="card-body">
         <div class="card-badges">
           <span class="badge badge-mage">Mage</span>
-		  <span class="badge badge-support">Support</span>
-		  <span class="badge badge-lane">Roam</span>
+          <span class="badge badge-support">Support</span>
+          <span class="badge badge-lane">Roam</span>
         </div>
         <div class="card-name">YUHUAN</div>
         <div class="card-epithet">The Tunecaster</div>
@@ -485,6 +520,7 @@
 
     <!-- AUGRAN -->
     <div class="card card--soon">
+      <span class="card-ep">Ep. 35</span>
       <div class="card-banner">
         <span class="hero-icon">🌟</span>
       </div>
@@ -503,6 +539,7 @@
 
     <!-- XUANCE -->
     <div class="card card--soon">
+      <span class="card-ep">Ep. 36</span>
       <div class="card-banner">
         <span class="hero-icon">💥</span>
       </div>
@@ -521,6 +558,7 @@
 
     <!-- HEINO -->
     <div class="card card--soon">
+      <span class="card-ep">Ep. 37</span>
       <div class="card-banner">
         <span class="hero-icon">🔮</span>
       </div>
@@ -539,6 +577,7 @@
 
     <!-- MUSASHI -->
     <div class="card card--soon">
+      <span class="card-ep">Ep. 38</span>
       <div class="card-banner">
         <span class="hero-icon">⚔</span>
       </div>
@@ -556,6 +595,7 @@
 
     <!-- ARKE -->
     <div class="card card--soon">
+      <span class="card-ep">Ep. 39</span>
       <div class="card-banner">
         <span class="hero-icon">🌑</span>
       </div>

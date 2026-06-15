@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biron — The Sparkmace · Guide Script & Screenplay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#05060b;
+    --ink:#0b0e1a;
+    --panel:#10142400;
+    --panel-solid:#0e1326;
+    --edge:#26304f;
+    --edge-soft:#1a2138;
+    --bolt:#6ea8ff;
+    --bolt-bright:#a9ccff;
+    --volt:#8f6dff;
+    --gold:#e7b75a;
+    --gold-soft:#c9a25a;
+    --paper:#e9ecf5;
+    --paper-dim:#9aa3bd;
+    --paper-faint:#69718e;
+    --danger:#ff7a8a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Spectral',Georgia,serif;
+    background:
+      radial-gradient(1200px 700px at 50% -10%, rgba(143,109,255,.18), transparent 60%),
+      radial-gradient(900px 600px at 85% 8%, rgba(110,168,255,.14), transparent 55%),
+      linear-gradient(180deg,#05060b 0%, #070912 45%, #05060b 100%);
+    color:var(--paper);
+    line-height:1.7;
+    min-height:100vh;
+    padding:0 0 80px;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+    background-image:
+      linear-gradient(rgba(110,168,255,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(110,168,255,.035) 1px, transparent 1px);
+    background-size:46px 46px;
+    mask-image:radial-gradient(1000px 800px at 50% 0%, #000 30%, transparent 80%);
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+  /* ---------- MASTHEAD ---------- */
+  header.mast{
+    text-align:center;padding:64px 0 30px;position:relative;
+  }
+  .kicker{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.42em;
+    text-transform:uppercase;color:var(--bolt);opacity:.85;margin-bottom:22px;
+  }
+  .ep-num{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;
+    text-transform:uppercase;color:var(--paper-faint);margin-bottom:10px;
+    display:block;
+  }
+  .mast h1{
+    font-family:'Cinzel',serif;font-weight:900;line-height:.98;
+    font-size:clamp(48px,11vw,104px);letter-spacing:.02em;
+    background:linear-gradient(180deg,#fff 0%, var(--bolt-bright) 38%, var(--volt) 105%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 60px rgba(143,109,255,.25);
+  }
+  .mast .epithet{
+    font-family:'Cinzel',serif;font-weight:600;font-size:clamp(15px,3.6vw,22px);
+    letter-spacing:.5em;text-transform:uppercase;color:var(--gold);
+    margin-top:10px;padding-left:.5em;
+  }
+  .mast .sub{
+    margin-top:20px;color:var(--paper-dim);font-style:italic;font-size:16px;
+    max-width:560px;margin-left:auto;margin-right:auto;
+  }
+  .bolt-rule{
+    width:120px;height:2px;margin:30px auto 0;
+    background:linear-gradient(90deg,transparent,var(--bolt),var(--volt),transparent);
+    box-shadow:0 0 18px rgba(110,168,255,.7);
+  }
+  .runtime{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--paper-faint);
+    letter-spacing:.2em;margin-top:18px;
+  }
+
+  /* ---------- TABS ---------- */
+  .tabs{
+    position:sticky;top:0;z-index:20;display:flex;gap:8px;justify-content:center;
+    padding:14px 0 12px;margin:18px 0 8px;
+    background:linear-gradient(180deg,#05060bef 60%, transparent);
+    backdrop-filter:blur(4px);
+  }
+  .tab{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;
+    letter-spacing:.18em;text-transform:uppercase;cursor:pointer;
+    color:var(--paper-dim);background:var(--panel-solid);
+    border:1px solid var(--edge);padding:11px 20px;border-radius:2px;
+    transition:.22s;
+  }
+  .tab:hover{color:var(--paper);border-color:var(--bolt)}
+  .tab.active{
+    color:#060912;background:linear-gradient(180deg,var(--bolt-bright),var(--bolt));
+    border-color:var(--bolt);box-shadow:0 0 22px rgba(110,168,255,.45);
+  }
+  .view{display:none;animation:fade .4s ease}
+  .view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ---------- SCRIPT BLOCKS ---------- */
+  .block{
+    position:relative;margin:30px 0;padding:26px 28px 26px 30px;
+    background:linear-gradient(180deg,rgba(14,19,38,.72),rgba(8,11,22,.72));
+    border:1px solid var(--edge-soft);border-left:none;border-radius:3px;
+    overflow:hidden;
+  }
+  .block::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:linear-gradient(180deg,var(--bolt),var(--volt));
+    box-shadow:0 0 16px rgba(110,168,255,.55);
+  }
+  .block .ts{
+    display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:12px;letter-spacing:.12em;color:#060912;
+    background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+    padding:4px 12px;border-radius:2px;margin-bottom:6px;
+  }
+  .block h2{
+    font-family:'Cinzel',serif;font-weight:700;font-size:clamp(20px,4vw,28px);
+    color:var(--bolt-bright);letter-spacing:.04em;margin:8px 0 4px;line-height:1.15;
+    text-shadow:0 0 30px rgba(110,168,255,.2);
+  }
+  .block h2 .tail{font-size:.62em;color:var(--gold);letter-spacing:.08em;font-weight:600}
+  .vo{color:var(--paper);font-size:17px}
+  .vo p{margin:0 0 2px}
+  .vo .quote{display:block;margin:6px 0;padding-left:2px}
+  .skill{
+    font-family:'Cinzel',serif;font-weight:600;color:var(--gold);
+    letter-spacing:.03em;display:block;margin:14px 0 1px;font-size:16px;
+  }
+  .subhead{
+    font-family:'Cinzel',serif;font-weight:600;color:var(--bolt);
+    letter-spacing:.05em;display:block;margin:20px 0 4px;font-size:17px;
+    border-bottom:1px solid var(--edge-soft);padding-bottom:5px;
+  }
+  .lead{font-weight:600;color:var(--bolt-bright)}
+  .vo .spacer{height:9px}
+  .vo ul{list-style:none;margin:6px 0;padding:0}
+  .vo ul li{
+    position:relative;padding-left:20px;margin:7px 0;
+  }
+  .vo ul li::before{
+    content:"⚡";position:absolute;left:0;top:0;font-size:12px;color:var(--bolt);
+    filter:drop-shadow(0 0 4px rgba(110,168,255,.7));
+  }
+  em.note{color:var(--paper-dim)}
+
+  /* ---------- SCREENPLAY ---------- */
+  .sp-intro{
+    margin:26px 0 8px;color:var(--paper-dim);font-style:italic;font-size:15px;
+    border-left:2px solid var(--edge);padding-left:16px;
+  }
+  .scene{
+    margin:22px 0;border:1px solid var(--edge-soft);border-radius:3px;overflow:hidden;
+    background:linear-gradient(180deg,rgba(12,16,32,.7),rgba(7,10,20,.7));
+  }
+  .scene-head{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:12px 18px;background:rgba(110,168,255,.07);
+    border-bottom:1px solid var(--edge-soft);
+  }
+  .scene-head .ts{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;
+    color:#060912;background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+    padding:4px 11px;border-radius:2px;letter-spacing:.08em;
+  }
+  .scene-head .title{
+    font-family:'Cinzel',serif;font-weight:600;font-size:15px;color:var(--bolt-bright);
+    letter-spacing:.06em;text-transform:uppercase;
+  }
+  .scene-body{padding:6px 18px 16px}
+  .row{display:flex;gap:0;border-bottom:1px dashed var(--edge-soft);padding:12px 0}
+  .row:last-child{border-bottom:none}
+  .row .lab{
+    flex:0 0 116px;font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    padding-top:3px;
+  }
+  .row.visual .lab{color:var(--bolt)}
+  .row.fx .lab{color:var(--volt)}
+  .row.ost .lab{color:var(--gold)}
+  .row .val{flex:1;font-size:15.5px;color:var(--paper)}
+  .row .val .ost-text{
+    font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--bolt-bright);
+    background:rgba(110,168,255,.08);border:1px solid var(--edge-soft);
+    padding:2px 8px;border-radius:2px;display:inline-block;margin:2px 4px 2px 0;
+  }
+  .row .val .none{color:var(--paper-faint);font-style:italic}
+
+  /* ---------- NOTE BAR ---------- */
+  .notebar{
+    margin:34px 0 0;padding:16px 20px;border:1px dashed var(--edge);border-radius:3px;
+    background:rgba(231,183,90,.05);color:var(--paper-dim);font-size:14px;
+  }
+  .notebar b{color:var(--gold);font-family:'Cinzel',serif;letter-spacing:.04em}
+  footer{
+    text-align:center;margin-top:50px;color:var(--paper-faint);
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;
+  }
+
+  /* ---------- PRINT ---------- */
+  @media print{
+    body{background:#fff;color:#111}
+    body::before{display:none}
+    .tabs{display:none}
+    .view{display:block!important}
+    .view + .view{page-break-before:always}
+    .mast h1{color:#1a2350;-webkit-text-fill-color:#1a2350}
+    .mast .epithet{color:#8a6a14}
+    .block,.scene{background:#fff;border-color:#bbb;break-inside:avoid}
+    .block h2,.scene-head .title{color:#1a2350}
+    .vo,.row .val{color:#111}
+    .skill{color:#8a6a14}
+    .block .ts,.scene-head .ts{background:#1a2350;color:#fff}
+  }
+  @media (max-width:600px){
+    .row{flex-direction:column;gap:3px}
+    .row .lab{flex:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker">Honor of Kings · Global · Hero Guide</div>
+    <span class="ep-num">Episode 22</span>
+    <h1>BIRON</h1>
+    <div class="epithet">The Sparkmace</div>
+    <p class="sub">"Build the storm. Then let it break."</p>
+    <div class="bolt-rule"></div>
+    <div class="runtime">FULL RUNTIME · 0:00 — 3:40</div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-view="script">📜 Full Script</button>
+    <button class="tab" data-view="screenplay">🎬 Screenplay + FX</button>
+  </nav>
+
+  <!-- ============================== FULL SCRIPT ============================== -->
+  <section class="view active" id="script">
+
+    <div class="block">
+      <span class="ts">0:00 – 0:12</span>
+      <h2>Hook &amp; Identity</h2>
+      <div class="vo">
+        <span class="quote">"Biron doesn't just swing a mace — he builds a storm.</span>
+        <span class="quote">Every hit charges his weapon, every skill crackles with electricity, and every fight becomes a relentless chase.</span>
+        <span class="quote">Biron isn't about rushing into fights. He's about building pressure until the enemy runs out of room to breathe.</span>
+        <span class="quote">In this guide, I'll show you how to harness the current that makes Biron the Sparkmace."</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">0:12 – 0:38</span>
+      <h2>Skill Showcase</h2>
+      <div class="vo">
+        <p>"His power builds with every strike.</p>
+        <span class="skill">Passive – Charge</span>
+        <p>Basic attacks and standard skills generate Charge. At thirty Charge or more, his mace becomes Electrified, empowering his attacks and abilities.</p>
+        <span class="skill">Skill 1 – Electrifying Charge</span>
+        <p>Swings twice, dealing damage while restoring health — with stronger damage and recovery when Electrified. A powerful trading tool during extended fights.</p>
+        <span class="skill">Skill 2 – Storm Strike</span>
+        <p>Dash forward, damaging enemies in your path and empowering your next basic attack to slow the target. At thirty Charge or more, that empowered strike becomes Electrified — dealing increased damage, launching and stunning the enemy before slowing them again. Reliable engage and crowd control in one button.</p>
+        <span class="skill">Ultimate – Force Field Suppression</span>
+        <p>Slam the ground, damaging and slowing enemies while granting yourself a shield. When Electrified, it releases an electric wave that steals enemy movement speed — making it even harder for enemies to escape once Biron reaches them."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">0:38 – 1:25</span>
+      <h2>Basic Flow &amp; Core Combo</h2>
+      <div class="vo">
+        <p>"New Biron players react to opportunities. Experienced Biron players create them.</p>
+        <p>Your basic trading pattern is simple: use Storm Strike through the minion wave, land the empowered basic attack, then follow with Electrifying Charge. This deals steady damage while quickly building Charge toward your Electrified state.</p>
+        <p>In the early game, pressure the lane by using Electrifying Charge to hit both minions and the enemy whenever possible. Its damage and healing make you difficult to push out of extended trades.</p>
+        <p>Once Electrified, your engage becomes much stronger: use Storm Strike, land the empowered basic attack to launch and stun the target, then follow with Electrifying Charge and your ultimate to slow enemies, gain a shield, and control the fight. When enemies stay just outside your reach, combine Storm Strike with Flash to close the gap and catch them off guard.</p>
+        <p>For upgrades, prioritize your Ultimate whenever possible, then Skill 1, and finally Skill 2. Build Charge whenever you safely can, manage it intelligently during fights, and look for the right opening to force an engage."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">1:25 – 2:30</span>
+      <h2>Advanced Mechanics <span class="tail">— Offense, Defense &amp; Tech</span></h2>
+      <div class="vo">
+        <p>"Now this is where Biron starts becoming truly oppressive. Most players understand his abilities. The best Biron players understand his timing.</p>
+
+        <span class="subhead">Charge Management</span>
+        <p>Your entire kit becomes more threatening when Electrified. Before forcing a fight, look for opportunities to build Charge through minions, jungle camps, or nearby enemies — so your strongest abilities are available the moment you engage.</p>
+
+        <span class="subhead">Animation Canceling</span>
+        <p>Your empowered basic attack has a long recovery animation. Cancel it by immediately chaining Electrifying Charge or your ultimate — keeping your damage smooth and giving enemies less time to escape.</p>
+
+        <span class="subhead">Early-Game Pressure</span>
+        <p>Biron is strongest early. Use your level two and level four power spikes to pressure the lane, force trades, and look for solo kills through sustained damage and recovery. Create opportunities before enemy carries have time to scale.</p>
+
+        <span class="subhead">The Two Engage Patterns</span>
+        <ul>
+          <li><span class="lead">Without Charge:</span> start with Electrifying Charge across multiple enemies to power up during the fight, then use Storm Strike to control your target.</li>
+          <li><span class="lead">With Electrified ready:</span> lead with Storm Strike, add Flash when you need the extra reach, launch the enemy, then follow with Electrifying Charge and your ultimate.</li>
+        </ul>
+
+        <span class="subhead">Gap-Closing Tech — Double Launch</span>
+        <p>With enough cooldown reduction, Biron can chain a double launch: prepare one empowered attack, wait for Storm Strike to refresh, then chain a second launch before finishing with Electrifying Charge and his ultimate. Relentless and nearly impossible to escape."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">2:30 – 3:10</span>
+      <h2>Lineup Dynamics &amp; Counters</h2>
+      <div class="vo">
+        <ul>
+          <li><span class="lead">Best teammates</span> — heroes like Guiguzi and Lian Po can open the control chain, giving Biron time to follow up with empowered attacks and burst damage. Biron also benefits from facing heroes that summon additional units — against heroes like Milady and Agudo, those extra targets make it easier to build Charge before major engagements.</li>
+          <li><span class="lead">Tough matchups</span> — durable sustain fighters like Ata and Dun can survive Biron's early pressure and force longer trades on equal footing. Meanwhile, heroes like Lu Bu, Diao Chan, and Marco Polo can punish predictable engages through mobility, true damage, or sustained kiting.</li>
+          <li>The longer the game goes, the more important your decision-making becomes. Build your advantage early, manage your Charge carefully, and choose your fights wisely.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">3:10 – 3:40</span>
+      <h2>Closing &amp; Retention Hook</h2>
+      <div class="vo">
+        <span class="quote">"Biron doesn't overwhelm enemies with one ability.</span>
+        <span class="quote">He overwhelms them by building momentum they can't stop.</span>
+        <span class="quote">Manage your Charge, time your engage, and force fights when your Electrified state is ready.</span>
+        <span class="quote">Master his rhythm, and every battle starts feeling like a storm your enemies can't escape.</span>
+        <span class="quote">Now it's your turn to bring the thunder.</span>
+        <span class="quote">And I'll see you in the next episode."</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================== SCREENPLAY + FX ============================== -->
+  <section class="view" id="screenplay">
+
+    <p class="sp-intro">Shooting screenplay broken into production beats inside the same timestamp windows as the script. <b>Visual</b> = exactly what to record/match. <b>FX</b> = post / motion graphics. <b>On-Screen Text</b> = burned-in overlays.</p>
+
+    <!-- HOOK -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:00 – 0:12</span><span class="title">Hook &amp; Identity</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Cold open: hold on Biron standing in lane as a fight ignites around him in slow-mo. On "builds a storm," cut to a rapid montage of Charge building across successive hits. On "relentless chase," cut to an Electrified Storm Strike launch — enemy flying up in real time. End on a hero portrait / splash-art freeze of Biron.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Electric surge transition; subtle Charge-meter fill animation synced to "every hit." Bold title card slams in on the final line: name strikes in like a thunderbolt. Blue-electric color grade throughout cold open.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">BIRON</span><span class="ost-text">THE SPARKMACE</span><span class="ost-text">Full Hero Guide</span><span class="ost-text">EP. 22</span></div></div>
+      </div>
+    </div>
+
+    <!-- PASSIVE -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:12 – 0:18</span><span class="title">Passive — Charge</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Practice-range clip: land basic attacks and standard skills, keeping the Charge meter clearly in frame. Let it fill to 30 — show the mace visibly crackling / glowing to signal Electrified state. Capture the transformation moment cleanly.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Zoom and circle-highlight on the Charge bar; electric pulse on each tick gained. Big glow burst at the 30-Charge threshold — "ELECTRIFIED" stamp flashes on screen.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">PASSIVE · Charge</span><span class="ost-text">Basic attacks + skills = Charge</span><span class="ost-text">30 Charge → ELECTRIFIED</span></div></div>
+      </div>
+    </div>
+
+    <!-- SKILL 1 -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:18 – 0:24</span><span class="title">Skill 1 — Electrifying Charge</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Two quick clips side by side: (1) normal Electrifying Charge — double swing, damage numbers and heal pop-ups visible; (2) Electrified Electrifying Charge — same pattern but bigger numbers, larger heal. Keep both clips short and punchy so the difference is immediately readable.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">A/B label overlay ("Normal" vs "Electrified"); highlight the heal pop-up with a green circle. Brief slow-mo on the second swing of the Electrified version.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">SKILL 1 · Electrifying Charge</span><span class="ost-text">Double swing · damage + heal</span><span class="ost-text">Electrified = stronger dmg &amp; recovery</span></div></div>
+      </div>
+    </div>
+
+    <!-- SKILL 2 -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:24 – 0:31</span><span class="title">Skill 2 — Storm Strike</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Two back-to-back clips: (1) normal Storm Strike — dash, empowered basic attack lands, target briefly slowed; (2) Electrified Storm Strike — same dash, empowered basic launches enemy up, stun + slow visible on landing. Make the launch arc unmissable.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Speed ramp: slow-mo the launch 50% then snap to full speed. "LAUNCH + STUN" callout overlay on clip 2. Motion-streak on the dash path.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">SKILL 2 · Storm Strike</span><span class="ost-text">Dash → empowered basic → slow</span><span class="ost-text">Electrified: launch + stun + slow</span></div></div>
+      </div>
+    </div>
+
+    <!-- ULTIMATE -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:31 – 0:38</span><span class="title">Ultimate — Force Field Suppression</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Two clips: (1) base ultimate — ground slam, damage + slow ring radiating out, shield bubble appears on Biron; (2) Electrified ultimate — same slam plus an electric wave visibly chasing enemies and stealing their movement speed (show their speed debuff icon).</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Shockwave ripple effect on the slam impact. Outline the shield gain with a glow ring. On clip 2, trace the electric wave with a trailing arc and add "SPEED STOLEN" callout.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">ULTIMATE · Force Field Suppression</span><span class="ost-text">Slam · dmg · slow · shield</span><span class="ost-text">Electrified: electric wave steals movement speed</span></div></div>
+      </div>
+    </div>
+
+    <!-- CORE COMBO -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:38 – 0:55</span><span class="title">Basic Flow — React vs. Create</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Two contrasting clips: label one "Reactive Biron" (a player waiting for the enemy to engage first, missing windows), label the second "Proactive Biron" (Storm Strike through the wave, empowered basic lands, Charge climbs). The contrast carries the "react vs create" thesis of this section.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Split-screen or A/B cut with amber "REACTIVE" vs green "PROACTIVE" banners. Charge bar visible and climbing on the proactive clip.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">New players REACT · Experienced players CREATE</span><span class="ost-text">Base trade: Storm Strike → empowered basic → S1</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:55 – 1:10</span><span class="title">Electrified Engage + Flash Combo</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Full Electrified engage sequence in one clean clip: Storm Strike → empowered basic attack launches enemy → Electrifying Charge → ultimate (shield + slow). Then a second clip showing the Storm Strike + Flash extension: Storm Strike fires, Flash instantly closes the remaining gap mid-dash, empowered basic connects.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Input overlay synced to each cast. "ELECTRIFIED ENGAGE" card on clip 1. Flash icon badge and "GAP CLOSED" callout on clip 2.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">ELECTRIFIED: S2 → empowered basic (launch) → S1 → Ult</span><span class="ost-text">Flash extend: S2 + Flash → close gap → engage</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:10 – 1:25</span><span class="title">Skill Priority</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Skill-up menu screen recording: level Ultimate first, then Skill 1, then Skill 2. Cut to a brief clip of Biron farming lane to underline "build Charge safely whenever you can."</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Clean leveling-order graphic: Ult &gt; S1 &gt; S2. Charge bar overlay on the farming clip.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">PRIORITY: Ult &gt; Electrifying Charge &gt; Storm Strike</span><span class="ost-text">Build Charge · manage it · pick your moment</span></div></div>
+      </div>
+    </div>
+
+    <!-- ADVANCED -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:25 – 1:35</span><span class="title">Advanced — Intro / Understanding Timing</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Quick highlight montage of Biron at peak Electrified state — a launch here, a double-kill there, an escape punished. End on a clip that highlights a well-timed engage over a raw abilities clip — this section is about timing, not raw power.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Chapter-break wipe with electric crack. "ADVANCED MECHANICS" stamp slams in. Speed ramp on the montage.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">⚡ ADVANCED MECHANICS</span><span class="ost-text">Most players know the abilities. Master the TIMING.</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:35 – 1:48</span><span class="title">Charge Management</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Two-part clip: (1) Biron forcing a fight at low Charge — abilities feel weak, no launch, engage stalls; (2) Biron pre-building Charge on minions / a jungle camp before walking into the fight at 30+ — Storm Strike immediately launches, the difference is night and day. Keep Charge bar visible in both.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Charge bar highlighted throughout. "LOW CHARGE → weak engage" red flag on clip 1; "ELECTRIFIED → oppressive" green flag on clip 2. Slow-mo the pre-build phase to make it deliberate.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">CHARGE MANAGEMENT</span><span class="ost-text">Pre-build on minions / camps before fighting</span><span class="ost-text">Electrified ready = maximum threat</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:48 – 2:00</span><span class="title">Animation Canceling</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Side-by-side slow-mo: (1) empowered basic attack followed by sitting in the full recovery animation — enemy dashes away; (2) empowered basic immediately chained into Electrifying Charge or the ultimate — no gap, enemy can't react. The gap in enemy reaction time should be unmistakeable.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Slow-mo both clips to 30% speed. Red "RECOVERY ANIMATION — enemy escapes" marker on clip 1. Green "CANCELLED — no gap" marker on clip 2. Input-overlay timed to each cancel.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">ANIMATION CANCEL</span><span class="ost-text">Empowered basic → immediately chain S1 or Ult</span><span class="ost-text">Keeps damage smooth · enemies can't escape</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:00 – 2:12</span><span class="title">Early-Game Pressure</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Clip of Biron at level two poke-trading and healing back, then a level four solo-kill sequence using sustained damage + healing to outlast the enemy. Show the HP bars: Biron's staying healthy while the enemy's drains. The level spike moment should be clearly visible.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">HP bar overlay with side-by-side comparison. "LVL 2 SPIKE" and "LVL 4 SPIKE" callout stamps timed to the relevant clips.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">STRONGEST EARLY — use lv2 &amp; lv4 spikes</span><span class="ost-text">Sustained dmg + healing = outlast the enemy</span><span class="ost-text">Create kills before carries scale</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:12 – 2:22</span><span class="title">Two Engage Patterns</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Two clean side-by-side engage clips: (1) No Charge — open with Electrifying Charge across multiple enemies to generate Charge mid-fight, then Storm Strike to control the target. (2) Electrified — Storm Strike first, empowered basic launches enemy, follow with S1 + Ult. Label each clearly so the viewer knows which to use and when.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Input sequence overlay per clip. "NO CHARGE" vs "ELECTRIFIED" scenario labels. Charge bar visible and annotated in both.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">NO CHARGE: S1 (multi-target) → Storm Strike</span><span class="ost-text">ELECTRIFIED: S2 → Flash → launch → S1 → Ult</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:22 – 2:30</span><span class="title">Double Launch Tech</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">One clean clip of the double-launch sequence at speed: first empowered attack lands → launch #1, Storm Strike refreshes, second launch → finish with S1 + Ult. The enemy should never touch the ground between launches. Follow with a brief clip showing the CDR item(s) that enable it.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">"LAUNCH #1" and "LAUNCH #2" stamps synced to each hit. CDR item badge callout. Slow-mo the full sequence first, then replay at full speed.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">DOUBLE LAUNCH TECH · requires CDR</span><span class="ost-text">Empowered basic (launch) → S2 refresh → launch #2 → S1 + Ult</span></div></div>
+      </div>
+    </div>
+
+    <!-- LINEUP -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:30 – 2:50</span><span class="title">Best Teammates</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Synergy clips: Guiguzi / Lian Po opening with AoE control while Biron follows up with an Electrified engage into the locked-down enemies. Also show a clip of Biron pre-building Charge on Milady's / Agudo's summoned units before a teamfight.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Hero portrait pairings slide in (Biron + each partner). "CONTROL CHAIN" tag on the follow-up clips. "CHARGE FODDER" tag on the summon-farming clip.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">BEST WITH: Guiguzi · Lian Po</span><span class="ost-text">vs Milady / Agudo: farm summons → enter Electrified</span></div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:50 – 3:10</span><span class="title">Tough Matchups</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Counter clips: (1) Ata / Dun surviving Biron's early burst, healing back up, and forcing Biron into a losing extended trade; (2) Lu Bu / Diao Chan / Marco Polo dashing away or punishing a telegraphed Storm Strike. Pair each with a "correct response" clip — Biron resetting Charge instead of committing, or holding engage until the dash is burned.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Red "COUNTER" tag + hero portraits (Ata, Dun, Lu Bu, Diao Chan, Marco Polo). "DON'T COMMIT → RESET" reminder banner on the correct-response clips.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">SUSTAIN COUNTERS: Ata · Dun → don't trade long</span><span class="ost-text">MOBILITY COUNTERS: Lu Bu · Diao Chan · Marco Polo → hold engage</span></div></div>
+      </div>
+    </div>
+
+    <!-- CLOSING -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">3:10 – 3:40</span><span class="title">Closing &amp; Retention Hook</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Slow, triumphant outro montage: Biron building Charge steadily, then bursting into an Electrified engage that wipes an enemy. Land on a heroic hold of Biron (or his splash art) as the electricity fades. Leave room for end-screen / subscribe + next-episode card.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Warm-to-electric grade; rolling distant charge hum fading to silence. Recap lower-thirds (Build Charge · Time the Engage · Bring the Thunder). Animate end-screen card + subscribe prompt; tease next hero.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">Build Charge · Time the Engage · Bring the Thunder</span><span class="ost-text">▶ SUBSCRIBE</span><span class="ost-text">Next episode →</span></div></div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>BIRON · THE SPARKMACE — HOK GLOBAL HERO GUIDE · EP. 22</footer>
+
+</div>
+
+<script>
+  const tabs=document.querySelectorAll('.tab');
+  const views=document.querySelectorAll('.view');
+  tabs.forEach(t=>t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    views.forEach(v=>v.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.view).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }));
+</script>
+</body>
+</html>
