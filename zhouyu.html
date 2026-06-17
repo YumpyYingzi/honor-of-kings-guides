@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zhou Yu — The Inferno · Guide Script & Screenplay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#05060b;
+    --ink:#0b0e1a;
+    --panel:#10142400;
+    --panel-solid:#0e1326;
+    --edge:#26304f;
+    --edge-soft:#1a2138;
+    --bolt:#6ea8ff;
+    --bolt-bright:#a9ccff;
+    --volt:#8f6dff;
+    --gold:#e7b75a;
+    --gold-soft:#c9a25a;
+    --paper:#e9ecf5;
+    --paper-dim:#9aa3bd;
+    --paper-faint:#69718e;
+    --danger:#ff7a8a;
+    --fire:#ff7a3a;
+    --fire-soft:#ffa06a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Spectral',Georgia,serif;
+    background:
+      radial-gradient(1200px 700px at 50% -10%, rgba(255,80,20,.14), transparent 60%),
+      radial-gradient(900px 600px at 85% 8%, rgba(143,109,255,.12), transparent 55%),
+      linear-gradient(180deg,#05060b 0%, #0a0710 45%, #05060b 100%);
+    color:var(--paper);
+    line-height:1.7;
+    min-height:100vh;
+    padding:0 0 80px;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+    background-image:
+      linear-gradient(rgba(255,122,58,.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,122,58,.028) 1px, transparent 1px);
+    background-size:46px 46px;
+    mask-image:radial-gradient(1000px 800px at 50% 0%, #000 30%, transparent 80%);
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+  /* ---------- MASTHEAD ---------- */
+  header.mast{text-align:center;padding:64px 0 30px;position:relative;}
+  .kicker{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.42em;
+    text-transform:uppercase;color:var(--fire-soft);opacity:.85;margin-bottom:22px;
+  }
+  .mast h1{
+    font-family:'Cinzel',serif;font-weight:900;line-height:.98;
+    font-size:clamp(48px,11vw,104px);letter-spacing:.02em;
+    background:linear-gradient(180deg,#fff 0%, var(--fire-soft) 38%, var(--fire) 105%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 60px rgba(255,100,30,.3);
+  }
+  .mast .epithet{
+    font-family:'Cinzel',serif;font-weight:600;font-size:clamp(15px,3.6vw,22px);
+    letter-spacing:.5em;text-transform:uppercase;color:var(--gold);
+    margin-top:10px;padding-left:.5em;
+  }
+  .mast .sub{
+    margin-top:20px;color:var(--paper-dim);font-style:italic;font-size:16px;
+    max-width:560px;margin-left:auto;margin-right:auto;
+  }
+  .bolt-rule{
+    width:120px;height:2px;margin:30px auto 0;
+    background:linear-gradient(90deg,transparent,var(--fire-soft),var(--fire),transparent);
+    box-shadow:0 0 18px rgba(255,122,58,.6);
+  }
+  .runtime{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--paper-faint);
+    letter-spacing:.2em;margin-top:18px;
+  }
+
+  /* ---------- TABS ---------- */
+  .tabs{
+    position:sticky;top:0;z-index:20;display:flex;gap:8px;justify-content:center;
+    padding:14px 0 12px;margin:18px 0 8px;
+    background:linear-gradient(180deg,#05060bef 60%, transparent);
+    backdrop-filter:blur(4px);
+  }
+  .tab{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;
+    letter-spacing:.18em;text-transform:uppercase;cursor:pointer;
+    color:var(--paper-dim);background:var(--panel-solid);
+    border:1px solid var(--edge);padding:11px 20px;border-radius:2px;
+    transition:.22s;
+  }
+  .tab:hover{color:var(--paper);border-color:var(--fire-soft)}
+  .tab.active{
+    color:#060912;background:linear-gradient(180deg,var(--fire-soft),var(--fire));
+    border-color:var(--fire);box-shadow:0 0 22px rgba(255,122,58,.45);
+  }
+  .view{display:none;animation:fade .4s ease}
+  .view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ---------- SCRIPT BLOCKS ---------- */
+  .block{
+    position:relative;margin:30px 0;padding:26px 28px 26px 30px;
+    background:linear-gradient(180deg,rgba(14,19,38,.72),rgba(8,11,22,.72));
+    border:1px solid var(--edge-soft);border-left:none;border-radius:3px;
+    overflow:hidden;
+  }
+  .block::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:linear-gradient(180deg,var(--fire-soft),var(--fire));
+    box-shadow:0 0 16px rgba(255,122,58,.55);
+  }
+  .block .ts{
+    display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:12px;letter-spacing:.12em;color:#060912;
+    background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+    padding:4px 12px;border-radius:2px;margin-bottom:6px;
+  }
+  .block h2{
+    font-family:'Cinzel',serif;font-weight:700;font-size:clamp(20px,4vw,28px);
+    color:var(--fire-soft);letter-spacing:.04em;margin:8px 0 4px;line-height:1.15;
+    text-shadow:0 0 30px rgba(255,122,58,.25);
+  }
+  .block h2 .tail{font-size:.62em;color:var(--gold);letter-spacing:.08em;font-weight:600}
+  .vo{color:var(--paper);font-size:17px}
+  .vo p{margin:0 0 2px}
+  .vo .quote{display:block;margin:6px 0;padding-left:2px}
+  .skill{
+    font-family:'Cinzel',serif;font-weight:600;color:var(--gold);
+    letter-spacing:.03em;display:block;margin:14px 0 1px;font-size:16px;
+  }
+  .subhead{
+    font-family:'Cinzel',serif;font-weight:600;color:var(--fire-soft);
+    letter-spacing:.05em;display:block;margin:20px 0 4px;font-size:17px;
+    border-bottom:1px solid var(--edge-soft);padding-bottom:5px;
+  }
+  .lead{font-weight:600;color:var(--fire-soft)}
+  .vo .spacer{height:9px}
+  .vo ul{list-style:none;margin:6px 0;padding:0}
+  .vo ul li{position:relative;padding-left:20px;margin:7px 0;}
+  .vo ul li::before{
+    content:"🔥";position:absolute;left:0;top:0;font-size:11px;
+    filter:drop-shadow(0 0 4px rgba(255,122,58,.7));
+  }
+  em.note{color:var(--paper-dim)}
+
+  /* ---------- SCREENPLAY ---------- */
+  .sp-intro{
+    margin:26px 0 8px;color:var(--paper-dim);font-style:italic;font-size:15px;
+    border-left:2px solid var(--edge);padding-left:16px;
+  }
+  .scene{
+    margin:22px 0;border:1px solid var(--edge-soft);border-radius:3px;overflow:hidden;
+    background:linear-gradient(180deg,rgba(12,16,32,.7),rgba(7,10,20,.7));
+  }
+  .scene-head{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:12px 18px;background:rgba(255,122,58,.06);
+    border-bottom:1px solid var(--edge-soft);
+  }
+  .scene-head .ts{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;
+    color:#060912;background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+    padding:4px 11px;border-radius:2px;letter-spacing:.08em;
+  }
+  .scene-head .title{
+    font-family:'Cinzel',serif;font-weight:600;font-size:15px;color:var(--fire-soft);
+    letter-spacing:.06em;text-transform:uppercase;
+  }
+  .scene-body{padding:6px 18px 16px}
+  .row{display:flex;gap:0;border-bottom:1px dashed var(--edge-soft);padding:12px 0}
+  .row:last-child{border-bottom:none}
+  .row .lab{
+    flex:0 0 116px;font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding-top:3px;
+  }
+  .row.visual .lab{color:var(--fire-soft)}
+  .row.fx .lab{color:var(--volt)}
+  .row.ost .lab{color:var(--gold)}
+  .row .val{flex:1;font-size:15.5px;color:var(--paper)}
+  .row .val .ost-text{
+    font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--fire-soft);
+    background:rgba(255,122,58,.07);border:1px solid var(--edge-soft);
+    padding:2px 8px;border-radius:2px;display:inline-block;margin:2px 4px 2px 0;
+  }
+  .row .val .none{color:var(--paper-faint);font-style:italic}
+
+  /* ---------- NOTE BAR ---------- */
+  .notebar{
+    margin:34px 0 0;padding:16px 20px;border:1px dashed var(--edge);border-radius:3px;
+    background:rgba(231,183,90,.05);color:var(--paper-dim);font-size:14px;
+  }
+  .notebar b{color:var(--gold);font-family:'Cinzel',serif;letter-spacing:.04em}
+
+  footer{
+    text-align:center;margin-top:50px;color:var(--paper-faint);
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;
+  }
+
+  /* ---------- PRINT ---------- */
+  @media print{
+    body{background:#fff;color:#111}
+    body::before{display:none}
+    .tabs{display:none}
+    .view{display:block!important}
+    .view + .view{page-break-before:always}
+    .mast h1{color:#7a1a00;-webkit-text-fill-color:#7a1a00}
+    .mast .epithet{color:#8a6a14}
+    .block,.scene{background:#fff;border-color:#bbb;break-inside:avoid}
+    .block h2,.scene-head .title{color:#7a1a00}
+    .vo,.row .val{color:#111}
+    .skill{color:#8a6a14}
+    .block .ts,.scene-head .ts{background:#7a1a00;color:#fff}
+  }
+  @media (max-width:600px){
+    .row{flex-direction:column;gap:3px}
+    .row .lab{flex:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker">Honor of Kings · Global · Hero Guide · Ep. 24</div>
+    <h1>ZHOU YU</h1>
+    <div class="epithet">The Inferno</div>
+    <p class="sub">"The enemy isn't standing in fire by accident. You put it there."</p>
+    <div class="bolt-rule"></div>
+    <div class="runtime">FULL RUNTIME · 0:00 — 4:30</div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-view="script">📜 Full Script</button>
+    <button class="tab" data-view="screenplay">🎬 Screenplay + FX</button>
+  </nav>
+
+  <!-- ============================== FULL SCRIPT ============================== -->
+  <section class="view active" id="script">
+
+    <!-- HOOK -->
+    <div class="block">
+      <span class="ts">0:00 – 0:14</span>
+      <h2>Hook &amp; Identity</h2>
+      <div class="vo">
+        <span class="quote">"There's a general in HOK who never chases.</span>
+        <span class="quote">He doesn't need to — because the battlefield you're standing on is already on fire.</span>
+        <span class="quote">Zhou Yu doesn't react to the fight. He designs it. Every flame placed, every wind summoned, every wall used — it's all a blueprint the enemy walks into three seconds too late.</span>
+        <span class="quote">In this guide, I'll show you how to think like the Ironwilled Governor — and turn Zhou Yu into the Inferno."</span>
+      </div>
+    </div>
+
+    <!-- SKILL SHOWCASE -->
+    <div class="block">
+      <span class="ts">0:14 – 1:00</span>
+      <h2>Skill Showcase</h2>
+      <div class="vo">
+        <p>"Zhou Yu's entire kit is built around one idea: fire domains that burn, spread, and punish.</p>
+
+        <span class="skill">Passive — Blaze</span>
+        <p>Basic attacks and skills place fire marks on enemies — including towers and structures. Stack four marks and they ignite: dealing magic damage over time and slowing their movement speed. This passive is the engine behind Zhou Yu's sustained damage and his ability to melt towers without a single minion in sight.</p>
+
+        <span class="skill">Skill 1 — Wildfire · CD 5s</span>
+        <p>Zhou Yu invokes a wind domain. Enemies inside are knocked back in the direction he aims and slowed, while allied heroes get a movement speed boost. But here's what makes Wildfire extraordinary: if that wind domain overlaps an existing fire domain for just one second, it clones the fire — spreading a new fire domain in the wind's direction. One fire domain becomes two. Two can become three. The wind doesn't just push enemies — it fans the flames.</p>
+
+        <span class="skill">Skill 2 — Scorching Bolt · CD 0.6s — stocks up to 3</span>
+        <p>Zhou Yu calls down a volley of flaming arrows at a target location — dealing burst magic damage, then leaving behind a fire domain that burns for 6.5 seconds. You can have up to six fire domains active at once. And a hidden bonus: while Zhou Yu himself stands inside a fire domain, he recovers health every half-second. He heals by standing in his own fire.</p>
+
+        <span class="skill">Ultimate — Flames of War · CD 10s</span>
+        <p>Zhou Yu unleashes a burst of flames in a target area. On its own, it deals solid magic damage. But if those flames travel through an existing fire domain — a firestorm erupts: double the damage, and a one-second stun. The ultimate doesn't create the stun. Your fire domains do. Set the stage first; then bring the fire."</p>
+      </div>
+    </div>
+
+    <!-- CORE RESOURCE & COMBO -->
+    <div class="block">
+      <span class="ts">1:00 – 1:45</span>
+      <h2>Core Mechanic &amp; Combo</h2>
+      <div class="vo">
+        <p>"Here's the mindset shift that separates a struggling Zhou Yu from a dominant one: your Scorching Bolt is not a damage button. It's a foundation.</p>
+        <p>You are always laying ground before the fight begins. That's the whole game.</p>
+        <p>The signature rotation is <strong>Scorching Bolt → Wildfire → Flames of War</strong>. Place a fire domain with Skill 2, blow Wildfire through it to spread a second domain in the enemy's direction, then fire the Ultimate through that flame — and the firestorm triggers, dealing bonus damage and stunning everyone caught in it.</p>
+        <p>But the advanced version chains multiple Scorching Bolts. Place two fire domains in different spots, use Wildfire to spread them simultaneously, then Ultimate through the network. At max fire coverage, your stun radius becomes enormous, and the sustained burn does the rest.</p>
+        <p>One critical habit: <strong>pre-spread before the teamfight starts</strong>. The moment you see on the minimap that a fight is about to break out, throw down two Scorching Bolts at the expected engagement zone. Wildfire has a one-second delay before it copies a domain — if you're reacting, you're already late.</p>
+        <p>For skill priority: max your <strong>Ultimate</strong> first, then <strong>Scorching Bolt</strong>, and leave <strong>Wildfire</strong> last. Your summoner spell is <strong>Flash</strong> — and it's not optional. Zhou Yu has no dash. Flash is his repositioning, his escape, and a key part of several advanced combos."</p>
+      </div>
+    </div>
+
+    <!-- ADVANCED MECHANICS -->
+    <div class="block">
+      <span class="ts">1:45 – 3:45</span>
+      <h2>Advanced Mechanics <span class="tail">— Offense, Defense &amp; Combos</span></h2>
+      <div class="vo">
+        <p>"This is where most Zhou Yu players hit a ceiling. Let's raise it.</p>
+
+        <span class="subhead">Offensive Rhythm</span>
+        <p>Most players think Zhou Yu's job is to sit back and lob fire. That's half the picture.</p>
+        <div class="spacer"></div>
+        <p>The real offensive identity is <span class="lead">terrain control</span>. Zhou Yu's fire domains wall off movement. Enemies entering them take constant damage and stack marks toward ignition. Used on a chokepoint — a jungle corridor, a tower base, a river crossing — two or three overlapping domains make it almost impossible to walk through without getting stunned and burned.</p>
+        <p>In lane against heroes who lack strong dashes — Fuzi or Musashi, for example — trade aggressively. Drop a Scorching Bolt between yourself and the enemy, weave basic attacks to stack Blaze marks, and punish anyone who steps into your flames. Your passive works on the tower too, so keep marks ticking on it even when the lane is clear.</p>
+        <p>When your team is on the offensive, <span class="lead">don't wait for fights to come to you</span>. Spread fire around enemy towers before the push begins: Wildfire through a Scorching Bolt sends a domain right into tower range, forcing defenders to fight in the fire or give up ground.</p>
+
+        <span class="subhead">Defensive Rhythm</span>
+        <p>Zhou Yu's biggest vulnerability is that he has no escape tool. A single dash-heavy assassin getting on top of him is a real problem.</p>
+        <div class="spacer"></div>
+        <ul>
+          <li><span class="lead">The self-peel technique.</span> When an enemy closes in, drop Scorching Bolt at your own feet to create a fire domain, then immediately cast Wildfire to knock them back. If you have Flash available, Flash first to reposition, then Wildfire to push them into a domain you've already laid.</li>
+          <li><span class="lead">Always keep a Scorching Bolt in reserve.</span> Running dry on charges when a fighter steps on you is how Zhou Yu dies. One charge held back is your panic button.</li>
+          <li><span class="lead">Stand in your own fire.</span> Scorching Bolt's passive heals Zhou Yu while he's inside a fire domain. In sustained skirmishes, position yourself on your own flames — you'll outlast trades you have no business winning.</li>
+          <li><span class="lead">Against Alessio</span> — his ultimate launches him airborne, during which ground-based fire skills won't reach him. Save your Wildfire knockback for when he lands rather than wasting it while he's in the air.</li>
+        </ul>
+
+        <span class="subhead">Read the Battlefield</span>
+        <ul>
+          <li><span class="lead">Pre-spread before the fight.</span> When you see both teams converging on Dragon, the Altar, or a jungle camp — throw two Scorching Bolts into the expected engagement zone before you move there. By the time the fight starts, the ground is already burning.</li>
+          <li><span class="lead">Prioritise jungle terrain.</span> In the jungle, Zhou Yu is disproportionately strong. Narrow corridors mean fire domains cover the entire width of a path — enemies can't sidestep. If a fight breaks out near a jungle entrance, that is your preferred terrain.</li>
+          <li><span class="lead">Wall tricks.</span> Wildfire's range is long and it can send fire through walls. At level two, you can use Wildfire in reverse and cast Scorching Bolt over a wall to contest the enemy's Azure Golem without stepping into their vision. Practice the angle — the delay before fire copies means timing matters.</li>
+        </ul>
+
+        <span class="subhead">Key Combos</span>
+
+        <span class="skill">Combo 1 — The Standard Combo (2 → 1 → Ult)</span>
+        <p>Scorching Bolt to place a fire domain → Wildfire through it to spread a second domain toward the enemy → Flames of War through the spread domain to trigger the firestorm and stun. Layer basic attacks throughout to stack Blaze marks toward ignition. This is your bread-and-butter engage.</p>
+
+        <span class="skill">Combo 2 — The Flash Combo (2 → Flash → 1)</span>
+        <p>Place Scorching Bolt slightly ahead of an enemy near your own tower, then Flash forward and immediately Wildfire to knock them back into the fire domain — and straight into tower range. The Flash-Wildfire can also flip: Flash first to create distance, then Wildfire to push a chaser away when you need space instead of a pick.</p>
+
+        <span class="skill">Combo 3 — The Pre-Lay Ambush (2 → 2 → 1 → Ult)</span>
+        <p>When you anticipate an enemy path — a gank route, a choke, a tower siege — place two Scorching Bolts in advance. When they arrive, Wildfire to spread both simultaneously, then immediately follow with Flames of War. The firestorm hits before they even realise it's been triggered. This is the combo that makes Zhou Yu feel like a trap, not a mage."</p>
+      </div>
+    </div>
+
+    <!-- TEAMMATES & COUNTERS -->
+    <div class="block">
+      <span class="ts">3:45 – 4:15</span>
+      <h2>Lineup Dynamics &amp; Counters</h2>
+      <div class="vo">
+        <p>"Zhou Yu thrives when his team can push enemies into fire and hold them there.</p>
+        <ul>
+          <li><span class="lead">Agudo and Liu Shan</span> — tower-pushing specialists who create the offensive momentum Zhou Yu's fire needs to do maximum work. When they're shoving, Zhou Yu's domains turn defensive lines into deathtraps.</li>
+          <li><span class="lead">Guan Yu</span> — his skills can drive enemies directly into Zhou Yu's fire domains and hold them there. The combination of Guan Yu's crowd control and Zhou Yu's sustained burn is punishing: once someone is caught in that fire, they're not walking out healthy.</li>
+          <li><span class="lead">Tough matchup — Alessio.</span> His airborne ultimate lets him float above ground-based fire. Don't blow all your charges trying to hit him mid-air — hold Wildfire and punish the landing.</li>
+          <li><span class="lead">Favourable matchups — Fuzi and Musashi.</span> Both lack reliable dashes. They're forced to walk through your fire domains to engage, which stacks marks and triggers ignition before they ever reach you. These are the matchups where you play aggressively and stack pressure early."</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CLOSING -->
+    <div class="block">
+      <span class="ts">4:15 – 4:30</span>
+      <h2>Closing &amp; Retention Hook</h2>
+      <div class="vo">
+        <span class="quote">"Zhou Yu never chases. He never panics. He reads the map, places the fire, and by the time the enemy realises what's happening — they're already standing in a blaze they can't escape.</span>
+        <span class="quote">That's the Ironwilled Governor's way: not force, but foresight.</span>
+        <span class="quote">Place the fire. Spread the flame. Let the battlefield do the work.</span>
+        <span class="quote">And I'll see you in the next episode."</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================== SCREENPLAY + FX ============================== -->
+  <section class="view" id="screenplay">
+
+    <p class="sp-intro">Shooting screenplay broken into production beats inside the same timestamp windows as the script. <b>Visual</b> = exactly what to record/match. <b>FX</b> = post / motion graphics. <b>On-Screen Text</b> = burned-in overlays.</p>
+
+    <!-- HOOK -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:00 – 0:14</span><span class="title">Hook &amp; Identity</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Cold open on Zhou Yu standing still at the edge of a teamfight. The battlefield around him is already carpeted in fire domains — enemies trapped, burning. On "the battlefield you're standing on is already on fire," cut to a wide shot showing three fire domains covering a jungle corridor. On "blueprint," slow-mo of an enemy walking into the pre-laid fire. End on a hero portrait / splash-art freeze of Zhou Yu.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Deep orange-red colour grade; embers drifting upward throughout. Heavy fire-whoosh transition on the cold open cut. Title card animates in: "ZHOU YU" burns onto screen letter-by-letter with a smouldering trail. Bass thud on "already on fire."</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">ZHOU YU</span><span class="ost-text">THE INFERNO</span><span class="ost-text">Full Hero Guide · Ep. 24</span></div></div>
+      </div>
+    </div>
+
+    <!-- PASSIVE -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:14 – 0:23</span><span class="title">Passive — Blaze</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Practice-range clip: land basic attacks on a dummy — show the fire mark counter building from 1 to 4. On the 4th stack, the ignition triggers — highlight the slow and the damage-over-time numbers floating up. Then repeat on a tower to show the passive applies to structures too.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Zoom + circle-highlight on the mark counter. Each stack pops with a small ember burst. Big flash + shake on the ignition trigger. Arrow pointing to tower-damage numbers.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">PASSIVE · Blaze</span><span class="ost-text">4 marks = Ignite → DoT + Slow</span><span class="ost-text">Works on towers &amp; structures</span></div></div>
+      </div>
+    </div>
+
+    <!-- SKILL 1 -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:23 – 0:35</span><span class="title">Skill 1 — Wildfire</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Two clips. Clip 1: Wildfire used alone — shows the wind domain knocking enemies back and slowing them. Clip 2: Wildfire overlapping a Scorching Bolt fire domain — hold on the one-second overlap window, then the fire spreads in the wind's direction. Make the copy mechanic unmistakable by showing one domain become two in a single take.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Split-screen or quick A/B cut labelled "ALONE" vs "WITH FIRE." Arrow showing the spread direction. Glow-highlight on the copied fire domain as it spawns. "1s OVERLAP" timer badge.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">SKILL 1 · Wildfire · CD 5s</span><span class="ost-text">Knockback + Slow enemies · Speed allies</span><span class="ost-text">Overlaps fire domain → spreads a copy</span></div></div>
+      </div>
+    </div>
+
+    <!-- SKILL 2 -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:35 – 0:47</span><span class="title">Skill 2 — Scorching Bolt</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Practice-range clip: cast all three Scorching Bolt charges in sequence — show the three fire domains forming and the charge counter refilling over time. Then clip of Zhou Yu standing inside one of his own fire domains with the HP recovery numbers ticking up. Keep the charge stock UI clearly in frame throughout.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Zoom on the charge counter (3 → 2 → 1 → restock). Circle-highlight the self-heal numbers. Ember-particle effect around Zhou Yu while he's inside the domain.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">SKILL 2 · Scorching Bolt · CD 0.6s</span><span class="ost-text">Stocks up to 3 · Max 6 domains active</span><span class="ost-text">Passive: heal while standing in fire</span></div></div>
+      </div>
+    </div>
+
+    <!-- ULTIMATE -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:47 – 1:00</span><span class="title">Ultimate — Flames of War</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Two clips. Clip 1 (no fire domain): Ultimate fired into open ground — shows base damage only, no stun. Clip 2 (with fire domain): Ultimate fired through a Scorching Bolt domain — firestorm triggers, stun lands, bonus damage pops. The contrast must be obvious. Clip 2 should be the longer one.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">"NO STUN" badge on Clip 1. Big screen flash + "FIRESTORM" stamp + shake on the Clip 2 stun trigger. Slow-mo the moment the flames cross the domain boundary. "1s STUN" callout.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">ULTIMATE · Flames of War · CD 10s</span><span class="ost-text">Alone → damage only</span><span class="ost-text">Through fire domain → FIRESTORM + 1s Stun</span></div></div>
+      </div>
+    </div>
+
+    <!-- CORE MECHANIC -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:00 – 1:20</span><span class="title">The Core Rotation (2 → 1 → Ult)</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">One clean, uncut practice-range clip showing the full rotation: Scorching Bolt placed → Wildfire spread → Flames of War through the spread domain → firestorm + stun. Then a second clip of the same rotation in a real game skirmish. Show the button presses with an input overlay if possible.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Animated input sequence overlay (S2 → S1 → Ult icons). Step labels: "LAY," "SPREAD," "IGNITE." Green "STUN CONFIRMED" callout on the firestorm landing.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">CORE ROTATION: S2 → S1 → Ult</span><span class="ost-text">Lay · Spread · Ignite</span></div></div>
+      </div>
+    </div>
+
+    <!-- PRE-SPREAD -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:20 – 1:45</span><span class="title">Pre-Spread Habit &amp; Skill Priority</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Minimap-focused clip: Zhou Yu spots convergence on Dragon via minimap, immediately throws two Scorching Bolts into the expected fight zone before moving. Cut to the teamfight starting — ground already burning before the first enemy arrives. Then cut to skill-up menu showing the priority order: Ult first, then Skill 2, then Skill 1. Summoner Spell select showing Flash.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Minimap zoom with "PRE-SPREAD" callout. "1s DELAY — react too late" warning badge. Priority graphic: R &gt; 2 &gt; 1. Flash icon badge.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">PRE-SPREAD before the fight — don't react, anticipate</span><span class="ost-text">PRIORITY: Ult &gt; Scorching Bolt &gt; Wildfire</span><span class="ost-text">Summoner: FLASH (non-negotiable)</span></div></div>
+      </div>
+    </div>
+
+    <!-- OFFENSIVE RHYTHM -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:45 – 2:10</span><span class="title">Offensive Rhythm — Terrain Control</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Three clips. Clip 1: fire domains covering a jungle chokepoint — enemies forced through, taking damage and igniting. Clip 2: lane clip vs Fuzi or Musashi — Scorching Bolt dropped between Zhou Yu and enemy, basic attacks stacking Blaze marks, enemy ignites before they can engage. Clip 3: offensive push — Wildfire sends a fire domain into tower range, defenders forced to fight in the fire or retreat.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">"TERRAIN CONTROL" chapter stamp. Outline the fire domain coverage radius on Clip 1. Mark counter + ignition pop-up on Clip 2. "FIRE IN TOWER RANGE" callout on Clip 3.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">TERRAIN CONTROL — choke the path</span><span class="ost-text">vs Fuzi / Musashi: bully with marks</span><span class="ost-text">Offence: push fire into tower range first</span></div></div>
+      </div>
+    </div>
+
+    <!-- DEFENSIVE RHYTHM -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:10 – 2:35</span><span class="title">Defensive Rhythm — Self-Peel &amp; Survival</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Three survival clips. Clip 1: enemy dives Zhou Yu → Scorching Bolt at feet → Wildfire knocks them back into the domain. Clip 2: Flash + Wildfire combo — Flash away first, then Wildfire pushes the chaser into a pre-laid domain. Clip 3: Zhou Yu standing in his own fire domain during a sustained trade — HP ticking up from the passive heal, winning a fight he should have lost.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">"SELF-PEEL" stamp. Circle the Scorching Bolt feet-drop on Clip 1. "FLASH → WILDFIRE" sequential icon overlay on Clip 2. Green heal-tick highlight + "WINNING IN OWN FIRE" on Clip 3. Red flag: "OUT OF CHARGES = DEAD."</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">S2 at feet → S1 knockback = self-peel</span><span class="ost-text">Flash → S1 to create space</span><span class="ost-text">Stand in fire → passive heal keeps you alive</span><span class="ost-text">ALWAYS keep 1 charge in reserve</span></div></div>
+      </div>
+    </div>
+
+    <!-- ALESSIO COUNTER -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:35 – 2:45</span><span class="title">Counter — Alessio Airborne</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Clip: Alessio launches his ultimate — he goes airborne. Show Zhou Yu's fire domains doing no damage while Alessio is in the air (damage numbers absent or zero). Then Alessio lands — Zhou Yu immediately casts Wildfire to knock him back into a fire domain. The timing of "wait for the land" must be clear.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">"AIRBORNE = IMMUNE TO GROUND FIRE" warning banner. Zero/no-damage callout while airborne. "WAIT — PUNISH THE LANDING" green callout as Wildfire fires on touchdown.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">vs ALESSIO: hold Wildfire while he's airborne</span><span class="ost-text">Punish the landing — not the jump</span></div></div>
+      </div>
+    </div>
+
+    <!-- READ THE BATTLEFIELD -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:45 – 3:10</span><span class="title">Read the Battlefield — Anticipation &amp; Jungle</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Two clips. Clip 1: minimap read — Zhou Yu sees teams converging, pre-drops two Scorching Bolts into the Dragon pit or jungle camp before arriving. Clip 2: jungle fight — fire domains cover the full width of a narrow corridor, enemies literally can't avoid walking through. Show multiple enemies burning simultaneously.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Minimap zoom + convergence arrows on Clip 1. "PRE-LAID" badge on the domains. Full-corridor fire coverage graphic on Clip 2 — flame-width bar showing total choke.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">Read minimap → pre-spread the fight zone</span><span class="ost-text">Jungle = Zhou Yu's best terrain</span><span class="ost-text">Narrow paths = unavoidable fire</span></div></div>
+      </div>
+    </div>
+
+    <!-- WALL TRICK -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">3:10 – 3:22</span><span class="title">Wall Trick — Azure Golem Steal</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Level-2 clip: Zhou Yu casts Wildfire in reverse (away from the Golem camp), then immediately casts Scorching Bolt over the wall into the camp. The fire domain spawns inside the camp, stacks marks on the Golem, and Zhou Yu secures the steal without stepping into enemy vision. Show the wall clearly so viewers understand the "over-wall" mechanic.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Wall graphic with an arc arrow showing the bolt going over. "OVER-WALL STEAL" label. "LVL 2 ONLY" badge. Highlight Zhou Yu's safe position outside enemy vision.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">WALL TRICK: S1 reverse → S2 over wall</span><span class="ost-text">Steal Azure Golem at Lvl 2 from safety</span></div></div>
+      </div>
+    </div>
+
+    <!-- COMBOS -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">3:22 – 3:45</span><span class="title">Key Combos 1 · 2 · 3</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Rapid combo montage — one clean rep each, clearly labelled. <b>Combo 1 (Standard 2→1→Ult):</b> Scorching Bolt → Wildfire spread → Flames of War through the domain → firestorm stun. <b>Combo 2 (Flash 2→Flash→1):</b> Scorching Bolt near tower → Flash forward → Wildfire knocks enemy back into fire and tower range. <b>Combo 3 (Pre-Lay Ambush 2→2→1→Ult):</b> two Scorching Bolts pre-placed on a gank route → enemy arrives → Wildfire spreads both → Flames of War firestorm triggers before they can react.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Per-combo input icon chain overlay. Numbered "COMBO 1/2/3" chapter cards. Slow-mo the firestorm trigger on Combo 1. "TOWER RANGE" zone highlight on Combo 2. "THEY NEVER SAW IT COMING" stamp on Combo 3.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">COMBO 1 · Standard: S2 → S1 → Ult</span><span class="ost-text">COMBO 2 · Flash: S2 → Flash → S1 (tower kill)</span><span class="ost-text">COMBO 3 · Pre-Lay Ambush: S2 → S2 → S1 → Ult</span></div></div>
+      </div>
+    </div>
+
+    <!-- TEAMMATES -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">3:45 – 4:00</span><span class="title">Best Teammates</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Synergy clips. Agudo / Liu Shan clip: aggressive tower push — Zhou Yu's fire domains cover the area while the tower-pushers shove, defenders can't defend safely in the flames. Guan Yu clip: Guan Yu's skill drives an enemy directly into a fire domain — they're held in the burn, marks stack fast, ignition triggers. Show the combination as one continuous teamfight sequence if possible.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Hero portrait pairings (Zhou Yu + partner). "SYNERGY" tag on each. Highlight the enemy trapped in fire domain on the Guan Yu clip.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">BEST WITH: Agudo · Liu Shan · Guan Yu</span><span class="ost-text">Pushers + CC = enemies can't leave the fire</span></div></div>
+      </div>
+    </div>
+
+    <!-- COUNTERS -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">4:00 – 4:15</span><span class="title">Tough Matchups &amp; Favourable Matchups</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Clips of both matchup types. Tough: Alessio airborne — fire missing, Wildfire held until landing. Favourable: Fuzi / Musashi forced to walk through fire to engage — marks stacking, ignition triggering before they reach Zhou Yu. Show Zhou Yu playing passively vs Alessio and aggressively vs the no-dash matchups.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Red "HARD MATCHUP" tag + Alessio portrait. Green "BULLY" tag + Fuzi / Musashi portraits. "HOLD WILDFIRE" reminder banner on the Alessio clip.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">TOUGH: Alessio — hold Wildfire for the landing</span><span class="ost-text">BULLY: Fuzi · Musashi — stack marks, punish every step</span></div></div>
+      </div>
+    </div>
+
+    <!-- CLOSING -->
+    <div class="scene">
+      <div class="scene-head"><span class="ts">4:15 – 4:30</span><span class="title">Closing &amp; Retention Hook</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Visual</div><div class="val">Slow, triumphant outro montage: Zhou Yu standing calmly while a teamfight burns around him — enemies walking into pre-laid fire, igniting one by one, the game ending without him ever chasing. Land on a heroic hold of Zhou Yu's splash art as the flames settle. Leave room for end-screen / subscribe card.</div></div>
+        <div class="row fx"><div class="lab">FX</div><div class="val">Warm ember grade fading to calm. Recap lower-thirds: "Place the fire · Spread the flame · Let the battlefield work." Animate the end-screen card + subscribe prompt; tease next hero. Gentle fire-crackle audio fade-out.</div></div>
+        <div class="row ost"><div class="lab">On-Screen Text</div><div class="val"><span class="ost-text">Place the fire · Spread the flame · Let the battlefield work</span><span class="ost-text">▶ SUBSCRIBE</span><span class="ost-text">Next episode →</span></div></div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>ZHOU YU · THE INFERNO — HOK GLOBAL HERO GUIDE · EP. 24</footer>
+
+</div>
+
+<script>
+  const tabs=document.querySelectorAll('.tab');
+  const views=document.querySelectorAll('.view');
+  tabs.forEach(t=>t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    views.forEach(v=>v.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.view).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }));
+</script>
+</body>
+</html>
