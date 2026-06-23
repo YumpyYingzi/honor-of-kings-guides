@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feyd — The Featherfoot · Guide Script & Screenplay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#05060b;
+    --ink:#0b0e1a;
+    --panel-solid:#0e1326;
+    --edge:#26304f;
+    --edge-soft:#1a2138;
+    --bolt:#6ea8ff;
+    --bolt-bright:#a9ccff;
+    --volt:#8f6dff;
+    --gold:#e7b75a;
+    --gold-soft:#c9a25a;
+    --paper:#e9ecf5;
+    --paper-dim:#9aa3bd;
+    --paper-faint:#69718e;
+    /* Feyd accent — jade green / celadon */
+    --jade:#5ecfa0;
+    --jade-bright:#a4edd0;
+    --jade-dim:#2d7a5e;
+    --jade-glow:rgba(94,207,160,.18);
+    --jade-edge:rgba(94,207,160,.28);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Spectral',Georgia,serif;
+    background:
+      radial-gradient(1200px 700px at 50% -10%, rgba(30,120,80,.22), transparent 60%),
+      radial-gradient(900px 600px at 15% 8%, rgba(94,207,160,.10), transparent 55%),
+      linear-gradient(180deg,#04080b 0%, #060d0a 45%, #04080b 100%);
+    color:var(--paper);
+    line-height:1.7;
+    min-height:100vh;
+    padding:0 0 80px;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.45;
+    background-image:
+      linear-gradient(rgba(94,207,160,.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(94,207,160,.03) 1px, transparent 1px);
+    background-size:46px 46px;
+    mask-image:radial-gradient(1000px 800px at 50% 0%, #000 30%, transparent 80%);
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+  /* ---------- MASTHEAD ---------- */
+  header.mast{text-align:center;padding:64px 0 30px;position:relative}
+  .kicker{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.42em;
+    text-transform:uppercase;color:var(--jade);opacity:.85;margin-bottom:22px;
+  }
+  .mast h1{
+    font-family:'Cinzel',serif;font-weight:900;line-height:.98;
+    font-size:clamp(48px,11vw,104px);letter-spacing:.02em;
+    background:linear-gradient(180deg,#fff 0%, var(--jade-bright) 38%, var(--jade) 105%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 60px rgba(94,207,160,.25);
+  }
+  .mast .epithet{
+    font-family:'Cinzel',serif;font-weight:600;font-size:clamp(15px,3.6vw,22px);
+    letter-spacing:.5em;text-transform:uppercase;color:var(--gold);
+    margin-top:10px;padding-left:.5em;
+  }
+  .mast .sub{
+    margin-top:20px;color:var(--paper-dim);font-style:italic;font-size:16px;
+    max-width:560px;margin-left:auto;margin-right:auto;
+  }
+  .jade-rule{
+    width:120px;height:2px;margin:30px auto 0;
+    background:linear-gradient(90deg,transparent,var(--jade),var(--jade-bright),var(--jade),transparent);
+    box-shadow:0 0 18px rgba(94,207,160,.55);
+  }
+  .runtime{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--paper-faint);
+    letter-spacing:.2em;margin-top:18px;
+  }
+
+  /* ---------- TABS ---------- */
+  .tabs{
+    position:sticky;top:0;z-index:20;display:flex;gap:8px;justify-content:center;
+    padding:14px 0 12px;margin:18px 0 8px;
+    background:linear-gradient(180deg,rgba(4,8,11,.93) 60%, transparent);
+    backdrop-filter:blur(4px);
+  }
+  .tab{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;
+    letter-spacing:.18em;text-transform:uppercase;cursor:pointer;
+    color:var(--paper-dim);background:var(--panel-solid);
+    border:1px solid var(--edge);padding:11px 20px;border-radius:2px;
+    transition:.22s;
+  }
+  .tab:hover{color:var(--paper);border-color:var(--jade)}
+  .tab.active{
+    color:#04080b;background:linear-gradient(180deg,var(--jade-bright),var(--jade));
+    border-color:var(--jade);box-shadow:0 0 22px rgba(94,207,160,.4);
+  }
+  .view{display:none;animation:fade .4s ease}
+  .view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ---------- SCRIPT BLOCKS ---------- */
+  .block{
+    position:relative;margin:30px 0;padding:26px 28px 26px 30px;
+    background:linear-gradient(180deg,rgba(10,22,16,.75),rgba(5,12,9,.72));
+    border:1px solid var(--edge-soft);border-left:none;border-radius:3px;
+    overflow:hidden;
+  }
+  .block::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:linear-gradient(180deg,var(--jade),var(--jade-dim));
+    box-shadow:0 0 16px rgba(94,207,160,.5);
+  }
+  .block .ts{
+    display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:12px;letter-spacing:.12em;color:#04080b;
+    background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+    padding:4px 12px;border-radius:2px;margin-bottom:6px;
+  }
+  .block h2{
+    font-family:'Cinzel',serif;font-weight:700;font-size:clamp(20px,4vw,28px);
+    color:var(--jade-bright);letter-spacing:.04em;margin:8px 0 4px;line-height:1.15;
+    text-shadow:0 0 30px rgba(94,207,160,.2);
+  }
+  .block h2 .tail{font-size:.62em;color:var(--gold);letter-spacing:.08em;font-weight:600}
+  .vo{color:var(--paper);font-size:17px}
+  .vo p{margin:0 0 2px}
+  .vo .quote{display:block;margin:6px 0;padding-left:2px}
+  .skill{
+    font-family:'Cinzel',serif;font-weight:600;color:var(--gold);
+    letter-spacing:.03em;display:block;margin:14px 0 1px;font-size:16px;
+  }
+  .subhead{
+    font-family:'Cinzel',serif;font-weight:600;color:var(--jade);
+    letter-spacing:.05em;display:block;margin:20px 0 4px;font-size:17px;
+    border-bottom:1px solid var(--edge-soft);padding-bottom:5px;
+  }
+  .lead{font-weight:600;color:var(--jade-bright)}
+  .vo .spacer{height:9px}
+  .vo ul{list-style:none;margin:6px 0;padding:0}
+  .vo ul li{position:relative;padding-left:20px;margin:7px 0}
+  .vo ul li::before{
+    content:"◆";position:absolute;left:0;top:2px;font-size:10px;color:var(--jade);
+    filter:drop-shadow(0 0 4px rgba(94,207,160,.7));
+  }
+
+  /* ---------- SCREENPLAY ---------- */
+  .sp-intro{
+    margin:26px 0 8px;color:var(--paper-dim);font-style:italic;font-size:15px;
+    border-left:2px solid var(--edge);padding-left:16px;
+  }
+  .scene{
+    margin:22px 0;border:1px solid var(--edge-soft);border-radius:3px;overflow:hidden;
+    background:linear-gradient(180deg,rgba(10,22,16,.7),rgba(5,12,9,.7));
+  }
+  .scene-head{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:12px 18px;background:var(--jade-glow);
+    border-bottom:1px solid var(--jade-edge);
+  }
+  .scene-head .ts{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;
+    color:#04080b;background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+    padding:4px 11px;border-radius:2px;letter-spacing:.08em;
+  }
+  .scene-head .title{
+    font-family:'Cinzel',serif;font-weight:600;font-size:15px;color:var(--jade-bright);
+    letter-spacing:.06em;text-transform:uppercase;
+  }
+  .scene-body{padding:6px 18px 16px}
+  .row{display:flex;gap:0;border-bottom:1px dashed var(--edge-soft);padding:12px 0}
+  .row:last-child{border-bottom:none}
+  .row .lab{
+    flex:0 0 116px;font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding-top:3px;
+  }
+  .row.visual .lab{color:var(--jade)}
+  .row.fx .lab{color:var(--volt)}
+  .row.ost .lab{color:var(--gold)}
+  .row .val{flex:1;font-size:15.5px;color:var(--paper)}
+  .row .val .ost-text{
+    font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--jade-bright);
+    background:rgba(94,207,160,.08);border:1px solid var(--jade-edge);
+    padding:2px 8px;border-radius:2px;display:inline-block;margin:2px 4px 2px 0;
+  }
+  .row .val .none{color:var(--paper-faint);font-style:italic}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    text-align:center;margin-top:50px;color:var(--paper-faint);
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;
+  }
+
+  /* ---------- PRINT ---------- */
+  @media print{
+    body{background:#fff;color:#111}
+    body::before{display:none}
+    .tabs{display:none}
+    .view{display:block!important}
+    .view + .view{page-break-before:always}
+    .mast h1{color:#0d4a2e;-webkit-text-fill-color:#0d4a2e}
+    .mast .epithet{color:#8a6a14}
+    .block,.scene{background:#fff;border-color:#bbb;break-inside:avoid}
+    .block h2,.scene-head .title{color:#0d4a2e}
+    .vo,.row .val{color:#111}
+    .skill{color:#8a6a14}
+    .block .ts,.scene-head .ts{background:#0d4a2e;color:#fff}
+  }
+  @media (max-width:600px){
+    .row{flex-direction:column;gap:3px}
+    .row .lab{flex:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker">Honor of Kings · Global · Hero Guide · Episode #25</div>
+    <h1>FEYD</h1>
+    <div class="epithet">The Featherfoot</div>
+    <p class="sub">"I'm enjoying myself. Who cares about right and wrong?"</p>
+    <div class="jade-rule"></div>
+    <div class="runtime">FULL RUNTIME · 0:00 — 4:10</div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-view="script">📜 Full Script</button>
+    <button class="tab" data-view="screenplay">🎬 Screenplay</button>
+  </nav>
+
+  <!-- ============================== FULL SCRIPT ============================== -->
+  <section class="view active" id="script">
+
+    <div class="block">
+      <span class="ts">0:00 – 0:10</span>
+      <h2>Hook &amp; Identity</h2>
+      <div class="vo">
+        <span class="quote">"Jade City has a prince everyone thinks is useless — idle, extravagant, interested in nothing but jade.</span>
+        <span class="quote">He runs walls like a ghost, cuts down carries before they realize they're marked, and vanishes before anyone can prove he was there.</span>
+        <span class="quote">This is your guide to the Featherfoot."</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">0:10 – 0:45</span>
+      <h2>Skill Showcase</h2>
+      <div class="vo">
+        <span class="skill">Passive — Jade Carriage · View from Above</span>
+        <p>"On walls, Feyd's Basic Attacks switch to ranged, he gains 15% extra vision, and Skill 2 charges faster. The cost: crowd controls last 25% longer on him while he's up there."</p>
+
+        <span class="skill">Skill 1 — Jade Chase · Returning Strike</span>
+        <p>"Dash forward, launch enemies in your path, gain attack speed, and load 3 enhanced Basic Attacks. Melee enhanced attacks deal bonus damage and heal you. Ranged enhanced attacks deal bonus damage and bounce to a nearby unit. Gap closer, CC, and burst engine in one."</p>
+
+        <span class="skill">Skill 2 — Stepping on Jade</span>
+        <p>"Leap to a wall from the ground, or hop to an adjacent wall from a wall. Stocks up to 4 charges, regenerating one every 10 seconds — faster on a wall. Your map tool, escape, and ambush platform."</p>
+
+        <span class="skill">Ultimate — Hardened Jade Seal</span>
+        <p>"Sweep your blade around you, dealing damage and marking every enemy hit. Then Hardened Jade Strike triggers: four slashes per marked target that ignore untargetable states. If a target drops below one-eighth HP, they're Jadeified — instantly defeated. Cast from a wall, a built-in dash repositions you as you strike."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">0:45 – 1:15</span>
+      <h2>Core Combo &amp; Priority</h2>
+      <div class="vo">
+        <p>"One rule before anything else: use Skill 1 on the ground before mounting. It loads melee enhanced attacks — and on a wall, those flip to ranged with a bounce. Pre-loading is the single biggest damage difference you can make.</p>
+
+        <span class="skill">Standard Combo</span>
+        <p>Skill 1 → Skill 2 up → ranged enhanced attacks to poke → Ultimate Phase 1 to mark → Hardened Jade Strike → Skill 1 out.</p>
+
+        <span class="skill">Harvest Combo (target under tower or at range)</span>
+        <p>Skill 2 to nearby wall → chip HP with ranged attacks → Ultimate Phase 1 from the wall — the built-in dash dismounts you into the sweep — → Hardened Jade Strike → Skill 1 exit.</p>
+
+        <p>Priority: Ultimate → Skill 1. Spell: Smite."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">1:15 – 3:30</span>
+      <h2>Advanced Mechanics <span class="tail">— Combat &amp; Macro</span></h2>
+      <div class="vo">
+
+        <span class="subhead">Attack Mode Swap</span>
+        <p>"On a wall you're ranged; on the ground you're melee. Ranged enhanced attacks bounce — ideal for poking and chasing. Melee enhanced attacks heal — use them when you need sustain mid-dive. If you need the heal, drop off the wall, fire the melee hit, remount."</p>
+
+        <span class="subhead">Charge Economy</span>
+        <p>"Never burn your last charge without an exit. Stranded on a wall at zero, you're a slow target with extended CC. Also remember: some hero-generated walls are valid jump targets — a free repositioning option mid-fight."</p>
+
+        <span class="subhead">Playing Around CC</span>
+        <p>"CCs hit 25% harder on a wall — already covered in the passive, but it's the biggest strategic constraint you manage. Against fixed-position CCs, swap walls before they land. Against lock-on CCs, drop to the ground first, eat the hit at normal duration, then remount."</p>
+
+        <span class="subhead">Offensive Rhythm</span>
+        <ul>
+          <li><span class="lead">Ambush, don't open.</span> Perch on a wall, poke the enemy low, wait for them to isolate — then drop and Hardened Jade Seal.</li>
+          <li><span class="lead">Respect the Jadeify threshold.</span> It's one-eighth HP — lower than it feels. Dive too early and the execute doesn't fire. Stay on the wall and poke until you're certain.</li>
+          <li><span class="lead">Jadeify ignores untargetable.</span> Li Bai, Mi Yue — Hardened Jade Strike hits through their invulnerabilities. Save your ultimate for the moment they pop their escape.</li>
+          <li><span class="lead">Team fights: mark first.</span> Pop Phase 1 early, let your allies push enemies toward the threshold, collect the executes."</li>
+        </ul>
+
+        <span class="subhead">Defensive &amp; Macro</span>
+        <ul>
+          <li><span class="lead">Don't enter before your frontline.</span> Your tank absorbs the opener — you dive after the heavy CCs are spent.</li>
+          <li><span class="lead">Skill 1 dodges CC.</span> Once the dash starts it can't be interrupted — fire it through incoming crowd control to avoid the hit.</li>
+          <li><span class="lead">Use walls for vision.</span> Sitting at the low edge of a wall next to a brush reveals what's inside it — without entering. Enemies in the brush can't see you.</li>
+          <li><span class="lead">Help the strong lane.</span> Feyd needs gold to function. Route to the winning lane and amplify the lead — don't waste time on losing sides."</li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">3:30 – 4:00</span>
+      <h2>Best Teammates &amp; Tough Matchups</h2>
+      <div class="vo">
+        <ul>
+          <li><span class="lead">Best with Dyadia, Cai Yan, Sakeer.</span> Dyadia cleanses CC — directly countering the wall penalty. Cai Yan and Sakeer restore health, replacing the sustain removed from the ultimate.</li>
+          <li><span class="lead">Flowborn and Zhang Fei knock you off walls.</span> Both have long-range knockbacks that override passive protection. Hold a charge in reserve when facing either.</li>
+          <li><span class="lead">Di Renjie strips your marks.</span> His Skill 2 purifies, erasing the Hardened Jade Seal marks entirely. Bait it out before you commit your ultimate."</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">4:00 – 4:10</span>
+      <h2>Closing &amp; Retention Hook</h2>
+      <div class="vo">
+        <span class="quote">"The prince no one took seriously — running walls they can't follow, marking targets they can't protect, gone before the kill is confirmed.</span>
+        <span class="quote">Pre-load. Manage your charges. Let the fight come to you.</span>
+        <span class="quote">Do that, and the Featherfoot owns the map.</span>
+        <span class="quote">I'll see you in the next episode."</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================== SCREENPLAY ============================== -->
+  <section class="view" id="screenplay">
+
+    <p class="sp-intro">Shot list for the recording team. <b>Record</b> = gameplay to capture. <b>Show</b> = the one detail each clip must prove on screen. <b>Reps</b> = clean takes needed + setup.</p>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:00 – 0:10</span><span class="title">Hook &amp; Identity</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Record</div><div class="val">Feyd standing still on a wall above a live skirmish — enemies below, unaware. Hold the stillness, then cut to him dropping down: Skill 1 launches an enemy, Ultimate sweeps the backline, the kill completes before the title hits.</div></div>
+        <div class="row fx"><div class="lab">Show</div><div class="val">The contrast between the motionless wall perch and the instant full-combo.</div></div>
+        <div class="row ost"><div class="lab">Reps</div><div class="val">2–3 takes. Find a real match moment where Feyd is genuinely undetected before the dive — don't stage a hollow skirmish.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:10 – 0:17</span><span class="title">Passive — Jade Carriage · View from Above</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Record</div><div class="val">
+          <ul style="list-style:none;padding:0;margin:0">
+            <li style="margin-bottom:6px">Feyd on a wall: Basic Attacks visibly switching to ranged, bounce landing on a second unit.</li>
+            <li style="margin-bottom:6px">Pan from Feyd on a wall to a brush becoming visible in his vision range.</li>
+            <li>Side-by-side: the same stun landing on Feyd while on a wall vs on the ground — duration bars clearly different.</li>
+          </ul>
+        </div></div>
+        <div class="row fx"><div class="lab">Show</div><div class="val">The CC duration bar must be visibly longer on the wall clip than the ground clip.</div></div>
+        <div class="row ost"><div class="lab">Reps</div><div class="val">1 rep per beat, practice range. CC comparison needs a coordinated second player casting the same ability twice.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:17 – 0:25</span><span class="title">Skill 1 — Jade Chase · Returning Strike</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Record</div><div class="val">
+          <ul style="list-style:none;padding:0;margin:0">
+            <li style="margin-bottom:6px">Dash launching an enemy, then 3 melee enhanced attacks with heal numbers floating up.</li>
+            <li>Pre-load on ground → Skill 2 mount → 3 ranged enhanced attacks bouncing to a second unit.</li>
+          </ul>
+        </div></div>
+        <div class="row fx"><div class="lab">Show</div><div class="val">Heal numbers on the melee clip; the bounce arc clearly connecting to the second unit on the ranged clip.</div></div>
+        <div class="row ost"><div class="lab">Reps</div><div class="val">2 clean reps each, practice range.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:25 – 0:33</span><span class="title">Skill 2 — Stepping on Jade</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Record</div><div class="val">
+          <ul style="list-style:none;padding:0;margin:0">
+            <li style="margin-bottom:6px">Ground → wall leap, charge counter ticking down from 4 to 3.</li>
+            <li>Wall → adjacent wall chain: 2–3 consecutive hops, charge stack visibly dropping each time.</li>
+          </ul>
+        </div></div>
+        <div class="row fx"><div class="lab">Show</div><div class="val">The charge UI must be in frame and clearly decrementing per jump.</div></div>
+        <div class="row ost"><div class="lab">Reps</div><div class="val">1 rep per beat, practice range near clustered walls.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:33 – 0:45</span><span class="title">Ultimate — Hardened Jade Seal</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Record</div><div class="val">
+          <ul style="list-style:none;padding:0;margin:0">
+            <li style="margin-bottom:6px">Full ult on two targets: Phase 1 sweep + mark → Phase 2 four slashes → one target drops below 1/8 HP → Jadeify freeze → shatter → defeated.</li>
+            <li style="margin-bottom:6px">Ult cast from a wall: the built-in dash carries Feyd to a clearly different position as the sweep lands.</li>
+            <li>Feyd ults a Li Bai or Mi Yue mid-invulnerability — the slashes visibly connect.</li>
+          </ul>
+        </div></div>
+        <div class="row fx"><div class="lab">Show</div><div class="val">The Jadeify freeze-shatter sequence; the before/after position difference on the wall-cast clip; slashes landing during the untargetable state.</div></div>
+        <div class="row ost"><div class="lab">Reps</div><div class="val">1–2 reps per beat. The untargetable clip needs a coordinated custom match — confirm timing with the second player in advance.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">0:45 – 1:15</span><span class="title">Core Combo &amp; Priority</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Record</div><div class="val">
+          <ul style="list-style:none;padding:0;margin:0">
+            <li style="margin-bottom:6px">Standard combo full rep: Skill 1 on ground → Skill 2 mount → ranged enhanced attacks → Ult Phase 1 → Hardened Jade Strike → Skill 1 exit. Single-target kill.</li>
+            <li style="margin-bottom:6px">Harvest combo: Skill 2 to nearby wall → ranged poke chipping HP → Ult Phase 1 from wall (dash dismounts Feyd into the sweep) → Hardened Jade Strike → Skill 1 exit.</li>
+            <li>Skill priority screen recording: levelling Ult first, then Skill 1. Smite in the spell slot.</li>
+          </ul>
+        </div></div>
+        <div class="row fx"><div class="lab">Show</div><div class="val">Each combo input step clearly sequenced; the wall-dismount dash on the harvest combo; Smite visibly selected.</div></div>
+        <div class="row ost"><div class="lab">Reps</div><div class="val">3 clean reps each combo. Screen-record the skill menu separately — no need to rush it.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:15 – 1:30</span><span class="title">Attack Mode Swap</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Record</div><div class="val">
+          <ul style="list-style:none;padding:0;margin:0">
+            <li style="margin-bottom:6px">Melee enhanced attack on the ground: bonus damage + heal number.</li>
+            <li style="margin-bottom:6px">Ranged enhanced attack from the wall: bounce to second unit.</li>
+            <li>Deliberate swap: Feyd on wall → drops off → fires melee enhanced attack for the heal → remounts.</li>
+          </ul>
+        </div></div>
+        <div class="row fx"><div class="lab">Show</div><div class="val">Heal number on the melee clip; bounce arc on the ranged clip; the intentional dismount-fire-remount as one continuous move.</div></div>
+        <div class="row ost"><div class="lab">Reps</div><div class="val">2 reps each, practice range.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:30 – 1:45</span><span class="title">Charge Economy</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Record</div><div class="val">
+          <ul style="list-style:none;padding:0;margin:0">
+            <li style="margin-bottom:6px">Bad clip: Feyd burns all 4 charges chasing, stranded on a wall at 0, takes extended CC and dies.</li>
+            <li>Good clip: same chase, but 1 charge held back — Feyd exits cleanly.</li>
+          </ul>
+        </div></div>
+        <div class="row fx"><div class="lab">Show</div><div class="val">Charge counter at 0 on the bad clip; 1 remaining on the good clip. The CC landing and killing Feyd must be unambiguous on the bad version.</div></div>
+        <div class="row ost"><div class="lab">Reps</div><div class="val">1 rep each. The bad clip can be staged in a custom match for clarity.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">1:45 – 2:00</span><span class="title">Playing Around CC</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Record</div><div class="val">
+          <ul style="list-style:none;padding:0;margin:0">
+            <li style="margin-bottom:6px">Fixed-position CC incoming → Feyd hops to a different wall before it lands.</li>
+            <li>Lock-on CC incoming → Feyd drops to the ground first, eats the stun, remounts.</li>
+          </ul>
+        </div></div>
+        <div class="row fx"><div class="lab">Show</div><div class="val">The CC visibly missing on the wall-swap clip; the stun landing but at ground duration on the drop clip.</div></div>
+        <div class="row ost"><div class="lab">Reps</div><div class="val">1–2 reps each. Needs a coordinated second player using specific CCs — pick an area CC and a lock-on CC, agree on timing before recording.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:00 – 2:40</span><span class="title">Offensive Rhythm</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Record</div><div class="val">
+          <ul style="list-style:none;padding:0;margin:0">
+            <li style="margin-bottom:6px">Ambush: Feyd perched on wall, enemy carry isolated below → drops off, full combo, kill.</li>
+            <li style="margin-bottom:6px">Jadeify threshold: poke a target from the wall to below 1/8 HP, then execute. Back-to-back with a failed dive at ~30% HP where Jadeify doesn't trigger.</li>
+            <li style="margin-bottom:6px">Untargetable: enemy activates Li Bai or Mi Yue invulnerability → Feyd ults anyway → slashes connect.</li>
+            <li>Team fight: Ult Phase 1 marks multiple enemies early → allies push them to threshold → multi-execute fires.</li>
+          </ul>
+        </div></div>
+        <div class="row fx"><div class="lab">Show</div><div class="val">On the threshold clip: the execute firing vs not firing must be back-to-back and unmistakable. On the untargetable clip: the slash damage numbers must be visible during the invulnerability animation.</div></div>
+        <div class="row ost"><div class="lab">Reps</div><div class="val">1–2 reps each. The untargetable and multi-execute clips require a coordinated custom match — plan these sessions in advance.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">2:40 – 3:30</span><span class="title">Defensive &amp; Macro</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Record</div><div class="val">
+          <ul style="list-style:none;padding:0;margin:0">
+            <li style="margin-bottom:6px">Escape: fight going wrong → Stepping on Jade up → lateral hop to a different wall → chaser loses the angle.</li>
+            <li style="margin-bottom:6px">CC dodge: CC animation starts → Feyd fires Skill 1 → dash carries him clear before it lands.</li>
+            <li style="margin-bottom:6px">Wall vision: Feyd at the low edge of a wall beside a brush — brush interior is visible in his vision range; the enemy inside can't see him.</li>
+            <li>Routing decision: two active lanes on the minimap, one ahead, one behind — Feyd travels to the winning one.</li>
+          </ul>
+        </div></div>
+        <div class="row fx"><div class="lab">Show</div><div class="val">On the CC dodge: freeze the frame where the dash clears the CC zone — the timing must read clearly. On the vision clip: both Feyd's vision cone and the oblivious enemy must be in frame simultaneously.</div></div>
+        <div class="row ost"><div class="lab">Reps</div><div class="val">1–2 reps each. The CC dodge clip may need slow-mo capture. The vision clip works best in a custom match with a stationary second player in the brush.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">3:30 – 4:00</span><span class="title">Best Teammates &amp; Tough Matchups</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Record</div><div class="val">
+          <ul style="list-style:none;padding:0;margin:0">
+            <li style="margin-bottom:6px">Dyadia: Feyd takes CC on a wall → Dyadia ult fires → CC duration cuts short visibly.</li>
+            <li style="margin-bottom:6px">Cai Yan or Sakeer: Feyd dives deep, sustain healing keeps his HP bar alive through a situation he couldn't solo-survive.</li>
+            <li style="margin-bottom:6px">Flowborn or Zhang Fei: their knockback launches Feyd off a wall he's standing on.</li>
+            <li>Di Renjie — bad version: Feyd marks an enemy with Hardened Jade Seal → Di Renjie Skill 2 strips the marks → Jadeify fails. Good version immediately after: Feyd baits the Skill 2 first, then ults on cooldown.</li>
+          </ul>
+        </div></div>
+        <div class="row fx"><div class="lab">Show</div><div class="val">On the Dyadia clip: the CC bar visibly shortening mid-stun. On the Di Renjie clips: the marks disappearing vs the execute landing — these must be back-to-back.</div></div>
+        <div class="row ost"><div class="lab">Reps</div><div class="val">1 rep each. All clips require coordinated custom matches with specific hero picks — batch these into one session.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="ts">4:00 – 4:10</span><span class="title">Closing &amp; Retention Hook</span></div>
+      <div class="scene-body">
+        <div class="row visual"><div class="lab">Record</div><div class="val">Slow outro: Feyd gliding between walls, one clean isolated kill, then walking away as the score settles. End on a static hero shot or splash art. Leave space for the subscribe card and next-episode teaser.</div></div>
+        <div class="row fx"><div class="lab">Show</div><div class="val">The ghost-like mobility → decisive kill → casual exit arc should read as one continuous mood, not three separate clips.</div></div>
+        <div class="row ost"><div class="lab">Reps</div><div class="val">Pull the best wall-travel and kill clips from the session. Hero shot can be a menu or cinematic capture — no in-match recording needed.</div></div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>FEYD · THE FEATHERFOOT — HOK GLOBAL HERO GUIDE · EP. #25</footer>
+
+</div>
+
+<script>
+  const tabs=document.querySelectorAll('.tab');
+  const views=document.querySelectorAll('.view');
+  tabs.forEach(t=>t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    views.forEach(v=>v.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.view).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }));
+</script>
+</body>
+</html>
