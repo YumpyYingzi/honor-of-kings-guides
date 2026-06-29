@@ -10,14 +10,11 @@
 <style>
   :root{
     --void:#05060b;
-    --ink:#0b0e1a;
-    --panel:#10142400;
     --panel-solid:#0e1326;
     --edge:#26304f;
     --edge-soft:#1a2138;
     --bolt:#6ea8ff;
     --bolt-bright:#a9ccff;
-    --volt:#8f6dff;
     --gold:#e7b75a;
     --gold-soft:#c9a25a;
     --paper:#e9ecf5;
@@ -33,158 +30,67 @@
     background:
       radial-gradient(1200px 700px at 50% -10%, rgba(90,130,200,.18), transparent 60%),
       radial-gradient(900px 600px at 85% 8%, rgba(110,168,255,.12), transparent 55%),
-      linear-gradient(180deg,#05060b 0%, #070912 45%, #05060b 100%);
-    color:var(--paper);
-    line-height:1.7;
-    min-height:100vh;
-    padding:0 0 80px;
+      linear-gradient(180deg,#05060b 0%,#070912 45%,#05060b 100%);
+    color:var(--paper);line-height:1.7;min-height:100vh;padding:0 0 80px;
   }
   body::before{
     content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.45;
     background-image:
-      linear-gradient(rgba(110,168,255,.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(110,168,255,.03) 1px, transparent 1px);
+      linear-gradient(rgba(110,168,255,.03) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(110,168,255,.03) 1px,transparent 1px);
     background-size:46px 46px;
-    mask-image:radial-gradient(1000px 800px at 50% 0%, #000 30%, transparent 80%);
+    mask-image:radial-gradient(1000px 800px at 50% 0%,#000 30%,transparent 80%);
   }
   .wrap{max-width:920px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
 
   /* MASTHEAD */
-  header.mast{text-align:center;padding:64px 0 30px;position:relative;}
-  .kicker{
-    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.42em;
-    text-transform:uppercase;color:var(--steel);opacity:.9;margin-bottom:22px;
-  }
+  header.mast{text-align:center;padding:64px 0 30px}
+  .kicker{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--steel);opacity:.9;margin-bottom:22px}
   .mast h1{
     font-family:'Cinzel',serif;font-weight:900;line-height:.98;
     font-size:clamp(48px,11vw,104px);letter-spacing:.02em;
-    background:linear-gradient(180deg,#fff 0%, var(--steel-bright) 38%, var(--bolt) 105%);
+    background:linear-gradient(180deg,#fff 0%,var(--steel-bright) 38%,var(--bolt) 105%);
     -webkit-background-clip:text;background-clip:text;color:transparent;
     text-shadow:0 0 60px rgba(110,168,255,.2);
   }
-  .mast .epithet{
-    font-family:'Cinzel',serif;font-weight:600;font-size:clamp(15px,3.6vw,22px);
-    letter-spacing:.5em;text-transform:uppercase;color:var(--gold);
-    margin-top:10px;padding-left:.5em;
-  }
-  .mast .sub{
-    margin-top:20px;color:var(--paper-dim);font-style:italic;font-size:16px;
-    max-width:560px;margin-left:auto;margin-right:auto;
-  }
-  .bolt-rule{
-    width:120px;height:2px;margin:30px auto 0;
-    background:linear-gradient(90deg,transparent,var(--steel),var(--bolt),transparent);
-    box-shadow:0 0 18px rgba(110,168,255,.5);
-  }
-  .runtime{
-    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--paper-faint);
-    letter-spacing:.2em;margin-top:18px;
-  }
+  .mast .epithet{font-family:'Cinzel',serif;font-weight:600;font-size:clamp(15px,3.6vw,22px);letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-top:10px;padding-left:.5em}
+  .mast .sub{margin-top:20px;color:var(--paper-dim);font-style:italic;font-size:16px;max-width:560px;margin-left:auto;margin-right:auto}
+  .bolt-rule{width:120px;height:2px;margin:30px auto 0;background:linear-gradient(90deg,transparent,var(--steel),var(--bolt),transparent);box-shadow:0 0 18px rgba(110,168,255,.5)}
+  .runtime{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--paper-faint);letter-spacing:.2em;margin-top:18px}
 
   /* TABS */
-  .tabs{
-    position:sticky;top:0;z-index:20;display:flex;gap:8px;justify-content:center;
-    padding:14px 0 12px;margin:18px 0 8px;
-    background:linear-gradient(180deg,#05060bef 60%, transparent);
-    backdrop-filter:blur(4px);
-  }
-  .tab{
-    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;
-    letter-spacing:.18em;text-transform:uppercase;cursor:pointer;
-    color:var(--paper-dim);background:var(--panel-solid);
-    border:1px solid var(--edge);padding:11px 20px;border-radius:2px;
-    transition:.22s;
-  }
+  .tabs{position:sticky;top:0;z-index:20;display:flex;gap:8px;justify-content:center;padding:14px 0 12px;margin:18px 0 8px;background:linear-gradient(180deg,#05060bef 60%,transparent);backdrop-filter:blur(4px)}
+  .tab{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;color:var(--paper-dim);background:var(--panel-solid);border:1px solid var(--edge);padding:11px 20px;border-radius:2px;transition:.22s}
   .tab:hover{color:var(--paper);border-color:var(--steel)}
-  .tab.active{
-    color:#060912;background:linear-gradient(180deg,var(--steel-bright),var(--steel));
-    border-color:var(--steel);box-shadow:0 0 22px rgba(110,168,255,.35);
-  }
+  .tab.active{color:#060912;background:linear-gradient(180deg,var(--steel-bright),var(--steel));border-color:var(--steel);box-shadow:0 0 22px rgba(110,168,255,.35)}
   .view{display:none;animation:fade .4s ease}
   .view.active{display:block}
   @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
   /* SCRIPT BLOCKS */
-  .block{
-    position:relative;margin:30px 0;padding:26px 28px 26px 30px;
-    background:linear-gradient(180deg,rgba(14,19,38,.72),rgba(8,11,22,.72));
-    border:1px solid var(--edge-soft);border-left:none;border-radius:3px;
-    overflow:hidden;
-  }
-  .block::before{
-    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
-    background:linear-gradient(180deg,var(--steel),var(--bolt));
-    box-shadow:0 0 16px rgba(110,168,255,.4);
-  }
-  .block .ts{
-    display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:700;
-    font-size:12px;letter-spacing:.12em;color:#060912;
-    background:linear-gradient(90deg,var(--gold),var(--gold-soft));
-    padding:4px 12px;border-radius:2px;margin-bottom:6px;
-  }
-  .block h2{
-    font-family:'Cinzel',serif;font-weight:700;font-size:clamp(20px,4vw,28px);
-    color:var(--steel-bright);letter-spacing:.04em;margin:8px 0 4px;line-height:1.15;
-    text-shadow:0 0 30px rgba(110,168,255,.15);
-  }
+  .block{position:relative;margin:30px 0;padding:26px 28px 26px 30px;background:linear-gradient(180deg,rgba(14,19,38,.72),rgba(8,11,22,.72));border:1px solid var(--edge-soft);border-left:none;border-radius:3px;overflow:hidden}
+  .block::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--steel),var(--bolt));box-shadow:0 0 16px rgba(110,168,255,.4)}
+  .block h2{font-family:'Cinzel',serif;font-weight:700;font-size:clamp(20px,4vw,28px);color:var(--steel-bright);letter-spacing:.04em;margin:8px 0 4px;line-height:1.15;display:flex;align-items:baseline;gap:12px}
+  .section-label{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;letter-spacing:.18em;color:var(--steel);text-transform:uppercase;flex-shrink:0}
   .block h2 .tail{font-size:.62em;color:var(--gold);letter-spacing:.08em;font-weight:600}
   .vo{color:var(--paper);font-size:17px}
-  .vo p{margin:0 0 2px}
+  .vo p{margin:0 0 6px}
   .vo .quote{display:block;margin:6px 0;padding-left:2px}
-  .skill{
-    font-family:'Cinzel',serif;font-weight:600;color:var(--gold);
-    letter-spacing:.03em;display:block;margin:14px 0 1px;font-size:16px;
-  }
-  .subhead{
-    font-family:'Cinzel',serif;font-weight:600;color:var(--steel);
-    letter-spacing:.05em;display:block;margin:20px 0 4px;font-size:17px;
-    border-bottom:1px solid var(--edge-soft);padding-bottom:5px;
-  }
+  .skill{font-family:'Cinzel',serif;font-weight:600;color:var(--gold);letter-spacing:.03em;display:block;margin:14px 0 1px;font-size:16px}
+  .subhead{font-family:'Cinzel',serif;font-weight:600;color:var(--steel);letter-spacing:.05em;display:block;margin:20px 0 4px;font-size:17px;border-bottom:1px solid var(--edge-soft);padding-bottom:5px}
   .lead{font-weight:600;color:var(--steel-bright)}
   .vo .spacer{height:9px}
-  .vo ul{list-style:none;margin:6px 0;padding:0}
-  .vo ul li{position:relative;padding-left:20px;margin:7px 0;}
-  .vo ul li::before{
-    content:"◆";position:absolute;left:0;top:2px;font-size:10px;color:var(--steel);
-    filter:drop-shadow(0 0 4px rgba(110,168,255,.5));
-  }
-  .verify{
-    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);
-    background:rgba(231,183,90,.1);border:1px solid rgba(231,183,90,.3);
-    padding:1px 6px;border-radius:2px;margin-left:4px;
-  }
 
   /* SCREENPLAY */
-  .sp-intro{
-    margin:26px 0 8px;color:var(--paper-dim);font-style:italic;font-size:15px;
-    border-left:2px solid var(--edge);padding-left:16px;
-  }
-  .scene{
-    margin:22px 0;border:1px solid var(--edge-soft);border-radius:3px;overflow:hidden;
-    background:linear-gradient(180deg,rgba(12,16,32,.7),rgba(7,10,20,.7));
-  }
-  .scene-head{
-    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
-    padding:12px 18px;background:rgba(110,168,255,.06);
-    border-bottom:1px solid var(--edge-soft);
-  }
-  .scene-head .ts{
-    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;
-    color:#060912;background:linear-gradient(90deg,var(--gold),var(--gold-soft));
-    padding:4px 11px;border-radius:2px;letter-spacing:.08em;
-  }
-  .scene-head .title{
-    font-family:'Cinzel',serif;font-weight:600;font-size:15px;color:var(--steel-bright);
-    letter-spacing:.06em;text-transform:uppercase;
-  }
+  .sp-intro{margin:26px 0 8px;color:var(--paper-dim);font-style:italic;font-size:15px;border-left:2px solid var(--edge);padding-left:16px}
+  .scene{margin:22px 0;border:1px solid var(--edge-soft);border-radius:3px;overflow:hidden;background:linear-gradient(180deg,rgba(12,16,32,.7),rgba(7,10,20,.7))}
+  .scene-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 18px;background:rgba(110,168,255,.06);border-bottom:1px solid var(--edge-soft)}
+  .scene-label{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;letter-spacing:.18em;color:var(--steel);text-transform:uppercase;flex-shrink:0}
+  .scene-head .title{font-family:'Cinzel',serif;font-weight:600;font-size:15px;color:var(--steel-bright);letter-spacing:.06em;text-transform:uppercase}
   .scene-body{padding:6px 18px 16px}
   .row{display:flex;gap:0;border-bottom:1px dashed var(--edge-soft);padding:12px 0}
   .row:last-child{border-bottom:none}
-  .row .lab{
-    flex:0 0 90px;font-family:'JetBrains Mono',monospace;font-weight:700;
-    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
-    padding-top:3px;
-  }
+  .row .lab{flex:0 0 90px;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding-top:3px}
   .row.record .lab{color:var(--steel)}
   .row.show .lab{color:var(--bolt)}
   .row.reps .lab{color:var(--gold)}
@@ -193,36 +99,23 @@
   .row .val ul li{position:relative;padding-left:16px;margin:6px 0;font-size:15px}
   .row .val ul li::before{content:"–";position:absolute;left:0;color:var(--paper-faint)}
 
-  /* NOTE BAR */
-  .notebar{
-    margin:34px 0 0;padding:16px 20px;border:1px dashed var(--edge);border-radius:3px;
-    background:rgba(231,183,90,.05);color:var(--paper-dim);font-size:14px;
-  }
-  .notebar b{color:var(--gold);font-family:'Cinzel',serif;letter-spacing:.04em}
-
-  footer{
-    text-align:center;margin-top:50px;color:var(--paper-faint);
-    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;
-  }
+  footer{text-align:center;margin-top:50px;color:var(--paper-faint);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em}
 
   @media print{
     body{background:#fff;color:#111}
     body::before{display:none}
     .tabs{display:none}
     .view{display:block!important}
-    .view + .view{page-break-before:always}
+    .view+.view{page-break-before:always}
     .mast h1{color:#1a2350;-webkit-text-fill-color:#1a2350}
     .mast .epithet{color:#8a6a14}
     .block,.scene{background:#fff;border-color:#bbb;break-inside:avoid}
     .block h2,.scene-head .title{color:#1a2350}
+    .section-label,.scene-label{color:#1a2350}
     .vo,.row .val{color:#111}
     .skill{color:#8a6a14}
-    .block .ts,.scene-head .ts{background:#1a2350;color:#fff}
   }
-  @media (max-width:600px){
-    .row{flex-direction:column;gap:3px}
-    .row .lab{flex:none}
-  }
+  @media(max-width:600px){.row{flex-direction:column;gap:3px}.row .lab{flex:none}}
 </style>
 </head>
 <body>
@@ -234,7 +127,7 @@
     <div class="epithet">The Peaceful Fist</div>
     <p class="sub">"They don't know where they learned any of this. But the moment a fight starts — their body moves."</p>
     <div class="bolt-rule"></div>
-    <div class="runtime">FULL RUNTIME · 0:00 — 4:10</div>
+    <div class="runtime">FULL RUNTIME · ~4:10</div>
   </header>
 
   <nav class="tabs">
@@ -242,12 +135,11 @@
     <button class="tab" data-view="screenplay">🎬 Screenplay</button>
   </nav>
 
-  <!-- ============================== FULL SCRIPT ============================== -->
+  <!-- ============================== SCRIPT ============================== -->
   <section class="view active" id="script">
 
     <div class="block">
-      <span class="ts">0:00 – 0:12</span>
-      <h2>Hook &amp; Identity</h2>
+      <h2><span class="section-label">A.)</span> Hook &amp; Identity</h2>
       <div class="vo">
         <span class="quote">"They walked out of Jixia Academy with no memory of how they learned to fight — and no idea what they're capable of.</span>
         <span class="quote">Doesn't matter. The moment a teammate needs covering, their body moves on its own.</span>
@@ -258,76 +150,64 @@
     </div>
 
     <div class="block">
-      <span class="ts">0:12 – 0:55</span>
-      <h2>Skill Showcase</h2>
+      <h2><span class="section-label">B.)</span> Skill Showcase</h2>
       <div class="vo">
         <p>"Flowborn's kit is built around one resource and one idea: build up, then unleash.</p>
-
         <span class="skill">Passive — Flow of the World</span>
-        <p>At the base, Flowborn selects a weapon to enhance their stats: Vitality for HP and both defenses, Piercing Heart for HP and physical attack, Haste for HP and movement speed, Focus for HP and cooldown reduction. Beyond that, Flow is the fuel for everything. Spend one stack on an enhanced basic attack — it deals bonus physical damage and heals you, both scaling with your max HP. Even in full tank gear, those enhanced basics hit hard and keep you alive.</p>
-
+        <p>At the base, Flowborn selects a weapon: Vitality for HP and defenses, Piercing Heart for HP and physical attack, Haste for HP and movement speed, Focus for HP and cooldown reduction. Spend one Flow stack on an enhanced basic — bonus physical damage and HP recovery, both scaling with max HP.</p>
         <span class="skill">Skill 1 — Convergence</span>
-        <p>Flowborn channels the Flow — halving other skills' cooldowns, gaining up to 9 stacks of Flow, and recovering HP. Every nearby teammate and every two minions add an extra stack and more healing. It also knocks back enemies in the inner radius. This is your recharge tool — pop it near your wave or your team and you come out fully loaded.</p>
-
+        <p>Channels the Flow — halving other skills' cooldowns, gaining up to 9 stacks, and recovering HP. Nearby teammates and every two minions add an extra stack and more healing. Knocks back enemies in the inner radius. Pop it near your wave or your team and you come out fully loaded.</p>
         <span class="skill">Skill 2 — Power From Within</span>
-        <p>Charges at a locked-on target, knocking back units in the path, slashes for physical damage, and gains a shield for 3 seconds. Chain it onto the same target and the crowd control escalates: second cast launches them briefly, third cast launches them longer. Spend 4 Flow stacks to reset the cooldown and fire again without waiting. Skill 2 can also lock onto targets through walls — useful for chasing or escaping.</p>
-
+        <p>Charges at a locked-on target, knocking back units in the path, slashes for physical damage, and gains a shield for 3 seconds. Chain it on the same target and the crowd control escalates: second cast launches briefly, third launches longer. Spend 4 Flow stacks to reset the cooldown instantly. Locks onto targets through walls — useful for chasing or escaping.</p>
         <span class="skill">Ultimate — All In</span>
-        <p>Flowborn leaps to a target location, knocks back enemies, and deals physical damage with 50% bonus at the center. Spend 5 Flow stacks to land a second time. Queue any skill the moment you cast it — it fires automatically on landing, and Convergence skips its pre-animation entirely, so you get instant crowd control the frame you touch down."</p>
+        <p>Leaps to a target location, knocks back enemies, deals physical damage with 50% bonus at the center. Spend 5 Flow stacks to land a second time. Queue any skill as you cast it and it fires on landing — Convergence skips its pre-animation, giving instant crowd control the frame you touch down."</p>
       </div>
     </div>
 
     <div class="block">
-      <span class="ts">0:55 – 1:45</span>
-      <h2>Core Resource &amp; Combo</h2>
+      <h2><span class="section-label">C.)</span> Core Resource &amp; Combo</h2>
       <div class="vo">
-        <p>"Here's how it all ties together. Convergence is how you fill Flow — ideally near your wave or teammates to hit the 9-stack cap. Hold those stacks until you're ready to spend them in one clean burst: Power From Within three times, All In twice, or a chain of enhanced basics for sustained damage and healing.</p>
+        <p>"Here's how it all ties together. Convergence fills your Flow — ideally near your wave or teammates to hit the 9-stack cap. Hold those stacks until you're ready to spend them in one burst: Power From Within three times, All In twice, or a chain of enhanced basics for sustained damage and healing.</p>
         <div class="spacer"></div>
-        <p><span class="lead">Weapon choice</span> shapes each game. Piercing Heart when you have lane dominance — your enhanced basics become a genuine threat. Haste when you need to roam — it covers the movement speed gap your kit can't solve alone. Vitality when you're taking heavy burst — the double-resistance keeps you standing. Default to Piercing Heart; switch to Haste when you need to roam or chase.</p>
+        <p><span class="lead">Weapon choice</span> shapes each game. Piercing Heart for lane dominance — enhanced basics become a genuine threat. Haste to roam — covers the movement gap your kit can't solve alone. Vitality against heavy burst — the double-resistance keeps you standing.</p>
         <div class="spacer"></div>
-        <p><span class="lead">Enhancement effects</span> are your late-game flex. Winning? Flip to Enhanced Damage — close the game faster. Losing? Flip to Enhanced Defense — stay alive longer and buy your carries more room.</p>
+        <p><span class="lead">Enhancement effects</span> are your late-game flex. Winning? Enhanced Damage closes the game faster. Losing? Enhanced Defense buys your carries more room.</p>
         <div class="spacer"></div>
-        <p>Skill priority: Ultimate first, then Skill 2. Leave Convergence last — its cooldown reduction is fixed and it's always available at base level.</p>
+        <p>Skill priority: Ultimate first, then Skill 2. Leave Convergence last — its cooldown reduction is fixed and always available at base level.</p>
         <div class="spacer"></div>
-        <p>Summoner spells: Flash is the standard — it opens tower-dive combos and bails you out of bad spots. Enfeeble for lane bullying; Execute when you want to finish carries yourself."</p>
+        <p>Summoner spells: Flash is standard — tower-dive combos and bail-outs. Enfeeble for lane bullying; Execute when you want to finish carries yourself."</p>
       </div>
     </div>
 
     <div class="block">
-      <span class="ts">1:45 – 3:20</span>
-      <h2>Advanced Mechanics <span class="tail">— Offense, Defense &amp; Combos</span></h2>
+      <h2><span class="section-label">D.)</span> Advanced Mechanics <span class="tail">— Offense, Defense &amp; Combos</span></h2>
       <div class="vo">
         <span class="subhead">Offensive Rhythm</span>
-        <p>The basic lane combo is Convergence into two Power From Withins into an enhanced basic — one, two, two, charged hit. Fast, reliable, and lethal on any hero without a dash.</p>
+        <p>The basic lane combo: Convergence, two Power From Withins, enhanced basic — one, two, two, charged hit. Lethal on any hero without a dash.</p>
         <div class="spacer"></div>
-        <p>In teamfights, open with Convergence, queue All In immediately so it lands with instant crowd control, lock onto their carry with Power From Within, weave in enhanced basics, then spend remaining Flow on a second All In if they try to escape. The sequence: One, Ult, Two, enhanced basics, second Ult.</p>
+        <p>In teamfights, open with Convergence, queue All In so it lands with instant crowd control, lock onto their carry with Power From Within, weave in enhanced basics, then spend remaining Flow on a second All In. The sequence: One, Ult, Two, enhanced basics, second Ult.</p>
         <div class="spacer"></div>
-        <p>For tower-dives, open with All In plus Flash to land behind the target, Convergence to recharge, then double Power From Within to knock them clear of the tower.</p>
-        <div class="spacer"></div>
-        <p>Both Power From Within and All In pass through most terrain — aim at a wall, watch for the blue landing-light on the other side, and go through. Use this to chase through river walls or escape through brush walls. If the blue light doesn't appear, the wall is impassable.</p>
-
+        <p>For tower-dives and wall plays: both Power From Within and All In pass through most terrain. Open with All In plus Flash to land behind a tower target, Convergence to recharge, then double Power From Within to knock them clear. Aim at a wall, watch for the blue landing-light on the other side — if none appears, the wall is impassable.</p>
         <span class="subhead">Defensive Rhythm</span>
-        <p>Flowborn's weakness is movement speed — they can be kited. The fix is patience: never open Power From Within at max range on an approaching enemy. Wait until they're close — the knockback travels much farther at point-blank. Keep Convergence ready to halve your cooldowns in a lull. And remember your wall-passage is an escape route just as much as an engage tool — Power From Within through the nearest wall hands you a shield and distance in the same cast.</p>
+        <p>Flowborn's weakness is movement speed — they can be kited. Never open Power From Within at max range; wait until the enemy is close — the knockback travels much farther at point-blank. Keep Convergence ready to halve cooldowns in a lull, and use wall-passage as an escape: Power From Within through the nearest wall hands you a shield and distance in the same cast.</p>
         <div class="spacer"></div>
-        <p>In the support role: your priority is always the carry. Knock the diver off first, chain Power From Within to keep them away, then worry about yourself."</p>
+        <p>In the support role: knock the diver off your carry first, chain Power From Within to keep them away, then worry about yourself."</p>
       </div>
     </div>
 
     <div class="block">
-      <span class="ts">3:20 – 3:50</span>
-      <h2>Best Teammates &amp; Tough Matchups</h2>
+      <h2><span class="section-label">E.)</span> Best Teammates &amp; Tough Matchups</h2>
       <div class="vo">
-        <p>"Flowborn covers the movement speed weakness with the right partners. Sun Bin's recovery buffs let Flowborn soak more damage and stay in fights longer. Da Qiao's repositioning keeps Flowborn at full health so they can front-line without backing off. Any teammate who brings speed boosts makes the Haste weapon choice even more decisive.</p>
+        <p>"Flowborn covers the movement speed weakness with the right partners. Sun Bin's recovery lets Flowborn soak more punishment and stay in fights longer. Da Qiao's repositioning keeps them healthy enough to front-line. Speed-boost allies make the Haste weapon even more decisive.</p>
         <div class="spacer"></div>
-        <p>Best targets: heroes without a dash. Once Flowborn locks on and chains their skills, they have nowhere to go — Hou Yi is the textbook example.</p>
+        <p>Best targets: heroes without a dash — once Flowborn locks on and chains skills, they have nowhere to go. Hou Yi is the textbook example.</p>
         <div class="spacer"></div>
-        <p>Tough matchups: heroes with multiple crowd controls, like Lady Zhen, can stack debuffs on Flowborn before they can respond. Lu Bu with his enchantment deals true-damage burst that cuts straight through tank stats. Against either, play slow — farm your Flow near the wave, stay close to your carry, and let the fight come to you."</p>
+        <p>Tough matchups: Lady Zhen stacks crowd controls faster than Flowborn can respond. Lu Bu's enchantment deals true-damage burst that cuts through tank stats. Against either, farm Flow near the wave, stay close to your carry, and let the fight come to you."</p>
       </div>
     </div>
 
     <div class="block">
-      <span class="ts">3:50 – 4:10</span>
-      <h2>Closing &amp; Retention Hook</h2>
+      <h2><span class="section-label">F.)</span> Closing &amp; Retention Hook</h2>
       <div class="vo">
         <span class="quote">"They don't know where they learned any of this.</span>
         <span class="quote">But the moment a fight starts — their body moves.</span>
@@ -342,11 +222,10 @@
   <!-- ============================== SCREENPLAY ============================== -->
   <section class="view" id="screenplay">
 
-    <p class="sp-intro">Shooting screenplay — one section per script block, same names and timestamps. Each scene contains Record (what to film), Show (what must be visible), and Reps (takes + setup).</p>
+    <p class="sp-intro">Shooting screenplay — one section per script block, same names and order. Record = what to film. Show = what must be visible. Reps = takes and setup.</p>
 
-    <!-- HOOK -->
     <div class="scene">
-      <div class="scene-head"><span class="ts">0:00 – 0:12</span><span class="title">Hook &amp; Identity</span></div>
+      <div class="scene-head"><span class="scene-label">A.)</span><span class="title">Hook &amp; Identity</span></div>
       <div class="scene-body">
         <div class="row record"><div class="lab">Record</div><div class="val">Cold open on Flowborn standing still at the edge of a teamfight — calm, unbothered. On "their body moves on its own," cut to a full-speed All In leap crashing into the enemy backline. End on a freeze of Flowborn's splash art or hero portrait.</div></div>
         <div class="row show"><div class="lab">Show</div><div class="val">The contrast between stillness and sudden explosive entry.</div></div>
@@ -354,80 +233,66 @@
       </div>
     </div>
 
-    <!-- SKILL SHOWCASE -->
     <div class="scene">
-      <div class="scene-head"><span class="ts">0:12 – 0:55</span><span class="title">Skill Showcase</span></div>
+      <div class="scene-head"><span class="scene-label">B.)</span><span class="title">Skill Showcase</span></div>
       <div class="scene-body">
-        <div class="row record"><div class="lab">Record</div><div class="val">
-          <ul>
-            <li>Passive — At the base menu, cycle through all four weapon options (Vitality, Piercing Heart, Haste, Focus) with stat tooltips visible. Then a practice-range clip of an enhanced basic landing — damage number and HP recovery tick both clearly readable.</li>
-            <li>Skill 1 (Convergence) — Cast near a minion wave with a teammate present. Show Flow stacks filling to 9, cooldown reduction firing on other skills, and knockback on nearby enemies. Flow bar and skill cooldown timers must stay in frame throughout.</li>
-            <li>Skill 2 (Power From Within) — Three clips: (1) single charge into a target showing knockback and shield gain; (2) back-to-back casts on the same target showing escalating launch — second brief, third longer; (3) wall-pass clip locking onto a target through terrain and arriving on the other side.</li>
-            <li>Ultimate (All In) — Full sequence: leap to location, center hit with bonus damage on a clumped group, knockback. Then a second clip of All In fired twice (5 Flow stacks spent for the reset). Then the skill-queue trick: cast All In, immediately tap Convergence — show it fire on landing with no pre-animation.</li>
-          </ul>
-        </div></div>
-        <div class="row show"><div class="lab">Show</div><div class="val">Flow stack counter prominent in all clips. Each ability's key effect clearly readable — knockback, shield, launch durations, center vs edge damage difference on All In.</div></div>
+        <div class="row record"><div class="lab">Record</div><div class="val"><ul>
+          <li>Passive — At the base menu, cycle through all four weapon options with stat tooltips visible. Then a practice-range clip of an enhanced basic landing — damage number and HP recovery tick both clearly readable.</li>
+          <li>Skill 1 (Convergence) — Cast near a minion wave with a teammate present. Show Flow stacks filling to 9, cooldown reduction firing on other skills, and knockback on nearby enemies. Flow bar and skill cooldown timers must stay in frame.</li>
+          <li>Skill 2 (Power From Within) — Three clips: (1) single charge showing knockback and shield gain; (2) back-to-back casts on the same target showing escalating launch — second brief, third longer; (3) wall-pass clip locking onto a target through terrain and arriving on the other side.</li>
+          <li>Ultimate (All In) — Full sequence: leap, center hit with bonus damage, knockback. Second clip of All In fired twice (5 Flow stacks for the reset). Then the skill-queue trick: cast All In, immediately tap Convergence — show it fire on landing with no pre-animation.</li>
+        </ul></div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">Flow stack counter prominent in all clips. Each ability's key effect clearly readable — knockback, shield, launch durations, center vs edge damage on All In.</div></div>
         <div class="row reps"><div class="lab">Reps</div><div class="val">1–2 clean takes per ability. Practice range throughout.</div></div>
       </div>
     </div>
 
-    <!-- CORE RESOURCE -->
     <div class="scene">
-      <div class="scene-head"><span class="ts">0:55 – 1:45</span><span class="title">Core Resource &amp; Combo</span></div>
+      <div class="scene-head"><span class="scene-label">C.)</span><span class="title">Core Resource &amp; Combo</span></div>
       <div class="scene-body">
-        <div class="row record"><div class="lab">Record</div><div class="val">
-          <ul>
-            <li>Weapon choice — screen-record the base weapon select showing all four options with stat tooltips. Highlight Piercing Heart, Haste, and Vitality as the three primary picks.</li>
-            <li>Enhancement effects — show the in-match enhancement toggle: Enhanced Damage selected while winning, Enhanced Defense while losing. Side-by-side stat comparison if possible.</li>
-            <li>Skill priority — skill-up menu showing Ultimate levelled first, then Skill 2, Convergence last.</li>
-            <li>Summoner spells — spell select screen with Flash chosen; quick cuts to Enfeeble and Execute as alternatives, each labelled.</li>
-          </ul>
-        </div></div>
+        <div class="row record"><div class="lab">Record</div><div class="val"><ul>
+          <li>Weapon choice — screen-record the base weapon select with stat tooltips. Highlight Piercing Heart, Haste, and Vitality as the three primary picks.</li>
+          <li>Enhancement effects — show the in-match enhancement toggle: Enhanced Damage while winning, Enhanced Defense while losing. Side-by-side stat comparison if possible.</li>
+          <li>Skill priority — skill-up menu showing Ultimate levelled first, then Skill 2, Convergence last.</li>
+          <li>Summoner spells — spell select with Flash chosen; quick cuts to Enfeeble and Execute labelled as alternatives.</li>
+        </ul></div></div>
         <div class="row show"><div class="lab">Show</div><div class="val">Enhancement toggle UI clearly visible; skill-level order readable on screen.</div></div>
         <div class="row reps"><div class="lab">Reps</div><div class="val">Screen recordings — 1 take each. No live gameplay needed.</div></div>
       </div>
     </div>
 
-    <!-- ADVANCED MECHANICS -->
     <div class="scene">
-      <div class="scene-head"><span class="ts">1:45 – 3:20</span><span class="title">Advanced Mechanics — Offense, Defense &amp; Combos</span></div>
+      <div class="scene-head"><span class="scene-label">D.)</span><span class="title">Advanced Mechanics — Offense, Defense &amp; Combos</span></div>
       <div class="scene-body">
-        <div class="row record"><div class="lab">Record</div><div class="val">
-          <ul>
-            <li>Basic lane combo — practice-range clip of the full 1-2-2-enhanced basic sequence on a dummy, all four inputs in order.</li>
-            <li>Teamfight combo — real match or bot clip of the full sequence: Convergence → All In queued (no pre-animation on landing) → Power From Within onto carry → enhanced basics → second All In. Label each step on screen.</li>
-            <li>Tower-dive — All In plus Flash landing behind a target near tower, Convergence to recharge, two Power From Withins knocking them clear. Capture as one continuous play.</li>
-            <li>Wall-pass — aim Power From Within or All In at a wall, show the blue landing-light appearing on the other side, then the through-wall arrival. Second clip: no blue light on an impassable wall, as contrast.</li>
-            <li>Defensive patience — two side-by-side clips: (1) Power From Within at max range, small knockback; (2) Power From Within at point-blank, large knockback. Then a clip of Convergence used during a lull to reset cooldowns mid-fight.</li>
-            <li>Support priority — clip of Flowborn knocking a diver off a carry with Power From Within, then chaining a second cast to keep the enemy away. Carry survives.</li>
-          </ul>
-        </div></div>
-        <div class="row show"><div class="lab">Show</div><div class="val">Flow stack counter and skill cooldowns visible in all combo clips. Blue landing-light clearly readable on the wall-pass clip. Knockback distance difference obvious in the defensive patience side-by-side.</div></div>
+        <div class="row record"><div class="lab">Record</div><div class="val"><ul>
+          <li>Basic lane combo — practice-range clip of the 1-2-2-enhanced basic sequence on a dummy, all inputs in order.</li>
+          <li>Teamfight combo — real match or bot clip: Convergence, All In queued with no pre-animation on landing, Power From Within onto carry, enhanced basics, second All In. Label each step.</li>
+          <li>Tower-dive and wall play — All In plus Flash landing behind a tower target, Convergence to recharge, two Power From Withins knocking them clear. Then: aim at a wall, show the blue landing-light on the other side and the through-wall arrival. Second clip: no blue light on an impassable wall, as contrast.</li>
+          <li>Defensive patience — side-by-side: (1) Power From Within at max range, small knockback; (2) point-blank, large knockback. Then a clip of Convergence halving cooldowns in a lull.</li>
+          <li>Support priority — Flowborn knocking a diver off a carry with Power From Within, chaining a second cast to keep them away. Carry survives.</li>
+        </ul></div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">Flow counter and cooldowns visible in all combo clips. Blue landing-light readable on wall-pass. Knockback distance difference obvious in the side-by-side.</div></div>
         <div class="row reps"><div class="lab">Reps</div><div class="val">2 clean takes per beat. Real match preferred for combos; practice range for wall-pass and knockback comparison.</div></div>
       </div>
     </div>
 
-    <!-- TEAMMATES & MATCHUPS -->
     <div class="scene">
-      <div class="scene-head"><span class="ts">3:20 – 3:50</span><span class="title">Best Teammates &amp; Tough Matchups</span></div>
+      <div class="scene-head"><span class="scene-label">E.)</span><span class="title">Best Teammates &amp; Tough Matchups</span></div>
       <div class="scene-body">
-        <div class="row record"><div class="lab">Record</div><div class="val">
-          <ul>
-            <li>Teammates — synergy clip of Sun Bin healing Flowborn through a sustained brawl; Da Qiao repositioning Flowborn into a better angle. Hero portrait badges for both slide in.</li>
-            <li>Best target — Flowborn locking onto Hou Yi with Power From Within chaining into All In — no dash, no escape.</li>
-            <li>Counters — Lady Zhen stacking crowd controls on Flowborn before they can respond; Lu Bu's enchantment burst dropping Flowborn's HP. Pair each with the correct response: Flowborn farming Flow near the wave instead of engaging.</li>
-          </ul>
-        </div></div>
+        <div class="row record"><div class="lab">Record</div><div class="val"><ul>
+          <li>Teammates — Sun Bin healing Flowborn through a sustained brawl; Da Qiao repositioning Flowborn into a better angle. Hero portrait badges for both slide in.</li>
+          <li>Best target — Flowborn locking onto Hou Yi with Power From Within chaining into All In — no dash, no escape.</li>
+          <li>Counters — Lady Zhen stacking crowd controls on Flowborn; Lu Bu's enchantment burst dropping their HP. Pair each with the correct response: Flowborn farming Flow near the wave.</li>
+        </ul></div></div>
         <div class="row show"><div class="lab">Show</div><div class="val">Hero portraits for Sun Bin, Da Qiao, Hou Yi, Lady Zhen, and Lu Bu clearly visible. Crowd-control debuff icons readable on the Lady Zhen clip.</div></div>
         <div class="row reps"><div class="lab">Reps</div><div class="val">1–2 clips per matchup. Real match footage preferred.</div></div>
       </div>
     </div>
 
-    <!-- CLOSING -->
     <div class="scene">
-      <div class="scene-head"><span class="ts">3:50 – 4:10</span><span class="title">Closing &amp; Retention Hook</span></div>
+      <div class="scene-head"><span class="scene-label">F.)</span><span class="title">Closing &amp; Retention Hook</span></div>
       <div class="scene-body">
-        <div class="row record"><div class="lab">Record</div><div class="val">Slow outro montage — Flowborn absorbing hits, chaining controls, carry surviving because of it. Land on a hold of Flowborn's splash art or hero portrait as music settles. Leave space for end-screen subscribe card and next-episode tease.</div></div>
+        <div class="row record"><div class="lab">Record</div><div class="val">Slow outro montage — Flowborn absorbing hits, chaining controls, carry surviving. Land on Flowborn's splash art or hero portrait as music settles. Leave space for end-screen subscribe card and next-episode tease.</div></div>
         <div class="row show"><div class="lab">Show</div><div class="val">The "carry survives" moment clearly visible before the cut to splash art.</div></div>
         <div class="row reps"><div class="lab">Reps</div><div class="val">2 takes. Pull best teamfight clips from the session.</div></div>
       </div>
@@ -438,7 +303,6 @@
   <footer>FLOWBORN · THE PEACEFUL FIST — HOK GLOBAL HERO GUIDE · EP. 26</footer>
 
 </div>
-
 <script>
   const tabs=document.querySelectorAll('.tab');
   const views=document.querySelectorAll('.view');
