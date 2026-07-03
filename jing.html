@@ -149,17 +149,6 @@
     background:linear-gradient(180deg,transparent,rgba(201,170,255,.06),transparent);
   }
 
-  .block .ts{
-    display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:700;
-    font-size:11px;letter-spacing:.14em;color:var(--void);
-    background:linear-gradient(90deg,var(--silver),var(--violet));
-    padding:3px 12px;border-radius:2px;margin-bottom:8px;
-  }
-  .block .sec-label{
-    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;
-    text-transform:uppercase;color:var(--deep);font-weight:700;
-    margin-left:10px;vertical-align:middle;
-  }
   .block h2{
     font-family:'Cinzel',serif;font-weight:700;font-size:clamp(18px,3.8vw,26px);
     color:var(--shard);letter-spacing:.04em;margin:8px 0 4px;line-height:1.15;
@@ -203,15 +192,6 @@
     display:flex;align-items:center;gap:14px;flex-wrap:wrap;
     padding:12px 18px;background:rgba(157,126,232,.07);
     border-bottom:1px solid var(--edge-soft);
-  }
-  .scene-head .ts{
-    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;
-    color:var(--void);background:linear-gradient(90deg,var(--silver),var(--violet));
-    padding:3px 11px;border-radius:2px;letter-spacing:.08em;
-  }
-  .scene-head .sec-label{
-    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;
-    color:var(--deep);font-weight:700;text-transform:uppercase;
   }
   .scene-head .title{
     font-family:'Cinzel',serif;font-weight:600;font-size:14px;color:var(--shard);
@@ -265,7 +245,7 @@
     .block h2,.scene-head .title{color:#2d1a50}
     .vo,.row .val{color:#111}
     .skill{color:#8a6a14}
-    .block .ts,.scene-head .ts{background:#2d1a50;color:#fff}
+
   }
   @media(max-width:600px){
     .row{flex-direction:column;gap:4px}
@@ -294,8 +274,8 @@
   <section class="view active" id="script">
 
     <div class="block">
-      <span class="ts">0:00 – 0:32</span><span class="sec-label">A</span>
-      <h2>Hook &amp; Identity</h2>
+      
+      <h2>A.) Hook &amp; Identity</h2>
       <div class="vo">
         <span class="quote">"She broke the mirror herself — shattered it with her fist, took the shards into her body, paid with her skin, and walked out with a power no one else could claim.</span>
         <span class="quote">When the dust settled, the only face looking back was her own. Not a ghost. Not an illusion. Just Jing.</span>
@@ -304,8 +284,8 @@
     </div>
 
     <div class="block">
-      <span class="ts">0:32 – 2:15</span><span class="sec-label">B</span>
-      <h2>Skill Showcase</h2>
+      
+      <h2>B.) Skill Showcase</h2>
       <div class="vo">
         <p>"Jing's kit runs on one engine: her Mirror Image.</p>
         <span class="skill">Passive — Lethal Reflections</span>
@@ -322,8 +302,8 @@
     </div>
 
     <div class="block">
-      <span class="ts">2:15 – 3:30</span><span class="sec-label">C</span>
-      <h2>The Mark System &amp; Core Combo</h2>
+      
+      <h2>C.) The Mark System &amp; Core Combo</h2>
       <div class="vo">
         <p>"The Mark system is the loop. Jing and her Image each apply a different Mark when they hit. Both on the same target at once triggers a shatter — both skill cooldowns reset instantly.</p>
         <p>Base rhythm: <span class="lead">Skill 1, Basic Attack, Skill 2, Basic Attack.</span> The auto between casts lands the second Mark — skip it and the shatter never fires. Image damage scales with distance: 30% up close, 80% at range — stay spread. The enhanced Basic Attack from Reflective Assault is a double strike, so Skill 1 alone can trigger a shatter if the Image is already on the same target.</p>
@@ -333,16 +313,16 @@
     </div>
 
     <div class="block">
-      <span class="ts">3:30 – 3:55</span><span class="sec-label">D</span>
-      <h2>Offensive Rhythm</h2>
+      
+      <h2>D.) Offensive Rhythm</h2>
       <div class="vo">
         <p>"Jing's power spike is 8 to 12 minutes. Never initiate a teamfight — she's a single-target executioner. Wait for your team to absorb the first skill wave, then enter from the flank onto the backline. Strong against low-mobility carries who can't escape once she's inside. When no gank is clean, push waves or take neutrals."</p>
       </div>
     </div>
 
     <div class="block">
-      <span class="ts">3:55 – 4:30</span><span class="sec-label">E</span>
-      <h2>Defensive Rhythm</h2>
+      
+      <h2>E.) Defensive Rhythm</h2>
       <div class="vo">
         <p>"Survival is built around the swap. Dimensional Shift moves you to wherever the Image is — so pre-position the Image before any risky angle, keep a charge reserved, and swap out the moment things turn bad.</p>
         <p>Against burst assassins like Wukong and Daji, never enter without a charge ready. If Mirror Domain is down, Shattered Illusions' speed burst is your escape. Never burn both Image-generating skills without knowing your exit."</p>
@@ -350,8 +330,8 @@
     </div>
 
     <div class="block">
-      <span class="ts">4:30 – 5:05</span><span class="sec-label">F</span>
-      <h2>Read the Battlefield</h2>
+      
+      <h2>F.) Read the Battlefield</h2>
       <div class="vo">
         <p>"The Image is a free scout. After any skill that spawns one, direct it into a suspicious bush — it reveals what's inside without you stepping in. Use this before every objective fight.</p>
         <p>Don't just look for low HP — look for enemies whose escape just went on cooldown. An enemy who burned their dash can't leave. Inside Mirror Domain, stack both on the same cluster — every swap fires the Vortex fragments and multiplies output."</p>
@@ -359,8 +339,8 @@
     </div>
 
     <div class="block">
-      <span class="ts">5:05 – 6:10</span><span class="sec-label">G</span>
-      <h2>Key Combos</h2>
+      
+      <h2>G.) Key Combos</h2>
       <div class="vo">
         <span class="skill">Strangle Combo</span>
         <p>Open with Reflective Assault into a basic attack for the first shatter, then activate Mirror Domain. Chain Reflective Assault, Shattered Illusions, and basics inside — swapping between bursts and healing throughout.</p>
@@ -372,8 +352,8 @@
     </div>
 
     <div class="block">
-      <span class="ts">6:10 – 6:50</span><span class="sec-label">H</span>
-      <h2>Best Teammates &amp; Tough Matchups</h2>
+      
+      <h2>H.) Best Teammates &amp; Tough Matchups</h2>
       <div class="vo">
         <p>"Best teammates hold enemies in your reach. <span class="lead">Liu Bang</span> covers your entry; <span class="lead">Guiguzi</span> compresses enemies into Mark range; <span class="lead">Sun Bin</span> speeds the loop with Jing's own sustain.</p>
         <p>Hardest counters are heavy crowd-control heroes — <span class="lead">Liang</span> and <span class="lead">Donghuang</span> — which cut off Mark generation before the second hit lands. Break the combo and she has nothing. Heroes who burst faster than she can swap, like <span class="lead">Wukong</span> and <span class="lead">Daji</span>, also win the duel if she enters without a charge reserved."</p>
@@ -381,8 +361,8 @@
     </div>
 
     <div class="block">
-      <span class="ts">6:50 – 7:20</span><span class="sec-label">I</span>
-      <h2>Closing &amp; Retention Hook</h2>
+      
+      <h2>I.) Closing &amp; Retention Hook</h2>
       <div class="vo">
         <span class="quote">"The mirror never lies — and when Jing smashed hers and took the shards, the only face looking back was her own.</span>
         <span class="quote">That's the whole game plan: the Image draws the eye, the Marks set the trap, the swap holds the exit.</span>
@@ -400,8 +380,8 @@
 
     <div class="scene">
       <div class="scene-head">
-        <span class="ts">0:00 – 0:32</span><span class="sec-label">A</span>
-        <span class="title">Hook &amp; Identity</span>
+        
+        <span class="title">A.) Hook &amp; Identity</span>
       </div>
       <div class="scene-body">
         <div class="row record">
@@ -421,8 +401,8 @@
 
     <div class="scene">
       <div class="scene-head">
-        <span class="ts">0:32 – 2:15</span><span class="sec-label">B</span>
-        <span class="title">Skill Showcase</span>
+        
+        <span class="title">B.) Skill Showcase</span>
       </div>
       <div class="scene-body">
         <div class="row record">
@@ -450,8 +430,8 @@
 
     <div class="scene">
       <div class="scene-head">
-        <span class="ts">2:15 – 3:30</span><span class="sec-label">C</span>
-        <span class="title">The Mark System &amp; Core Combo</span>
+        
+        <span class="title">C.) The Mark System &amp; Core Combo</span>
       </div>
       <div class="scene-body">
         <div class="row record">
@@ -478,8 +458,8 @@
 
     <div class="scene">
       <div class="scene-head">
-        <span class="ts">3:30 – 3:55</span><span class="sec-label">D</span>
-        <span class="title">Offensive Rhythm</span>
+        
+        <span class="title">D.) Offensive Rhythm</span>
       </div>
       <div class="scene-body">
         <div class="row record">
@@ -505,8 +485,8 @@
 
     <div class="scene">
       <div class="scene-head">
-        <span class="ts">3:55 – 4:30</span><span class="sec-label">E</span>
-        <span class="title">Defensive Rhythm</span>
+        
+        <span class="title">E.) Defensive Rhythm</span>
       </div>
       <div class="scene-body">
         <div class="row record">
@@ -532,8 +512,8 @@
 
     <div class="scene">
       <div class="scene-head">
-        <span class="ts">4:30 – 5:05</span><span class="sec-label">F</span>
-        <span class="title">Read the Battlefield</span>
+        
+        <span class="title">F.) Read the Battlefield</span>
       </div>
       <div class="scene-body">
         <div class="row record">
@@ -559,8 +539,8 @@
 
     <div class="scene">
       <div class="scene-head">
-        <span class="ts">5:05 – 6:10</span><span class="sec-label">G</span>
-        <span class="title">Key Combos</span>
+        
+        <span class="title">G.) Key Combos</span>
       </div>
       <div class="scene-body">
         <div class="row record">
@@ -586,8 +566,8 @@
 
     <div class="scene">
       <div class="scene-head">
-        <span class="ts">6:10 – 6:50</span><span class="sec-label">H</span>
-        <span class="title">Best Teammates &amp; Tough Matchups</span>
+        
+        <span class="title">H.) Best Teammates &amp; Tough Matchups</span>
       </div>
       <div class="scene-body">
         <div class="row record">
@@ -613,8 +593,8 @@
 
     <div class="scene">
       <div class="scene-head">
-        <span class="ts">6:50 – 7:20</span><span class="sec-label">I</span>
-        <span class="title">Closing &amp; Retention Hook</span>
+        
+        <span class="title">I.) Closing &amp; Retention Hook</span>
       </div>
       <div class="scene-body">
         <div class="row record">
