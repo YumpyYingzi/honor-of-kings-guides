@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jing — The Broken Mirage · Guide Script & Screenplay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  /* ── JING PALETTE — derived from passive icon: shattered violet/purple ── */
+  :root{
+    --void:#0a080f;
+    --ink:#100d1c;
+    --panel-solid:#120e22;
+    --edge:#2e2050;
+    --edge-soft:#1e1638;
+    --shard:#c9aaff;        /* bright lavender — shard-crack highlight */
+    --shard-bright:#e8e0ff; /* near-white violet — shatter burst */
+    --violet:#9d7ee8;       /* mid violet — secondary accent */
+    --deep:#6b3fa0;         /* deep purple — structural accent */
+    --silver:#b8a4d8;       /* desaturated lavender — epithet, kicker */
+    --paper:#e9ecf5;
+    --paper-dim:#9a94b8;
+    --paper-faint:#635e80;
+    --gold:#e7b75a;
+    --gold-soft:#c9a25a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+
+  body{
+    font-family:'Spectral',Georgia,serif;
+    background:
+      radial-gradient(1100px 650px at 50% -8%,  rgba(107,63,160,.22), transparent 60%),
+      radial-gradient(800px 500px at 88% 6%,    rgba(157,126,232,.12), transparent 55%),
+      radial-gradient(600px 400px at 10% 60%,   rgba(107,63,160,.08), transparent 60%),
+      linear-gradient(180deg,#0a080f 0%, #0d0b1a 50%, #0a080f 100%);
+    color:var(--paper);
+    line-height:1.7;
+    min-height:100vh;
+    padding:0 0 80px;
+  }
+
+  /* shattered-mirror fragment texture — diagonal lines instead of grid */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;
+    background-image:
+      linear-gradient(135deg, rgba(201,170,255,.04) 1px, transparent 1px),
+      linear-gradient(45deg,  rgba(201,170,255,.03) 1px, transparent 1px);
+    background-size:52px 52px, 38px 38px;
+    mask-image:radial-gradient(1000px 700px at 50% 0%, #000 25%, transparent 75%);
+  }
+
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+  /* ── MASTHEAD ── */
+  header.mast{text-align:center;padding:64px 0 30px;position:relative}
+
+  .kicker{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.42em;
+    text-transform:uppercase;color:var(--silver);opacity:.85;margin-bottom:22px;
+  }
+  .mast h1{
+    font-family:'Cinzel',serif;font-weight:900;line-height:.96;
+    font-size:clamp(52px,12vw,112px);letter-spacing:.03em;
+    background:linear-gradient(165deg,var(--shard-bright) 0%, var(--shard) 35%, var(--violet) 65%, var(--deep) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 70px rgba(157,126,232,.3);
+    position:relative;
+  }
+  /* crack-line pseudo element through the title */
+  .mast h1::after{
+    content:"";position:absolute;left:50%;top:0;transform:translateX(-50%);
+    width:2px;height:100%;
+    background:linear-gradient(180deg,transparent 0%,rgba(232,224,255,.18) 30%,rgba(232,224,255,.06) 70%,transparent 100%);
+    pointer-events:none;
+  }
+  .mast .epithet{
+    font-family:'Cinzel',serif;font-weight:600;font-size:clamp(13px,3.2vw,19px);
+    letter-spacing:.5em;text-transform:uppercase;color:var(--silver);
+    margin-top:10px;padding-left:.5em;
+  }
+  .mast .sub{
+    margin-top:20px;color:var(--paper-dim);font-style:italic;font-size:16px;
+    max-width:560px;margin-left:auto;margin-right:auto;
+  }
+
+  /* shard-crack rule instead of bolt rule */
+  .shard-rule{
+    width:140px;height:2px;margin:30px auto 0;position:relative;
+    background:linear-gradient(90deg,transparent,var(--deep),var(--shard),var(--deep),transparent);
+    box-shadow:0 0 20px rgba(157,126,232,.55);
+  }
+  .shard-rule::before{
+    content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:6px;height:6px;background:var(--shard-bright);border-radius:50%;
+    box-shadow:0 0 12px var(--shard);
+  }
+
+  .runtime{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--paper-faint);
+    letter-spacing:.2em;margin-top:18px;
+  }
+
+  /* ── TABS ── */
+  .tabs{
+    position:sticky;top:0;z-index:20;display:flex;gap:8px;justify-content:center;
+    padding:14px 0 12px;margin:18px 0 8px;
+    background:linear-gradient(180deg,#0a080fef 60%,transparent);
+    backdrop-filter:blur(4px);
+  }
+  .tab{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;
+    letter-spacing:.18em;text-transform:uppercase;cursor:pointer;
+    color:var(--paper-dim);background:var(--panel-solid);
+    border:1px solid var(--edge);padding:11px 20px;border-radius:2px;
+    transition:.22s;
+  }
+  .tab:hover{color:var(--paper);border-color:var(--shard)}
+  .tab.active{
+    color:var(--void);
+    background:linear-gradient(180deg,var(--shard-bright),var(--shard));
+    border-color:var(--shard);
+    box-shadow:0 0 22px rgba(201,170,255,.45);
+  }
+  .view{display:none;animation:fade .4s ease}
+  .view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ── SCRIPT BLOCKS ── */
+  .block{
+    position:relative;margin:30px 0;padding:26px 28px 26px 30px;
+    background:linear-gradient(160deg,rgba(18,14,34,.8),rgba(10,8,15,.8));
+    border:1px solid var(--edge-soft);border-left:none;border-radius:3px;
+    overflow:hidden;
+  }
+  /* left accent — diagonal shard instead of straight bolt */
+  .block::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:linear-gradient(180deg,var(--shard-bright),var(--violet),var(--deep));
+    box-shadow:0 0 16px rgba(157,126,232,.5);
+  }
+  /* faint shard-crack across block */
+  .block::after{
+    content:"";position:absolute;right:0;top:0;width:1px;height:100%;
+    background:linear-gradient(180deg,transparent,rgba(201,170,255,.06),transparent);
+  }
+
+  .block .ts{
+    display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:11px;letter-spacing:.14em;color:var(--void);
+    background:linear-gradient(90deg,var(--silver),var(--violet));
+    padding:3px 12px;border-radius:2px;margin-bottom:8px;
+  }
+  .block .sec-label{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--deep);font-weight:700;
+    margin-left:10px;vertical-align:middle;
+  }
+  .block h2{
+    font-family:'Cinzel',serif;font-weight:700;font-size:clamp(18px,3.8vw,26px);
+    color:var(--shard);letter-spacing:.04em;margin:8px 0 4px;line-height:1.15;
+    text-shadow:0 0 30px rgba(201,170,255,.2);
+  }
+  .block h2 .tail{font-size:.62em;color:var(--gold);letter-spacing:.08em;font-weight:600}
+
+  .vo{color:var(--paper);font-size:17px}
+  .vo p{margin:0 0 2px}
+  .vo .quote{display:block;margin:5px 0;padding-left:2px}
+  .vo .spacer{height:9px}
+
+  .skill{
+    font-family:'Cinzel',serif;font-weight:600;color:var(--gold);
+    letter-spacing:.03em;display:block;margin:14px 0 1px;font-size:16px;
+  }
+  .subhead{
+    font-family:'Cinzel',serif;font-weight:600;color:var(--shard);
+    letter-spacing:.05em;display:block;margin:20px 0 4px;font-size:17px;
+    border-bottom:1px solid var(--edge-soft);padding-bottom:5px;
+  }
+  .lead{font-weight:600;color:var(--shard-bright)}
+
+  .vo ul{list-style:none;margin:6px 0;padding:0}
+  .vo ul li{position:relative;padding-left:20px;margin:7px 0}
+  .vo ul li::before{
+    content:"◈";position:absolute;left:0;top:0;font-size:10px;color:var(--violet);
+    filter:drop-shadow(0 0 4px rgba(157,126,232,.7));line-height:1.9;
+  }
+
+  /* ── SCREENPLAY ── */
+  .sp-intro{
+    margin:26px 0 8px;color:var(--paper-dim);font-style:italic;font-size:15px;
+    border-left:2px solid var(--edge);padding-left:16px;
+  }
+  .scene{
+    margin:22px 0;border:1px solid var(--edge-soft);border-radius:3px;overflow:hidden;
+    background:linear-gradient(160deg,rgba(16,12,30,.75),rgba(8,6,18,.75));
+  }
+  .scene-head{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:12px 18px;background:rgba(157,126,232,.07);
+    border-bottom:1px solid var(--edge-soft);
+  }
+  .scene-head .ts{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;
+    color:var(--void);background:linear-gradient(90deg,var(--silver),var(--violet));
+    padding:3px 11px;border-radius:2px;letter-spacing:.08em;
+  }
+  .scene-head .sec-label{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;
+    color:var(--deep);font-weight:700;text-transform:uppercase;
+  }
+  .scene-head .title{
+    font-family:'Cinzel',serif;font-weight:600;font-size:14px;color:var(--shard);
+    letter-spacing:.06em;text-transform:uppercase;
+  }
+  .scene-body{padding:6px 18px 16px}
+
+  .row{display:flex;gap:0;border-bottom:1px dashed var(--edge-soft);padding:12px 0}
+  .row:last-child{border-bottom:none}
+  .row .lab{
+    flex:0 0 80px;font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding-top:3px;
+  }
+  .row.record .lab{color:var(--shard)}
+  .row.show   .lab{color:var(--violet)}
+  .row.reps   .lab{color:var(--silver)}
+  .row .val{flex:1;font-size:15px;color:var(--paper)}
+  .row .val ul{list-style:none;margin:4px 0;padding:0}
+  .row .val ul li{position:relative;padding-left:16px;margin:5px 0;font-size:14.5px}
+  .row .val ul li::before{content:"—";position:absolute;left:0;color:var(--paper-faint)}
+  .label-tag{
+    font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--void);
+    background:linear-gradient(90deg,var(--deep),var(--violet));
+    padding:1px 7px;border-radius:2px;margin:0 4px 0 0;display:inline-block;
+    letter-spacing:.08em;font-weight:700;vertical-align:middle;
+  }
+  .none{color:var(--paper-faint);font-style:italic}
+
+  /* ── NOTE BAR ── */
+  .notebar{
+    margin:34px 0 0;padding:16px 20px;border:1px dashed var(--edge);border-radius:3px;
+    background:rgba(107,63,160,.06);color:var(--paper-dim);font-size:14px;
+  }
+  .notebar b{color:var(--shard);font-family:'Cinzel',serif;letter-spacing:.04em}
+
+  footer{
+    text-align:center;margin-top:50px;color:var(--paper-faint);
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;
+  }
+
+  /* ── PRINT ── */
+  @media print{
+    body{background:#fff;color:#111}
+    body::before{display:none}
+    .tabs{display:none}
+    .view{display:block!important}
+    .view+.view{page-break-before:always}
+    .mast h1{color:#2d1a50;-webkit-text-fill-color:#2d1a50}
+    .mast .epithet{color:#7a5ab0}
+    .block,.scene{background:#fff;border-color:#ccc;break-inside:avoid}
+    .block h2,.scene-head .title{color:#2d1a50}
+    .vo,.row .val{color:#111}
+    .skill{color:#8a6a14}
+    .block .ts,.scene-head .ts{background:#2d1a50;color:#fff}
+  }
+  @media(max-width:600px){
+    .row{flex-direction:column;gap:4px}
+    .row .lab{flex:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker">Honor of Kings · Global · Hero Guide · Ep. 27</div>
+    <h1>JING</h1>
+    <div class="epithet">The Broken Mirage</div>
+    <p class="sub">"I project myself onto my mirror."</p>
+    <div class="shard-rule"></div>
+    <div class="runtime">FULL RUNTIME · 0:00 — 7:20</div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-view="script">📜 Full Script</button>
+    <button class="tab" data-view="screenplay">🎬 Screenplay</button>
+  </nav>
+
+  <!-- ═══════════════ FULL SCRIPT ═══════════════ -->
+  <section class="view active" id="script">
+
+    <div class="block">
+      <span class="ts">0:00 – 0:32</span><span class="sec-label">A</span>
+      <h2>Hook &amp; Identity</h2>
+      <div class="vo">
+        <span class="quote">"She broke the mirror herself — shattered it with her fist, took the shards into her body, paid with her skin, and walked out with a power no one else could claim.</span>
+        <span class="quote">When the dust settled, the only face looking back was her own. Not a ghost. Not an illusion. Just Jing.</span>
+        <span class="quote">In this guide, I'll show you how to play the Broken Mirage — and make the enemy spend all game chasing a reflection while the real one takes the kill."</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">0:32 – 2:15</span><span class="sec-label">B</span>
+      <h2>Skill Showcase</h2>
+      <div class="vo">
+        <p>"Jing's kit runs on one engine: her Mirror Image.</p>
+        <span class="skill">Passive — Lethal Reflections</span>
+        <p>Jing and her Image apply different Marks on every enemy they hit. Both Marks on one target trigger a shatter — bonus damage equal to 4% of lost HP and an instant reset on Reflective Assault and Shattered Illusions. Shatter cooldown: 5 seconds, or 2 inside Mirror Domain.</p>
+        <span class="skill">Skill 1 — Reflective Assault</span>
+        <p>Dash forward, deal damage, slow enemies in your path, and enhance the next Basic Attack into a double strike. Spawns a Mirror Image if none is present.</p>
+        <span class="skill">Skill 2 — Shattered Illusions</span>
+        <p>AoE damage to nearby enemies, a movement speed burst, and healing. Spawns a Mirror Image if none is present.</p>
+        <span class="skill">Skill 3 — Dimensional Shift</span>
+        <p>Stocks 1 charge every 10 seconds, up to 4. Each use swaps positions with the Mirror Image instantly.</p>
+        <span class="skill">Ultimate — Mirror Domain</span>
+        <p>Jing dashes forward pulling enemies along, opens a Mirror Vortex that immobilizes enemies at its center for 1 second while she and her Image land on opposite sides. For 10 seconds, every swap heals her, every hit earns a bonus charge, and 8 mirror fragments orbit the Vortex border — each firing on hit, scaled to the target's lost HP."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">2:15 – 3:30</span><span class="sec-label">C</span>
+      <h2>The Mark System &amp; Core Combo</h2>
+      <div class="vo">
+        <p>"The Mark system is the loop. Jing and her Image each apply a different Mark when they hit. Both on the same target at once triggers a shatter — both skill cooldowns reset instantly.</p>
+        <p>Base rhythm: <span class="lead">Skill 1, Basic Attack, Skill 2, Basic Attack.</span> The auto between casts lands the second Mark — skip it and the shatter never fires. Image damage scales with distance: 30% up close, 80% at range — stay spread. The enhanced Basic Attack from Reflective Assault is a double strike, so Skill 1 alone can trigger a shatter if the Image is already on the same target.</p>
+        <p>Priority: max Ultimate first, Reflective Assault second, Shattered Illusions third. Dimensional Shift's charge cap grows with Ultimate rank. Bring Punish.</p>
+        <p>The shatter has a 5-second cooldown — 2 seconds inside Mirror Domain. That's what makes the Flying Raijin possible."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">3:30 – 3:55</span><span class="sec-label">D</span>
+      <h2>Offensive Rhythm</h2>
+      <div class="vo">
+        <p>"Jing's power spike is 8 to 12 minutes. Never initiate a teamfight — she's a single-target executioner. Wait for your team to absorb the first skill wave, then enter from the flank onto the backline. Strong against low-mobility carries who can't escape once she's inside. When no gank is clean, push waves or take neutrals."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">3:55 – 4:30</span><span class="sec-label">E</span>
+      <h2>Defensive Rhythm</h2>
+      <div class="vo">
+        <p>"Survival is built around the swap. Dimensional Shift moves you to wherever the Image is — so pre-position the Image before any risky angle, keep a charge reserved, and swap out the moment things turn bad.</p>
+        <p>Against burst assassins like Wukong and Daji, never enter without a charge ready. If Mirror Domain is down, Shattered Illusions' speed burst is your escape. Never burn both Image-generating skills without knowing your exit."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">4:30 – 5:05</span><span class="sec-label">F</span>
+      <h2>Read the Battlefield</h2>
+      <div class="vo">
+        <p>"The Image is a free scout. After any skill that spawns one, direct it into a suspicious bush — it reveals what's inside without you stepping in. Use this before every objective fight.</p>
+        <p>Don't just look for low HP — look for enemies whose escape just went on cooldown. An enemy who burned their dash can't leave. Inside Mirror Domain, stack both on the same cluster — every swap fires the Vortex fragments and multiplies output."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">5:05 – 6:10</span><span class="sec-label">G</span>
+      <h2>Key Combos</h2>
+      <div class="vo">
+        <span class="skill">Strangle Combo</span>
+        <p>Open with Reflective Assault into a basic attack for the first shatter, then activate Mirror Domain. Chain Reflective Assault, Shattered Illusions, and basics inside — swapping between bursts and healing throughout.</p>
+        <span class="skill">Circle Combo — The Flying Raijin</span>
+        <p>Open Mirror Domain, use Reflective Assault to create distance from the Image, then loop: swap, Basic Attack, Shattered Illusions — repeat until charges run dry. Every swap fires the Vortex border fragments; the longer the loop, the higher the output.</p>
+        <span class="skill">Instant Kill</span>
+        <p>Wait in a bush. When the target approaches, open with Shattered Illusions — Image spawns, speed burst closes the gap — then follow with Reflective Assault and the enhanced double strike. Both hits land both Marks, shatter fires, cooldowns reset."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">6:10 – 6:50</span><span class="sec-label">H</span>
+      <h2>Best Teammates &amp; Tough Matchups</h2>
+      <div class="vo">
+        <p>"Best teammates hold enemies in your reach. <span class="lead">Liu Bang</span> covers your entry; <span class="lead">Guiguzi</span> compresses enemies into Mark range; <span class="lead">Sun Bin</span> speeds the loop with Jing's own sustain.</p>
+        <p>Hardest counters are heavy crowd-control heroes — <span class="lead">Liang</span> and <span class="lead">Donghuang</span> — which cut off Mark generation before the second hit lands. Break the combo and she has nothing. Heroes who burst faster than she can swap, like <span class="lead">Wukong</span> and <span class="lead">Daji</span>, also win the duel if she enters without a charge reserved."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="ts">6:50 – 7:20</span><span class="sec-label">I</span>
+      <h2>Closing &amp; Retention Hook</h2>
+      <div class="vo">
+        <span class="quote">"The mirror never lies — and when Jing smashed hers and took the shards, the only face looking back was her own.</span>
+        <span class="quote">That's the whole game plan: the Image draws the eye, the Marks set the trap, the swap holds the exit.</span>
+        <span class="quote">Master the timing, keep one charge in pocket, and the enemy spends all game fighting a ghost.</span>
+        <span class="quote">I'll shatter the obstacles in my path. I'll see you in the next episode."</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════ SCREENPLAY ═══════════════ -->
+  <section class="view" id="screenplay">
+
+    <p class="sp-intro">Shooting screenplay — 1:1 with the script sections. <b>Record</b> = what gameplay to capture. <b>Show</b> = the key on-screen detail each clip must prove. <b>Reps</b> = clean takes needed + setup.</p>
+
+    <div class="scene">
+      <div class="scene-head">
+        <span class="ts">0:00 – 0:32</span><span class="sec-label">A</span>
+        <span class="title">Hook &amp; Identity</span>
+      </div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">Cold open: Jing standing still in slow-mo while a teamfight rages around her. On "the real one takes the kill," cut to full-speed Mirror Domain entry and a clean backline assassination. End on splash art or a clean in-game freeze frame of Jing.</div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">The contrast between her stillness and the explosive entry. The kill must land cleanly and finally on the cut.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 takes. Use best real-match footage for the kill clip.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head">
+        <span class="ts">0:32 – 2:15</span><span class="sec-label">B</span>
+        <span class="title">Skill Showcase</span>
+      </div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li><b>Passive</b> — Practice range: Jing lands a skill hit, Image hits the same target simultaneously, both Mark icons appear, then shatter. Second clip: Reflective Assault cooldown counter resets the instant the shatter fires.</li>
+              <li><b>Skill 1</b> — Jing dashes through a group; slow registers; enhanced Basic Attack lands as a visible double strike. Include one rep where no Image is present so the spawn mid-dash is visible.</li>
+              <li><b>Skill 2</b> — AoE hits a group, healing numbers pop, speed burst visible. Include one rep spawning the Image from this skill.</li>
+              <li><b>Skill 3</b> — Show 3–4 charges stocked in the UI, then one clean swap: Jing and Image switch positions instantly.</li>
+              <li><b>Ultimate</b> — Full Mirror Domain sequence: dash forward, enemies pulled, Vortex opens, 1s immobilize registers, Jing and Image land on opposite sides. Follow with 2–3 swaps showing the heal tick and at least one mirror fragment firing from the Vortex border.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Passive: both Mark icons clearly visible before shatter fires. Skill 3: charge counter in UI. Ultimate: a mirror fragment projectile visibly launching from the Vortex border on hit.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">1–2 clean takes per skill. Practice range or controlled custom game.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head">
+        <span class="ts">2:15 – 3:30</span><span class="sec-label">C</span>
+        <span class="title">The Mark System &amp; Core Combo</span>
+      </div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li><b>Base rhythm</b> — Skill 1 → Basic Attack → Skill 2 → Basic Attack on a dummy. Keep the skill cooldown UI clearly in frame so the reset is visible.</li>
+              <li><b>Distance-scaling</b> — Two side-by-side reps of the same Skill 1 hit: one with Image close, one with Image far. Damage numbers visibly different.</li>
+              <li><b>Double-strike</b> — Enhanced Basic Attack landing as two distinct damage events with two separate Mark icons appearing.</li>
+              <li><b>Wrong example</b> — Player skips the Basic Attack between Skill 1 and Skill 2; shatter never fires. Label <span class="label-tag">WRONG</span>.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">The skill CD counter resetting the instant the shatter fires. Two distinct damage numbers from the double strike. The "WRONG" clip must show the shatter failing.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 clean takes of the full base rhythm loop. Slow-mo the shatter moment. Practice range.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head">
+        <span class="ts">3:30 – 3:55</span><span class="sec-label">D</span>
+        <span class="title">Offensive Rhythm</span>
+      </div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li><span class="label-tag">WRONG</span> Jing opens a fight / leads with Mirror Domain — gets focused and bursted.</li>
+              <li><span class="label-tag">RIGHT</span> Jing holds at the edge, team absorbs the enemy skill wave, Jing enters from the flank and one-combos the carry.</li>
+              <li>Strong-matchup clip: clean hunt of a low-mobility marksman — no escape, clean kill.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">The exact moment enemy skills are dumped before Jing enters on the RIGHT clip. The side-angle flank path clearly visible.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">Real match footage preferred. 1–2 takes per clip.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head">
+        <span class="ts">3:55 – 4:30</span><span class="sec-label">E</span>
+        <span class="title">Defensive Rhythm</span>
+      </div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li><b>Pre-position</b> — Jing sends Image into a risky angle, gets pressured, uses Dimensional Shift to safely swap to where the Image was placed.</li>
+              <li><b>Assassin counter</b> — Wukong or Daji lands on Jing; she immediately swaps to the Image and is in a different position entirely. Show charge counter going from 1 to 0.</li>
+              <li><b>Speed-burst escape</b> — Mirror Domain is down; Jing uses Shattered Illusions' speed burst to disengage cleanly.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">The spatial change on each swap — Jing clearly in a different position before and after. Dimensional Shift charge counter decrementing.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">1–2 takes per scenario. Custom game with aggressive assassin works for the second clip.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head">
+        <span class="ts">4:30 – 5:05</span><span class="sec-label">F</span>
+        <span class="title">Read the Battlefield</span>
+      </div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li><b>Bush scout</b> — Jing casts a skill, directs Image into a bush, enemy inside is revealed. Jing never steps in.</li>
+              <li><b>Gank timing</b> — Minimap focus: enemy escape skill just went on cooldown; Jing immediately moves to gank. Label <span class="label-tag">COOLDOWN WINDOW</span>.</li>
+              <li><b>Vortex cluster</b> — Inside Mirror Domain, Jing and Image both positioned on the same 2–3 clustered enemies. Each swap visibly fires Vortex fragments at them.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">The Image revealing the hidden enemy. Vortex fragment projectiles clearly visible firing on the cluster clip.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">Real match footage preferred for gank-timing clip. 1 clean take per clip.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head">
+        <span class="ts">5:05 – 6:10</span><span class="sec-label">G</span>
+        <span class="title">Key Combos</span>
+      </div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li><span class="label-tag">STRANGLE</span> Reflective Assault → Basic Attack → shatter fires → Mirror Domain → chain Reflective Assault + Shattered Illusions + basics with swaps → kill.</li>
+              <li><span class="label-tag">FLYING RAIJIN</span> Mirror Domain opens → Reflective Assault creates distance → swap, Basic Attack, Shattered Illusions × 3+ loops → Vortex fragments fire each cycle → sustained kill.</li>
+              <li><span class="label-tag">INSTANT KILL</span> Jing in bush → target approaches → Shattered Illusions (Image spawns + speed burst) → Reflective Assault → enhanced double strike → shatter → kill.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Strangle: shatter firing before Mirror Domain opens. Flying Raijin: Vortex fragment projectiles visibly launching each swap. Instant Kill: the two distinct hits of the enhanced double strike.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 clean takes of each combo. Button-press or input overlay recommended. Practice range or custom game.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head">
+        <span class="ts">6:10 – 6:50</span><span class="sec-label">H</span>
+        <span class="title">Best Teammates &amp; Tough Matchups</span>
+      </div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li><b>Synergy</b> — Liu Bang, Guiguzi, or Sun Bin sets up the fight; Jing enters from behind and closes the kill.</li>
+              <li><b>Hard counter</b> — Liang or Donghuang lands CC on Jing mid-combo; Mark loop breaks, no follow-up. Label <span class="label-tag">HARD COUNTER</span>.</li>
+              <li><b>Charge saved</b> — Wukong or Daji lands on Jing; she swaps out instantly and survives. Label <span class="label-tag">CHARGE READY</span>.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Synergy: CC landing on enemies before Jing enters — clear setup-to-payoff. Counter: the exact moment the interrupt breaks the Mark loop.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">Real match footage preferred. 1 clip per scenario.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head">
+        <span class="ts">6:50 – 7:20</span><span class="sec-label">I</span>
+        <span class="title">Closing &amp; Retention Hook</span>
+      </div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">Slow outro montage — Jing surviving a dangerous moment with a swap, then landing a decisive kill, then the match victory screen. Hold on a clean frame of Jing (splash art or in-game idle). Leave time for end-screen, subscribe prompt, and next-episode tease.</div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">The final kill must be deliberate and clean — not a lucky cleanup. Victory confirmation clearly visible.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">Curate from best plays in the session. No dedicated re-shoot needed.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="notebar">
+      <b>Character Count (Check A):</b> 5,193 with spaces — ✅ IN BAND (5,000–5,200)<br>
+      <b>All [VERIFY] flags resolved:</b> Liang · Donghuang · Liu Bang · Guiguzi · Sun Bin · Wukong · Daji — confirmed Global names.<br>
+      <b>Kit source:</b> Official in-game skill screenshots (Global build). All skill names and mechanics from screenshots only.
+    </div>
+
+  </section>
+
+  <footer>JING · THE BROKEN MIRAGE — HOK GLOBAL HERO GUIDE · EP. 27</footer>
+
+</div>
+
+<script>
+  const tabs  = document.querySelectorAll('.tab');
+  const views = document.querySelectorAll('.view');
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('active'));
+    views.forEach(v => v.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.view).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }));
+</script>
+</body>
+</html>
