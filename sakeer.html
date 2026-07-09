@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sakeer — The Brushstrider · Guide Script & Screenplay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<script defer src="shared.js"></script>
+<style>
+  :root{
+    --void:#050a08;
+    --ink:#081611;
+    --panel:#10142400;
+    --panel-solid:#0d1a15;
+    --edge:#243b30;
+    --edge-soft:#182920;
+    --bolt:#4fd68c;
+    --bolt-bright:#a8f0c6;
+    --volt:#2f9e6e;
+    --gold:#e7b75a;
+    --gold-soft:#c9a25a;
+    --paper:#e9ecf5;
+    --paper-dim:#9aa3bd;
+    --paper-faint:#69718e;
+    --danger:#ff7a8a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Spectral',Georgia,serif;
+    background:
+      radial-gradient(1200px 700px at 50% -10%, rgba(47,158,110,.18), transparent 60%),
+      radial-gradient(900px 600px at 85% 8%, rgba(79,214,140,.14), transparent 55%),
+      linear-gradient(180deg,#050a08 0%, #071510 45%, #050a08 100%);
+    color:var(--paper);
+    line-height:1.7;
+    min-height:100vh;
+    padding:0 0 80px;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+    background-image:
+      linear-gradient(rgba(79,214,140,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(79,214,140,.035) 1px, transparent 1px);
+    background-size:46px 46px;
+    mask-image:radial-gradient(1000px 800px at 50% 0%, #000 30%, transparent 80%);
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+  header.mast{
+    text-align:center;padding:64px 0 30px;position:relative;
+  }
+  .kicker{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.42em;
+    text-transform:uppercase;color:var(--bolt);opacity:.85;margin-bottom:22px;
+  }
+  .mast h1{
+    font-family:'Cinzel',serif;font-weight:900;line-height:.98;
+    font-size:clamp(48px,11vw,104px);letter-spacing:.02em;
+    background:linear-gradient(180deg,#fff 0%, var(--bolt-bright) 38%, var(--volt) 105%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 60px rgba(47,158,110,.25);
+  }
+  .mast .epithet{
+    font-family:'Cinzel',serif;font-weight:600;font-size:clamp(15px,3.6vw,22px);
+    letter-spacing:.5em;text-transform:uppercase;color:var(--gold);
+    margin-top:10px;padding-left:.5em;
+  }
+  .mast .sub{
+    margin-top:20px;color:var(--paper-dim);font-style:italic;font-size:16px;
+    max-width:560px;margin-left:auto;margin-right:auto;
+  }
+  .bolt-rule{
+    width:120px;height:2px;margin:30px auto 0;
+    background:linear-gradient(90deg,transparent,var(--bolt),var(--volt),transparent);
+    box-shadow:0 0 18px rgba(79,214,140,.7);
+  }
+  .runtime{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--paper-faint);
+    letter-spacing:.2em;margin-top:18px;
+  }
+
+  .tabs{
+    position:sticky;top:0;z-index:20;display:flex;gap:8px;justify-content:center;
+    padding:14px 0 12px;margin:18px 0 8px;
+    background:linear-gradient(180deg,#050a08ef 60%, transparent);
+    backdrop-filter:blur(4px);
+  }
+  .tab{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;
+    letter-spacing:.18em;text-transform:uppercase;cursor:pointer;
+    color:var(--paper-dim);background:var(--panel-solid);
+    border:1px solid var(--edge);padding:11px 20px;border-radius:2px;
+    transition:.22s;
+  }
+  .tab:hover{color:var(--paper);border-color:var(--bolt)}
+  .tab.active{
+    color:#060912;background:linear-gradient(180deg,var(--bolt-bright),var(--bolt));
+    border-color:var(--bolt);box-shadow:0 0 22px rgba(79,214,140,.45);
+  }
+  .view{display:none;animation:fade .4s ease}
+  .view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .block{
+    position:relative;margin:30px 0;padding:26px 28px 26px 30px;
+    background:linear-gradient(180deg,rgba(15,32,25,.72),rgba(8,18,14,.72));
+    border:1px solid var(--edge-soft);border-left:none;border-radius:3px;
+    overflow:hidden;
+  }
+  .block::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:linear-gradient(180deg,var(--bolt),var(--volt));
+    box-shadow:0 0 16px rgba(79,214,140,.55);
+  }
+  .block h2{
+    font-family:'Cinzel',serif;font-weight:700;font-size:clamp(20px,4vw,28px);
+    color:var(--bolt-bright);letter-spacing:.04em;margin:0 0 4px;line-height:1.15;
+    text-shadow:0 0 30px rgba(79,214,140,.2);
+  }
+  .block h2 .tail{font-size:.62em;color:var(--gold);letter-spacing:.08em;font-weight:600}
+  .vo{color:var(--paper);font-size:17px}
+  .vo p{margin:0 0 2px}
+  .vo .quote{display:block;margin:6px 0;padding-left:2px}
+  .skill{
+    font-family:'Cinzel',serif;font-weight:600;color:var(--gold);
+    letter-spacing:.03em;display:block;margin:14px 0 1px;font-size:16px;
+  }
+  .subhead{
+    font-family:'Cinzel',serif;font-weight:600;color:var(--bolt);
+    letter-spacing:.05em;display:block;margin:20px 0 4px;font-size:17px;
+    border-bottom:1px solid var(--edge-soft);padding-bottom:5px;
+  }
+  .lead{font-weight:600;color:var(--bolt-bright)}
+  .vo .spacer{height:9px}
+  .vo ul{list-style:none;margin:6px 0;padding:0}
+  .vo ul li{
+    position:relative;padding-left:20px;margin:7px 0;
+  }
+  .vo ul li::before{
+    content:"✦";position:absolute;left:0;top:0;font-size:12px;color:var(--bolt);
+    filter:drop-shadow(0 0 4px rgba(79,214,140,.7));
+  }
+  em.note{color:var(--paper-dim)}
+
+  .sp-intro{
+    margin:26px 0 8px;color:var(--paper-dim);font-style:italic;font-size:15px;
+    border-left:2px solid var(--edge);padding-left:16px;
+  }
+  .scene{
+    margin:22px 0;border:1px solid var(--edge-soft);border-radius:3px;overflow:hidden;
+    background:linear-gradient(180deg,rgba(13,28,22,.7),rgba(7,15,12,.7));
+  }
+  .scene-head{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:14px 18px;background:rgba(79,214,140,.07);
+    border-bottom:1px solid var(--edge-soft);
+  }
+  .scene-head .title{
+    font-family:'Cinzel',serif;font-weight:600;font-size:17px;color:var(--bolt-bright);
+    letter-spacing:.04em;
+  }
+  .scene-body{padding:6px 18px 16px}
+  .row{display:flex;gap:0;border-bottom:1px dashed var(--edge-soft);padding:12px 0}
+  .row:last-child{border-bottom:none}
+  .row .lab{
+    flex:0 0 90px;font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    padding-top:3px;
+  }
+  .row.record .lab{color:var(--bolt)}
+  .row.show .lab{color:var(--gold)}
+  .row.reps .lab{color:var(--volt)}
+  .row .val{flex:1;font-size:15.5px;color:var(--paper)}
+  .row .val .none{color:var(--paper-faint);font-style:italic}
+  .beat{margin:0 0 14px;padding-bottom:14px;border-bottom:1px dashed var(--edge-soft)}
+  .beat:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+  .beat .what{color:var(--paper-dim);font-size:14.5px;margin-top:4px}
+  .beat .setup{color:var(--paper-faint);font-size:13.5px;margin-top:3px;font-style:italic}
+
+  footer{
+    text-align:center;margin-top:50px;color:var(--paper-faint);
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;
+  }
+
+  @media print{
+    body{background:#fff;color:#111}
+    body::before{display:none}
+    .tabs{display:none}
+    .view{display:block!important}
+    .view + .view{page-break-before:always}
+    .mast h1{color:#1a2350;-webkit-text-fill-color:#1a2350}
+    .mast .epithet{color:#8a6a14}
+    .block,.scene{background:#fff;border-color:#bbb;break-inside:avoid}
+    .block h2,.scene-head .title{color:#1a2350}
+    .vo,.row .val{color:#111}
+    .skill{color:#8a6a14}
+  }
+  @media (max-width:600px){
+    .row{flex-direction:column;gap:3px}
+    .row .lab{flex:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker">Honor of Kings · Global · Hero Guide</div>
+    <h1>SAKEER</h1>
+    <div class="epithet">The Brushstrider</div>
+    <p class="sub">"I journey far, beneath a sky brimming with stars."</p>
+    <div class="bolt-rule"></div>
+    <div class="runtime">FULL RUNTIME · SCRIPT ONLY — NO TIMESTAMPS</div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-view="script">📜 Full Script</button>
+    <button class="tab" data-view="screenplay">🎬 Screenplay</button>
+  </nav>
+
+  <!-- ============================== FULL SCRIPT ============================== -->
+  <section class="view active" id="script">
+
+    <div class="block">
+      <h2>A.) Hook &amp; Identity</h2>
+      <div class="vo">
+        <span class="quote">"Every story needs someone willing to carry the light when everyone else has stopped believing in it. That's Sakeer.</span>
+        <span class="quote">The Brushstrider doesn't out-damage the fight — he outlasts it, keeping his team standing long after the enemy expected them to fall.</span>
+        <span class="quote">In this guide, I'll show you how to turn a wandering storyteller's fireflies into the reason your team survives every trade. This is Mastering Sakeer."</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>B.) Skill Showcase</h2>
+      <div class="vo">
+        <p>"Sakeer's whole kit runs on one resource: Luminescence, stacks of firefly light he builds passively over time.</p>
+        <span class="skill">Passive – Firefly Protection</span>
+        <p>Sakeer's basic attacks deal melee damage and summon a firefly that deals bonus magic damage and exposes enemies for 3 seconds. He also periodically heals the nearby teammate with the lowest health. With no enemies around, tap-and-hold basic attack to channel and heal himself instead.</p>
+        <span class="skill">Skill 1 – Mulberry Power</span>
+        <p>Sakeer channels Luminescence into the target area, dealing magic damage and launching enemies for 1 second. Each stack consumed on hit adds bonus damage — but with a teammate nearby, it heals them instead. He gains 1 stack every 1.5 seconds, up to 9, and the skill's range grows with his stack count. Core control and core heal, in one cast.</p>
+        <span class="skill">Skill 2 – Ride the Wind</span>
+        <p>Sakeer flies to a target brush, gaining a stack of Luminescence and releasing fireflies that seek the nearest lowest-health hero — healing an ally, damaging and exposing an enemy. It stocks up to 3 charges, so he can chain dashes brush to brush to close distance, retreat, or scout.</p>
+        <span class="skill">Ultimate – Firefly Fields</span>
+        <p>Sakeer summons an Illuminating Brush at the target location, then can recast within 6 seconds to fly into it, gaining a stack of Luminescence. The brush fires fireflies every second at nearby heroes — healing allies, damaging and revealing enemies — before settling into a normal brush that lingers 30 seconds. Engage, sustain, and vision, in one button."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>C.) Core Resource &amp; Combo</h2>
+      <div class="vo">
+        <p>"Here's what separates a Sakeer who wins fights from one who just runs around healing: everything he does spends the same resource. Luminescence.</p>
+        <p>Every 1.5 seconds he banks a stack, up to 9. The more he's holding, the bigger Skill 1 hits, the bigger it heals, and the wider its range gets. So don't dump Luminescence the moment you get it — let it build, then spend it with intent.</p>
+        <p>That intent is the signature combo: Ultimate to drop a brush near the fight, recast to fly in and close the distance, Skill 1 the instant you land to launch whoever's in range and heal whoever's low, then Skill 2 to hop brush to brush and get back out. In with the Ultimate, hit with Skill 1, leave with Skill 2.</p>
+        <p>Skill priority: max Ultimate first — if it's on cooldown, put the point in Skill 1. For your spell, Flash is the standard pick, since it turns Skill 1's telegraphed cast into a near-guaranteed hit. Disrupt is the alternative when your team wants to punish a dive or protect a push."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>D.) Advanced Mechanics <span class="tail">— Offense, Defense &amp; Positioning</span></h2>
+      <div class="vo">
+        <p>"Most players treat Sakeer as a healbot on a leash. The good ones treat him as a threat with a leash.</p>
+
+        <span class="subhead">Offensive Rhythm</span>
+        <p>Sakeer's damage comes from landing Skill 1 clean, and that means never casting it head-on — it has a visible wind-up, and anyone paying attention just walks out of it. Cast it from inside a brush instead, and a well-timed Flash right as you cast erases the dodge window entirely. Stick to whichever teammate benefits most from constant healing — usually your marksman — since a carry who never has to walk home is a carry who out-scales the enemy's.</p>
+
+        <span class="subhead">Defensive Rhythm</span>
+        <p>Skill 2's three banked charges are your answer to almost anything — chain them brush to brush to escape a dive, reposition mid-fight, or close distance without ever running a straight line an enemy can predict. And Firefly Protection keeps working passively too — teammates near a Skill 1 or Ultimate brush benefit even when you're not aiming directly at them.</p>
+
+        <span class="subhead">Reading the Brush</span>
+        <p>Both Skill 1 and Ultimate reveal enemies the instant a firefly clips them — use either to check a suspicious bush before your team walks in blind. Drop Ultimate in a contested brush before a fight: if fireflies start finding a target, you know someone's home."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>E.) Best Teammates &amp; Tough Matchups</h2>
+      <div class="vo">
+        <ul>
+          <li><span class="lead">Best with:</span> Fuzi, whose damage reduction lets him sit in the fight and eat hits Sakeer keeps topping off. Di Renjie and Garo both bring sustained damage that pairs naturally with constant healing, letting the team push straight through fights instead of trading in bursts.</li>
+          <li><span class="lead">Counters poke:</span> Sakeer is also a strong answer to poke-heavy harassers like Mozi or Shouyue — his passive and Skill 1 healing simply out-sustain chip damage that would wear down a squishier support.</li>
+          <li><span class="lead">Tough matchups:</span> heroes who lock him down before Mulberry Power goes off. Shi and Hou Yi both bring preemptive crowd control that punishes his visible wind-up — get caught before you cast, and the combo never happens. Respect their engage range and don't let them get the first move.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>F.) Closing &amp; Retention Hook</h2>
+      <div class="vo">
+        <span class="quote">"The people of Firefly Valley believed their fireflies were the ones they'd lost, lighting the way home.</span>
+        <span class="quote">Sakeer carries that light into every fight — not to win it alone, but to make sure his team is still standing when it matters.</span>
+        <span class="quote">Bank your Luminescence. Land Skill 1 from the brush. Keep the light moving.</span>
+        <span class="quote">Do that, and the Brushstrider becomes the reason your team walks out of every fight they were supposed to lose.</span>
+        <span class="quote">Now go tell your story. And I'll see you in the next episode."</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================== SCREENPLAY ============================== -->
+  <section class="view" id="screenplay">
+
+    <p class="sp-intro">Shooting screenplay broken into production beats, one section per script section. <b>Record</b> = what gameplay to film, written so anyone unfamiliar with the hero knows exactly what to do. <b>Show</b> = the detail that must be legible on screen. <b>Reps</b> = takes needed and filming setup.</p>
+
+    <!-- HOOK -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">A.) Hook &amp; Identity</span></div>
+      <div class="scene-body">
+        <div class="row record"><div class="lab">Record</div><div class="val">
+          <div class="beat">Open on a real match clip: Sakeer standing at the edge of a teamfight, fireflies drifting faintly around him while the fight rages a short distance away — he is not the one initiating, just present and calm.
+            <div class="what">What happens: The visual establishes Sakeer as a quiet, supporting presence rather than a frontline threat.</div>
+            <div class="setup">Setup: Real match footage. Find or record 2–3 seconds of Sakeer idle near a fight, fireflies visibly orbiting him.</div>
+          </div>
+          <div class="beat">Cut to a clean Ultimate → Skill 1 engage: Sakeer flies into his Illuminating Brush next to an enemy, then immediately casts Skill 1, launching multiple enemies into the air while a heal number pops on a nearby ally at the same time.
+            <div class="what">What happens: Both the enemy knock-up and the ally heal number must be visible in the same clip, showing his dual damage/heal identity in one action.</div>
+            <div class="setup">Setup: Real match footage preferred; practice range acceptable if a clean multi-target hit isn't available from matches. Keep both the launched enemies and the teammate's heal number in frame.</div>
+          </div>
+        </div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">The first clip must clearly show fireflies orbiting Sakeer with no combat happening yet. The second clip must show the enemy knock-up animation and a readable ally heal number in the same frame or immediately sequential frames.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">2 takes of the idle moment, 2 clean takes of the Ultimate-into-Skill-1 engage. Curate from match recordings if available; only use practice range as a backup.</div></div>
+      </div>
+    </div>
+
+    <!-- SKILL SHOWCASE -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">B.) Skill Showcase</span></div>
+      <div class="scene-body">
+        <div class="row record"><div class="lab">Record</div><div class="val">
+          <div class="beat"><b>Passive — Firefly Protection.</b> On the practice range, have Sakeer land several basic attacks on a dummy. Each basic attack must visibly summon a small firefly that flies to the target and deals a separate damage tick after the melee hit lands.
+            <div class="what">What happens: Two distinct hits register per basic attack — the melee swing, then the firefly's magic damage tick a moment later. The enemy's outline should also flash briefly to show the 3-second exposure effect.</div>
+            <div class="setup">Setup: Practice range, one dummy target. Zoom or replay slowly enough that the two separate hits are distinguishable.</div>
+          </div>
+          <div class="beat"><b>Passive (self-heal).</b> With no enemies nearby, have Sakeer tap-and-hold the basic attack button. Hold for at least 2 seconds.
+            <div class="what">What happens: Sakeer's own health bar visibly ticks upward while he channels, and no ally heal number appears elsewhere on screen during this channel.</div>
+            <div class="setup">Setup: Practice range or an empty lane, no enemies or minions in range. Keep the health bar UI in frame.</div>
+          </div>
+          <div class="beat"><b>Skill 1 — Mulberry Power.</b> Cast Skill 1 at a dummy with no allies nearby, showing the launch animation and the magic damage number.
+            <div class="what">What happens: The target is knocked into the air and a magic damage number appears, scaled up by however many Luminescence stacks Sakeer is currently holding.</div>
+            <div class="setup">Setup: Practice range. Repeat this cast once with 0 stacks and once at 9 stacks (wait roughly 14 seconds after a fresh reset to bank 9) so the damage difference is visible between the two clips.</div>
+          </div>
+          <div class="beat"><b>Skill 1 (healing variant).</b> Cast Skill 1 near a low-health ally (or bot ally in custom game) instead of an enemy.
+            <div class="what">What happens: Instead of damage, a heal number appears on the ally, and the launch effect does not apply damage to allies.</div>
+            <div class="setup">Setup: Custom game or practice range with a second player/bot standing in cast range at reduced health.</div>
+          </div>
+          <div class="beat"><b>Skill 2 — Ride the Wind.</b> Cast Skill 2 toward a nearby brush, then chain two more casts to two additional brushes in sequence without stopping.
+            <div class="what">What happens: Sakeer's position instantly relocates to each brush in turn, and a firefly is visibly released after each cast, flying toward the nearest lowest-health hero on screen.</div>
+            <div class="setup">Setup: Practice range or real match footage in an area with at least three brushes within dash range of each other. All three charges must be shown being used back to back.</div>
+          </div>
+          <div class="beat"><b>Ultimate — Firefly Fields.</b> Cast Ultimate at a target location to summon the Illuminating Brush, then recast within the 6-second window to fly into it.
+            <div class="what">What happens: The brush appears and visibly glows; Sakeer's position instantly changes to the brush location on the recast. Fireflies should be seen firing outward from the brush toward nearby heroes once per second while it glows.</div>
+            <div class="setup">Setup: Practice range with at least one ally bot and one enemy dummy within the brush's radius, so both a heal effect and a damage effect are visible from the same brush.</div>
+          </div>
+          <div class="beat"><b>Ultimate (brush fade).</b> Let the same Illuminating Brush run its full glowing duration without recasting again, and continue recording until it visibly stops firing fireflies and becomes a normal, non-glowing brush.
+            <div class="what">What happens: The brush's glow and firefly bursts stop, but the brush itself remains on the ground, visually indistinguishable from a normal map brush.</div>
+            <div class="setup">Setup: Practice range. This clip requires patience — let the full duration play out on camera without cutting.</div>
+          </div>
+        </div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">For the Passive clips, both the melee hit and the delayed firefly damage tick must be visible as two separate hits. For the self-heal clip, Sakeer's own health bar increasing must be legible. For Skill 1, the damage number in the 0-stack clip and the 9-stack clip must both be large enough to read and clearly different in size. For Skill 2, all three brush relocations and their released fireflies must be visible in one continuous sequence. For Ultimate, the brush's glow-to-normal transition must be visible on screen.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">2 clean dummy takes for the Passive damage clip. 1 take of the self-heal channel. 2 takes of Skill 1 (0-stack and 9-stack). 1 take of the Skill 1 healing variant. 2 takes of the full 3-charge Skill 2 chain. 1 full-length take of Ultimate cast through brush fade — do not cut this recording short.</div></div>
+      </div>
+    </div>
+
+    <!-- CORE RESOURCE -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">C.) Core Resource &amp; Combo</span></div>
+      <div class="scene-body">
+        <div class="row record"><div class="lab">Record</div><div class="val">
+          <div class="beat"><b>Luminescence stack build.</b> Record the Luminescence stack counter on Sakeer's UI over roughly 14 seconds of standing still (or moving, not attacking), showing it climb from 0 to 9 stacks one at a time.
+            <div class="what">What happens: The stack counter increments visibly roughly every 1.5 seconds until it caps at 9 and stops climbing.</div>
+            <div class="setup">Setup: Practice range. Keep the stack counter UI element in frame for the entire clip — do not cut away.</div>
+          </div>
+          <div class="beat"><b>Signature combo, full sequence.</b> Record one continuous, clean rep of the core combo against a real or dummy target: Ultimate to drop a brush near the target, recast Ultimate to fly into the brush and close distance, Skill 1 immediately on landing to launch the target and show a heal number on a nearby ally, then Skill 2 to hop to a different brush and move away from the target.
+            <div class="what">What happens: All four actions must be visibly distinct and in the stated order — brush appears, Sakeer teleports into it, target is launched with a heal number on the ally appearing at the same moment, then Sakeer relocates again via Skill 2, ending at a different position than where the combo started.</div>
+            <div class="setup">Setup: Practice range with one enemy dummy and one ally bot/player nearby to show the heal proc. Perform this slowly enough on the first take that each step is distinguishable, then repeat once at normal speed.</div>
+          </div>
+          <div class="beat"><b>Skill priority screen.</b> Screen-record the in-game skill-up menu, leveling Ultimate first at level 4 (or Skill 1 first if Ultimate isn't available to level yet), showing the level-up order clearly.
+            <div class="what">What happens: The skill icons show Ultimate receiving points first when available, with Skill 1 taking priority on levels where Ultimate is on level-lock.</div>
+            <div class="setup">Setup: Practice range or real match, skill-up UI visible and legible.</div>
+          </div>
+          <div class="beat"><b>Spell selection.</b> Screen-record the spell select screen, choosing Flash. Follow with a brief separate clip of selecting Disrupt as the alternative.
+            <div class="what">What happens: Both spell icons must be clearly selected and named on screen.</div>
+            <div class="setup">Setup: Pre-game lobby or practice range spell-select screen.</div>
+          </div>
+        </div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">The stack-counter clip must keep the Luminescence UI element legible and continuously visible. The combo clip must show all four actions in sequence without any of them being cut or implied — brush placement, teleport-in, the knock-up plus simultaneous heal number, and the repositioning dash must each be individually visible. The skill-up clip must show the leveling order on the ability icons. The spell-select clips must show each spell's name and icon clearly.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">1 take of the stack build-up, uncut. 2 takes of the full combo — one slow/deliberate, one at normal speed. 1 take of the skill-up sequence. 1 take each for Flash and Disrupt selection.</div></div>
+      </div>
+    </div>
+
+    <!-- ADVANCED -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">D.) Advanced Mechanics — Offense, Defense &amp; Positioning</span></div>
+      <div class="scene-body">
+        <div class="row record"><div class="lab">Record</div><div class="val">
+          <div class="beat"><b>Offensive Rhythm — WRONG (head-on cast).</b> Cast Skill 1 directly at a visible, un-hidden enemy from open ground, with no brush involved. If possible using a bot or dummy with basic movement, show it stepping out of the telegraphed cast area before the skill lands.
+            <div class="what">What happens: The launch animation fires into empty space or only clips the edge of the target, showing the skill whiffing or under-hitting because the enemy saw it coming.</div>
+            <div class="setup">Setup: Practice range or custom game with a moving bot target.</div>
+          </div>
+          <div class="beat"><b>Offensive Rhythm — RIGHT (brush cast).</b> From inside a brush, cast Skill 1 at an enemy standing nearby with no warning indicator visible to them beforehand.
+            <div class="what">What happens: The launch connects cleanly because the enemy had no visual warning of the cast, in clear contrast to the whiffed WRONG clip.</div>
+            <div class="setup">Setup: Practice range or real match footage, Sakeer positioned inside a brush before casting.</div>
+          </div>
+          <div class="beat"><b>Offensive Rhythm — Flash-assisted cast.</b> Cast Skill 1 while Flashing in the same motion, aimed at a target that would otherwise be out of normal cast range.
+            <div class="what">What happens: Sakeer's position updates instantly via Flash, and the Skill 1 cast connects on a target that was previously too far away to hit.</div>
+            <div class="setup">Setup: Practice range, target positioned just outside Skill 1's normal max range before the Flash.</div>
+          </div>
+          <div class="beat"><b>Offensive Rhythm — marksman pairing.</b> Real match or custom game footage of Sakeer staying near his marksman through an extended laning trade, with visible heal ticks landing on the marksman each time their health drops from an exchange.
+            <div class="what">What happens: The marksman's health bar recovers close to full after each trade, and the marksman does not return to base during the clip's span, showing they never needed to walk home.</div>
+            <div class="setup">Setup: Real match footage of a lane trade sequence preferred; a custom game with a second player on a marksman hero is an acceptable substitute.</div>
+          </div>
+          <div class="beat"><b>Defensive Rhythm — Skill 2 chain escape.</b> With an enemy or bot chasing Sakeer, use all three Skill 2 charges back to back through a sequence of brushes to escape.
+            <div class="what">What happens: Sakeer's position updates three times in quick succession, each time putting more distance between him and the chasing target, ending with the chaser unable to follow.</div>
+            <div class="setup">Setup: Practice range or custom game with a chasing bot/player and at least three brushes in a rough line or path away from the chaser.</div>
+          </div>
+          <div class="beat"><b>Defensive Rhythm — passive proximity heal without direct cast.</b> Position an ally near an active Skill 1 or Ultimate brush effect without Sakeer directly targeting that ally, and show the ally receiving heal ticks anyway.
+            <div class="what">What happens: The ally's health bar increases from the ambient firefly effect even though Sakeer's cursor or cast target was aimed elsewhere.</div>
+            <div class="setup">Setup: Custom game with an ally bot standing near, but not the direct target of, an active Skill 1 cast or Ultimate brush.</div>
+          </div>
+          <div class="beat"><b>Reading the Brush — vision check.</b> Cast Skill 1 or Ultimate into an unrevealed brush that has an enemy or dummy hidden inside it.
+            <div class="what">What happens: A firefly enters the brush, clips the hidden target, and the target's location is revealed on screen — either by an on-screen model appearing or a minimap ping.</div>
+            <div class="setup">Setup: Practice range or custom game with a hidden enemy/dummy positioned inside a brush Sakeer has not yet scouted.</div>
+          </div>
+        </div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">The WRONG label must be visible on screen over this clip in the edit, and the clip itself must show the launch effect missing or only partially connecting, with the target's evasive movement visible before the skill lands. The RIGHT clip must show a clean, full connect with no enemy reaction beforehand. The Flash-assisted clip must show the pre-Flash distance-to-target and the successful hit after, so the range extension is obvious. The marksman-pairing clip must show the heal ticks landing and the marksman's health bar recovering. The Skill 2 chain-escape clip must show all three relocations and the growing distance from the chaser. The passive proximity clip must show the ally's health bar rising while Sakeer's cast indicator is aimed at a different target or location. The vision-check clip must show the hidden target becoming visible the moment the firefly reaches it.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">1 take of the WRONG cast. 2 takes of the RIGHT brush cast. 1 take of the Flash-assisted cast. 1–2 takes of the marksman-pairing clip. 2 takes of the Skill 2 chain escape. 1 take of the passive proximity heal. 1 take of the brush vision check.</div></div>
+      </div>
+    </div>
+
+    <!-- TEAMMATES -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">E.) Best Teammates &amp; Tough Matchups</span></div>
+      <div class="scene-body">
+        <div class="row record"><div class="lab">Record</div><div class="val">
+          <div class="beat"><b>Synergy — Fuzi.</b> Real match or custom game footage of Fuzi engaging or holding position in a fight while Sakeer keeps him topped off with Skill 1 or passive healing in the background.
+            <div class="what">What happens: Fuzi's health bar stays consistently high across an extended fight window, with visible heal ticks or heal numbers from Sakeer appearing on him repeatedly.</div>
+            <div class="setup">Setup: Real match footage preferred; custom game with a second player as Fuzi is an acceptable substitute.</div>
+          </div>
+          <div class="beat"><b>Synergy — Di Renjie and Garo.</b> A clip (or two short clips) showing either hero dealing sustained damage in a fight while Sakeer's healing keeps the team's health bars stable enough to keep pushing rather than retreating.
+            <div class="what">What happens: The team's overall health bars remain in a fightable range through a sustained trade, rather than dropping to a retreat threshold.</div>
+            <div class="setup">Setup: Real match footage preferred.</div>
+          </div>
+          <div class="beat"><b>Counter (Sakeer countering) — vs. Mozi or Shouyue.</b> A laning clip where Sakeer's healing visibly offsets repeated poke damage from a long-range harasser, keeping his lane partner's health bar from dropping significantly over time.
+            <div class="what">What happens: The lane partner takes visible poke damage repeatedly but their health bar returns close to full each time due to Sakeer's healing, in contrast to what would happen without it.</div>
+            <div class="setup">Setup: Real match footage against a Mozi or Shouyue opponent, laning phase.</div>
+          </div>
+          <div class="beat"><b>Tough matchup — vs. Shi or Hou Yi.</b> A clip showing Shi or Hou Yi landing crowd control on Sakeer before he can complete his Skill 1 wind-up, followed by Sakeer being unable to act for the duration of the crowd control.
+            <div class="what">What happens: Sakeer is visibly locked down mid-cast-attempt or just before casting, and no Skill 1 or escape skill fires during the crowd-control duration.</div>
+            <div class="setup">Setup: Real match footage against a Shi or Hou Yi opponent if available; otherwise a custom game recreation with a second player using either hero to initiate on Sakeer.</div>
+          </div>
+        </div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">Both synergy clips must show a legible, sustained ally health bar alongside visible heal effects from Sakeer. The counter-matchup clip must show the lane partner's health bar recovering after each instance of poke damage. The tough-matchup clip must clearly show the crowd control landing before Sakeer's cast completes, and Sakeer unable to act immediately after.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">1–2 clean clips per teammate synergy (Fuzi; Di Renjie/Garo). 1 clip of the Mozi/Shouyue counter-matchup. 1 clip of the Shi/Hou Yi tough matchup. Real match footage is strongly preferred throughout this section, since these are relationship-dependent scenarios that read as more credible from genuine games than from staged custom-game recreations.</div></div>
+      </div>
+    </div>
+
+    <!-- CLOSING -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">F.) Closing &amp; Retention Hook</span></div>
+      <div class="scene-body">
+        <div class="row record"><div class="lab">Record</div><div class="val">
+          <div class="beat">A slower montage of Sakeer's fireflies at rest — the ambient orbiting effect from the hook, now paired with a couple of quick highlight beats of him healing a teammate through a fight and landing a game-changing Skill 1.
+            <div class="what">What happens: The pacing should slow down and feel reflective, echoing the calm opening shot from the Hook section, before a final held frame on Sakeer or his splash art.</div>
+            <div class="setup">Setup: Real match footage for the highlight beats; the closing hold can use splash art or an idle animation if available. Leave clean space at the end for an end-screen/subscribe card and next-episode tease to be added in post.</div>
+          </div>
+        </div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">The final held frame must be clean and uncluttered, since editorial will place the end-screen and subscribe elements over or after it.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">1 continuous take combining the ambient/reflective footage and highlight beats, plus 1 clean static hold of Sakeer or his splash art at the very end for the outro card.</div></div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>SAKEER · THE BRUSHSTRIDER — HOK GLOBAL HERO GUIDE</footer>
+
+</div>
+
+<script>
+  const tabs=document.querySelectorAll('.tab');
+  const views=document.querySelectorAll('.view');
+  tabs.forEach(t=>t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    views.forEach(v=>v.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.view).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }));
+</script>
+</body>
+</html>
