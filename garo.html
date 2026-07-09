@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garo — The Piercing Arrow · Guide Script &amp; Screenplay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<script defer src="shared.js"></script>
+<style>
+  :root {
+    --void:        #05060b;
+    --ink:         #0b0e1a;
+    --panel:       #10142400;
+    --panel-solid: #0e1220;
+    --edge:        #3a2e1a;
+    --edge-soft:   #261e10;
+    /* Garo accent palette — desert amber, teal-indigo, warm sand */
+    --bolt:        #c49a2e;
+    --bolt-bright: #e8c870;
+    --volt:        #3d8c9e;
+    --gold:        #e8c870;
+    --gold-soft:   #c49a2e;
+    --paper:       #f0ead8;
+    --paper-dim:   #b0a882;
+    --paper-faint: #7a7055;
+    --danger:      #d4634a;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Spectral', Georgia, serif;
+    background:
+      radial-gradient(1200px 700px at 50% -10%, rgba(196,154,46,.16), transparent 60%),
+      radial-gradient(900px 600px at 85% 8%,  rgba(61,140,158,.12), transparent 55%),
+      linear-gradient(180deg, #05060b 0%, #070912 45%, #05060b 100%);
+    color: var(--paper);
+    line-height: 1.7;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: .45;
+    background-image:
+      linear-gradient(rgba(196,154,46,.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(196,154,46,.03) 1px, transparent 1px);
+    background-size: 46px 46px;
+    mask-image: radial-gradient(1000px 800px at 50% 0%, #000 30%, transparent 80%);
+  }
+
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* ── MASTHEAD ── */
+  header.mast { text-align: center; padding: 64px 0 30px; position: relative; }
+  .kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .42em; text-transform: uppercase;
+    color: var(--bolt); opacity: .85; margin-bottom: 22px;
+  }
+  .mast h1 {
+    font-family: 'Cinzel', serif; font-weight: 900; line-height: .98;
+    font-size: clamp(48px, 11vw, 104px); letter-spacing: .02em;
+    background: linear-gradient(180deg, #fff 0%, var(--bolt-bright) 38%, var(--gold-soft) 105%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    text-shadow: 0 0 60px rgba(196,154,46,.25);
+  }
+  .mast .epithet {
+    font-family: 'Cinzel', serif; font-weight: 600;
+    font-size: clamp(15px, 3.6vw, 22px); letter-spacing: .5em;
+    text-transform: uppercase; color: var(--volt);
+    margin-top: 10px; padding-left: .5em;
+  }
+  .mast .sub {
+    margin-top: 20px; color: var(--paper-dim); font-style: italic;
+    font-size: 16px; max-width: 560px; margin-left: auto; margin-right: auto;
+  }
+  .bolt-rule {
+    width: 120px; height: 2px; margin: 30px auto 0;
+    background: linear-gradient(90deg, transparent, var(--bolt), var(--volt), transparent);
+    box-shadow: 0 0 18px rgba(196,154,46,.5);
+  }
+  .runtime {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--paper-faint); letter-spacing: .2em; margin-top: 18px;
+  }
+
+  /* ── TABS ── */
+  .tabs {
+    position: sticky; top: 0; z-index: 20; display: flex; gap: 8px; justify-content: center;
+    padding: 14px 0 12px; margin: 18px 0 8px;
+    background: linear-gradient(180deg, #05060bef 60%, transparent);
+    backdrop-filter: blur(4px);
+  }
+  .tab {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 12px;
+    letter-spacing: .18em; text-transform: uppercase; cursor: pointer;
+    color: var(--paper-dim); background: var(--panel-solid);
+    border: 1px solid var(--edge); padding: 11px 20px; border-radius: 2px;
+    transition: .22s;
+  }
+  .tab:hover { color: var(--paper); border-color: var(--bolt); }
+  .tab.active {
+    color: #06080e; background: linear-gradient(180deg, var(--bolt-bright), var(--bolt));
+    border-color: var(--bolt); box-shadow: 0 0 22px rgba(196,154,46,.45);
+  }
+  .view { display: none; animation: fade .4s ease; }
+  .view.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  /* ── SCRIPT BLOCKS ── */
+  .block {
+    position: relative; margin: 30px 0; padding: 26px 28px 26px 30px;
+    background: linear-gradient(180deg, rgba(14,18,32,.72), rgba(8,10,20,.72));
+    border: 1px solid var(--edge-soft); border-left: none; border-radius: 3px;
+    overflow: hidden;
+  }
+  .block::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(180deg, var(--bolt), var(--volt));
+    box-shadow: 0 0 16px rgba(196,154,46,.55);
+  }
+  .block .ts {
+    display: inline-block; font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 12px; letter-spacing: .12em; color: #06080e;
+    background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+    padding: 4px 12px; border-radius: 2px; margin-bottom: 6px;
+  }
+  .block h2 {
+    font-family: 'Cinzel', serif; font-weight: 700;
+    font-size: clamp(20px, 4vw, 28px); color: var(--bolt-bright);
+    letter-spacing: .04em; margin: 8px 0 4px; line-height: 1.15;
+    text-shadow: 0 0 30px rgba(196,154,46,.2);
+  }
+  .block h2 .tail { font-size: .62em; color: var(--volt); letter-spacing: .08em; font-weight: 600; }
+  .vo { color: var(--paper); font-size: 17px; }
+  .vo p { margin: 0 0 2px; }
+  .vo .quote { display: block; margin: 6px 0; padding-left: 2px; }
+  .skill {
+    font-family: 'Cinzel', serif; font-weight: 600; color: var(--gold);
+    letter-spacing: .03em; display: block; margin: 14px 0 1px; font-size: 16px;
+  }
+  .subhead {
+    font-family: 'Cinzel', serif; font-weight: 600; color: var(--bolt);
+    letter-spacing: .05em; display: block; margin: 20px 0 4px; font-size: 17px;
+    border-bottom: 1px solid var(--edge-soft); padding-bottom: 5px;
+  }
+  .lead { font-weight: 600; color: var(--bolt-bright); }
+  .vo .spacer { height: 9px; }
+  .vo ul { list-style: none; margin: 6px 0; padding: 0; }
+  .vo ul li { position: relative; padding-left: 20px; margin: 7px 0; }
+  .vo ul li::before {
+    content: "🏹"; position: absolute; left: 0; top: 0; font-size: 12px;
+    color: var(--bolt); filter: drop-shadow(0 0 4px rgba(196,154,46,.7));
+  }
+  em.note { color: var(--paper-dim); }
+
+  /* ── SCREENPLAY ── */
+  .sp-intro {
+    margin: 26px 0 8px; color: var(--paper-dim); font-style: italic; font-size: 15px;
+    border-left: 2px solid var(--edge); padding-left: 16px;
+  }
+  .scene {
+    margin: 22px 0; border: 1px solid var(--edge-soft); border-radius: 3px; overflow: hidden;
+    background: linear-gradient(180deg, rgba(12,16,32,.7), rgba(7,10,20,.7));
+  }
+  .scene-head {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    padding: 12px 18px; background: rgba(196,154,46,.07);
+    border-bottom: 1px solid var(--edge-soft);
+  }
+  .scene-head .ts {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 12px;
+    color: #06080e; background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+    padding: 4px 11px; border-radius: 2px; letter-spacing: .08em;
+  }
+  .scene-head .title {
+    font-family: 'Cinzel', serif; font-weight: 600; font-size: 15px;
+    color: var(--bolt-bright); letter-spacing: .06em; text-transform: uppercase;
+  }
+  .scene-body { padding: 6px 18px 16px; }
+  .row { display: flex; gap: 0; border-bottom: 1px dashed var(--edge-soft); padding: 12px 0; }
+  .row:last-child { border-bottom: none; }
+  .row .lab {
+    flex: 0 0 116px; font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; padding-top: 3px;
+  }
+  .row.record .lab { color: var(--bolt); }
+  .row.show .lab { color: var(--volt); }
+  .row.reps .lab { color: var(--gold-soft); }
+  .row .val { flex: 1; font-size: 15.5px; color: var(--paper); }
+  .row .val .ost-text {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--bolt-bright);
+    background: rgba(196,154,46,.08); border: 1px solid var(--edge-soft);
+    padding: 2px 8px; border-radius: 2px; display: inline-block; margin: 2px 4px 2px 0;
+  }
+  .row .val .none { color: var(--paper-faint); font-style: italic; }
+
+  footer {
+    text-align: center; margin-top: 50px; color: var(--paper-faint);
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em;
+  }
+
+  @media print {
+    body { background: #fff; color: #111; }
+    body::before { display: none; }
+    .tabs { display: none; }
+    .view { display: block !important; }
+    .view + .view { page-break-before: always; }
+    .mast h1 { color: #2a1f00; -webkit-text-fill-color: #2a1f00; }
+    .block, .scene { background: #fff; border-color: #bbb; break-inside: avoid; }
+    .block h2, .scene-head .title { color: #2a1f00; }
+    .vo, .row .val { color: #111; }
+    .skill { color: #8a6a14; }
+    .block .ts, .scene-head .ts { background: #2a1f00; color: #fff; }
+  }
+  @media (max-width: 600px) {
+    .row { flex-direction: column; gap: 3px; }
+    .row .lab { flex: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker">Honor of Kings · Global · Hero Guide · Ep. 29</div>
+    <h1>GARO</h1>
+    <div class="epithet">The Piercing Arrow</div>
+    <p class="sub">"Thanks to Madinat Erudit's blessing, we shall know peace."</p>
+    <div class="bolt-rule"></div>
+    <div class="runtime">FULL RUNTIME · 0:00 — 4:50</div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-view="script">📜 Full Script</button>
+    <button class="tab" data-view="screenplay">🎬 Screenplay</button>
+  </nav>
+
+  <!-- ============================== FULL SCRIPT ============================== -->
+  <section class="view active" id="script">
+
+    <div class="block">
+      <h2>A.) Hook &amp; Identity</h2>
+      <div class="vo">
+        <span class="quote">"Most carries need to get into the fight to win it.</span>
+        <span class="quote">Garo never does.</span>
+        <span class="quote">She stands at the edge of the battlefield — farther than anyone else can reach — and picks it apart one arrow at a time. Shields break for free. Silence cuts before the enemy can react. And by the time they close the gap, the fight is already over.</span>
+        <span class="quote">She's not here to outmuscle the enemy. She's here to outrange them.</span>
+        <span class="quote">In this guide, I'll show you how to hold that distance, control your mana, and make every shot count — with the Piercing Arrow."</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>B.) Skill Showcase</h2>
+      <div class="vo">
+        <p>"Garo is a marksman built around one principle: hit them before they can reach you.</p>
+        <span class="skill">Passive — Piercing Arrow</span>
+        <p>Every skill and basic attack deals equal bonus damage to shielded targets. Shields from items, from skills — Garo punishes them all. The moment the enemy builds a shield, she punishes them harder for it.</p>
+        <span class="skill">Skill 1 — Spirit Bow</span>
+        <p>Garo's identity. Toggle on: attack range extends massively, and each basic attack deals bonus magic damage — but costs mana. Toggle off: basics restore mana and movement speed rises. Open Bow is your damage state; Close Bow is your recovery state. Learn to switch fluidly and you'll never run dry.</p>
+        <span class="skill">Skill 2 — Silent Arrow</span>
+        <p>A piercing arrow in a target direction. It deals magic damage, silences, and slows every enemy it passes through. Two damage phases: the first carries the silence and slow; the second is pure damage. There's a cast delay — predict the enemy's path, not their current position.</p>
+        <span class="skill">Ultimate — Sacred Domain</span>
+        <p>Garo opens a magic circle. While active, she gains bonus crit rate and attack speed for up to eight seconds. Closing it early grants her and nearby allies crit rate and movement speed for three seconds. Its passive gives the ult its teeth: every crit she lands slows the target by ninety percent for half a second. Land crits, slow targets, keep the bow on them."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>C.) Core Resource &amp; Combo</h2>
+      <div class="vo">
+        <p>"Garo's core mechanic is mana control through her stance. In Open Bow, every basic attack drains mana. Hit zero and you cannot attack in this stance. That's the price of extreme range. Toggle close, restore mana with a few basics, then flip back open. The fluid stance swap is the wall between a Garo who goes silent mid-fight and one who never stops shooting.</p>
+        <p>Her damage sequence: open Spirit Bow at max range, activate Sacred Domain, unload basics. If the target breaks and runs, close Sacred Domain immediately — the three-second speed and crit buff lets you chase them down. If they stand and fight, hold it open and let the crits slow them in place.</p>
+        <p>For Silent Arrow: don't fire at a moving target without prediction. Use it when the enemy commits to a direction or locks into an animation. The silence shuts down a dash or a counterstrike at exactly the right moment.</p>
+        <p>Skill priority: Ultimate first, then Spirit Bow. Flash is the standard spell — no built-in dash makes it her only hard repositioning tool. Sprint is the alternative when you want sustained movement speed to kite and keep enemies at range."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>D.) Advanced Mechanics</h2>
+      <div class="vo">
+        <p>"Garo's attack interval in Open Bow is longer than normal — not lower attack speed, but a different model. You're trading tempo for reach. Accept that and stop expecting her to feel like a standard marksman.</p>
+        <p>Kite constantly. The moment you stand still, you're a target. Step back between shots, stay at max range, never let anyone close without paying for it. When Open Bow is off, mana returns with every hit — reposition, reset aggro, then flip back open.</p>
+        <p>In lane: never hard-trade into a stronger laner. The rhythm is advance when they're in your range, retreat when they step forward. Keep them choosing between losing health or losing farm. Watch for jungle pressure around the one-thirty mark.</p>
+        <p>In teamfights: stay behind your frontline. Wait for the enemy to dump their burst on your tanks, then open up from max range. The crit slow from Sacred Domain keeps divers off you. If someone reaches you anyway, close Sacred Domain — the speed burst creates distance so you can resume shooting.</p>
+        <p>Silent Arrow scouts too. Fire it into a suspicious bush — the hit animation and sound cue confirm a hidden enemy without you stepping inside."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>E.) Best Teammates &amp; Tough Matchups</h2>
+      <div class="vo">
+        <p>"Garo needs a wall between her and the enemy. With one, she's relentless. Without one, she's a liability.
+        Supports who heal — Ming and Cai Yan — sustain her through extended poke wars. Peel tanks like Zhang Fei and Liu Shan absorb dives and lock down anyone who reaches her line. With that cover, Garo's range becomes nearly impossible to answer.</p>
+        <p>Shield-reliant heroes like Liu Bei and Menki are her ideal targets — every shield feeds her passive. Short-range heroes who must walk into her range to deal damage are permanent victims.</p>
+        <p>Her counters: assassins like Prince of Lanling and Guiguzi who appear behind her line before she can react; and long-reach mages like Nuwa and Gan &amp; Mo who can trade with her from across the fight. In those matchups, stay near your support and let the tanks make the space you need."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>F.) Closing</h2>
+      <div class="vo">
+        <span class="quote">"Garo doesn't chase the fight.</span>
+        <span class="quote">She ends it from a distance no one else can reach.</span>
+        <span class="quote">Control your mana. Hold your ground. Keep the bow trained.</span>
+        <span class="quote">Let the arrow do the rest — and I'll see you in the next episode."</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================== SCREENPLAY ============================== -->
+  <section class="view" id="screenplay">
+
+    <p class="sp-intro">Shooting screenplay broken into production beats. <b>Record</b> = what to film. <b>Show</b> = what must be visible on screen. <b>Reps</b> = take count and environment.</p>
+
+    <!-- A.) Hook & Identity -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">A.) Hook &amp; Identity</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Open on Garo standing completely still in or near a ruined desert environment — use a real match clip or the loading screen idle if available. She should not be attacking or moving. The camera holds on her for 2–3 seconds while the world suggests conflict around her (distant combat sounds or a fire particle in the environment).
+                <br><br>What happens: Creates the contrast of stillness before action.
+                <br>Setup: Real match footage preferred. Curate from existing recordings — even a quiet moment between engagements works.</li>
+              <li>Cut immediately to Garo using Skill 1 (Spirit Bow toggle ON) and landing a long-range basic attack kill on an enemy hero from maximum range. The enemy must be far away — the distance should look extreme.
+                <br><br>What happens: The kill-notification banner appears on screen. Garo does not move to reach the enemy — the arrow travels the full distance.
+                <br>Setup: Real match footage. Find or record a kill where Garo is far from the target.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">The distance between Garo and her kill target must be clearly visible. The kill-notification banner must appear on screen in the second clip.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 clips total. Curate from existing match recordings.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B.) Skill Showcase — Passive -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">B.) Skill Showcase — Passive: Piercing Arrow</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>In the practice range, find an enemy hero dummy that currently has a shield active (or use a match clip where an enemy has a shield visible above their health bar). Land one basic attack on them with no shield present — note the normal damage number. Then let them have a shield active and land another basic attack — a second equal damage number appears separately.
+                <br><br>What happens: Two damage numbers pop up when the shield is present. Only one pops up without a shield.
+                <br>Setup: Practice range against a shielded hero, or real match clip where an enemy shield is clearly visible on screen.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Both damage numbers — the normal hit and the bonus hit from the passive — must be visible and readable on screen at the same time. The shield icon above the enemy must also be visible.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 clean takes. Practice range preferred for legibility.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B.) Skill Showcase — Skill 1 -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">B.) Skill Showcase — Skill 1: Spirit Bow</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Clip 1 — Open Bow state: Garo taps Skill 1 to toggle ON. She then fires a basic attack at a dummy. Show the mana bar decreasing after each shot.
+                <br><br>What happens: The attack range is visibly extended — the attack fires from a much greater distance than normal. A small mana cost appears each time she fires.
+                <br>Setup: Practice range. Keep the mana bar clearly in frame.</li>
+              <li>Clip 2 — Close Bow state: Garo taps Skill 1 again to toggle OFF. She then fires a basic attack.
+                <br><br>What happens: The mana bar increases (restores) with each basic attack landed. Her movement speed icon or speed indicator shows a boost.
+                <br>Setup: Same practice range clip, filmed immediately after the Open Bow clip so the toggle is visible.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">The mana bar must be visible and readable in both clips. In Open Bow, it must visibly decrease. In Close Bow, it must visibly increase. The distance difference between attack states should be apparent — ideally with the dummy at a distance that would be out of normal range.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 takes of each state (4 clips total). Practice range.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B.) Skill Showcase — Skill 2 -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">B.) Skill Showcase — Skill 2: Silent Arrow</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Clip 1 — Piercing through multiple enemies: In the practice range, line up 2–3 enemy dummies in a straight line. Fire Skill 2 through the line. All of them take damage and show a silence/slow icon.
+                <br><br>What happens: The arrow travels in a straight line through each dummy, hitting all of them. Silence and slow icons appear on each hit enemy.
+                <br>Setup: Practice range. Line up dummies or use a match clip where the arrow hits multiple enemies in a lane.</li>
+              <li>Clip 2 — Cast delay (prediction required): In a real match or custom game, fire Skill 2 at a moving enemy who is running in a straight line. Lead the shot so the arrow arrives where they will be, not where they are.
+                <br><br>What happens: The arrow fires and there is a visible travel delay before it hits. The shot lands because the arrow was aimed ahead of the moving target.
+                <br>Setup: Custom game or real match. The travel delay and the moving enemy must both be visible.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Clip 1: The silence icon on each hit enemy must be visible. Clip 2: The arrow travel time (the brief gap between firing and impact) must be visible — slow down to 50% if needed in post.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 takes of each clip. Practice range for clip 1; real match or custom game for clip 2.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B.) Skill Showcase — Ultimate -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">B.) Skill Showcase — Ultimate: Sacred Domain</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Clip 1 — Ult active state: Garo activates the Ultimate (Sacred Domain). She then fires several basic attacks at a dummy while the magic circle is active. Show the enhanced crit rate and attack speed while she attacks inside the circle.
+                <br><br>What happens: Crit hits register on the dummy. Each crit triggers a slow icon on the dummy (the 90% slow passive).
+                <br>Setup: Practice range. Keep the ultimate skill icon timer visible to show it is active.</li>
+              <li>Clip 2 — Early close for movement speed: Garo activates the Ultimate, lands a couple of attacks, then manually closes it early by pressing the button again. She immediately gains a movement speed boost and runs.
+                <br><br>What happens: The magic circle disappears. Garo's movement speed visibly increases for about 3 seconds — show her running away from the original position.
+                <br>Setup: Practice range or real match. The speed boost must be noticeable.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Clip 1: The slow icon appearing on the enemy after a crit must be visible. Clip 2: The movement speed increase after closing the ult must be visible — compare her movement to before the close.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 takes of each clip. Practice range preferred for legibility.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- C.) Core Resource & Combo -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">C.) Core Resource &amp; Combo</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Mana drain and toggle recovery: In the practice range, Garo activates Skill 1 (Open Bow) and fires basic attacks repeatedly at a dummy until her mana runs low. She then toggles Skill 1 OFF (Close Bow) and fires a few basics — show mana restoring. Then she toggles back ON.
+                <br><br>What happens: The mana bar drains in Open Bow, refills in Close Bow, and the player is back in Open Bow ready to output again.
+                <br>Setup: Practice range. The full mana bar must be visible the entire time.</li>
+              <li>Damage sequence — chase variation: Garo uses Skill 1 (Open Bow) on an enemy, fires basics from max range, activates the Ultimate (Sacred Domain), lands more attacks with crits. The enemy starts running. Garo immediately closes the Ultimate — she gains movement speed and chases the enemy down.
+                <br><br>What happens: The enemy is running low health. After Garo closes the ult, she catches up due to the speed burst and finishes them.
+                <br>Setup: Real match footage. The closing of the ult and the resulting speed chase must be in one continuous clip.</li>
+              <li>Silent Arrow prediction: Garo fires Skill 2 at a moving enemy. The arrow is aimed ahead of the target — it hits them because of the prediction, not a direct aim.
+                <br><br>What happens: The moving enemy walks into the arrow path and gets silenced.
+                <br>Setup: Real match or custom game. The enemy must be moving when the arrow is fired.</li>
+              <li>Skill priority and spell screen: Screen record the in-game level-up menu showing Ultimate levelled first, then Skill 1, then Skill 2. Cut to the spell selection screen showing Flash selected, then a second cut showing Sprint as the alternative pick.
+                <br><br>What happens: The levelling order is clearly visible. Flash appears as the primary option; Sprint appears as the kiting alternative.
+                <br>Setup: In-game menus. Two separate spell-screen recordings.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Mana clip: the mana bar must fill and empty visibly. Damage sequence: the ult close and the resulting speed chase must be in the same clip. Spell screen: Flash and Sprint must each be clearly selected and readable in their respective clips.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 takes of mana clip; 1–2 takes of damage sequence and prediction clip from real match footage; 1 take of skill/spell screen recording.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- D.) Advanced Mechanics -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">D.) Advanced Mechanics</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Attack model comparison (WRONG vs RIGHT): Two side-by-side clips.
+                <br>WRONG: Garo stands completely still while firing basic attacks in Open Bow — she does not move between shots. An enemy hero is able to close in on her.
+                <br>What happens: The enemy reaches her because she is stationary and easy to approach.
+                <br>RIGHT: Garo fires a basic attack, then takes a step backward, then fires again — repeating while retreating from a chasing enemy. She stays at max range.
+                <br>What happens: The enemy cannot close the gap. Garo continues outputting without being reached.
+                <br>Setup: Custom game or real match. Label the WRONG clip with a WRONG overlay and the RIGHT clip with a RIGHT overlay.</li>
+              <li>Stance kiting in lane: Garo is in the farm lane facing an enemy. She toggles Open Bow to poke with a basic attack when the enemy advances. The enemy retreats — Garo toggles to Close Bow and farms minions while mana restores. The enemy advances again — Garo flips Open Bow and pokes again.
+                <br><br>What happens: The enemy is repeatedly forced back. Garo's mana stays healthy because she uses Close Bow to recover between pokes.
+                <br>Setup: Real match footage. The mana bar toggling must be visible.</li>
+              <li>Teamfight positioning: Garo is attacking from behind her tank/support. She waits for the enemy frontline to dump skills on her teammates, then opens Sacred Domain and fires from maximum range.
+                <br><br>What happens: The enemy's burst is absorbed by allies. Garo outputs safely from behind the frontline.
+                <br>Setup: Real match footage.</li>
+              <li>Sacred Domain escape: An enemy diver reaches Garo. She immediately closes the Ultimate — gaining the 3-second speed burst — and runs away, creating distance.
+                <br><br>What happens: Garo escapes the diver using the movement speed from closing the ult.
+                <br>Setup: Real match footage. The diver reaching her and her escape must be in a single continuous clip.</li>
+              <li>Silent Arrow bush scout: Garo is standing near a brush. Instead of walking into it, she fires Skill 2 (Silent Arrow) into the brush. The hit animation and sound trigger — confirming an enemy is hiding inside.
+                <br><br>What happens: The arrow hits an enemy in the bush. The hit effect is visible and audible. Garo never enters the bush.
+                <br>Setup: Real match footage. The hidden enemy must be in the bush and the hit confirmation must be visible.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">WRONG/RIGHT clips: both must have clear labels visible on screen. Kiting clip: the mana bar toggle must be readable. Bush scout: the hit confirmation on the hidden enemy must be visible — include audio cue if possible.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 takes of each clip. WRONG/RIGHT can be recorded in a custom game for control. All others from real match footage if available.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- E.) Best Teammates & Tough Matchups -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">E.) Best Teammates &amp; Tough Matchups</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Synergy clip — healer support: A match clip showing Ming or Cai Yan healing Garo during a fight while Garo continues outputting. Garo stays alive through what would otherwise be a dangerous trade.
+                <br><br>What happens: Garo's health bar recovers mid-fight while she keeps firing.
+                <br>Setup: Real match footage.</li>
+              <li>Synergy clip — peel tank: A match clip showing Zhang Fei or Liu Shan blocking a diver who is trying to reach Garo. The tank stuns or displaces the diver. Garo continues outputting from range.
+                <br><br>What happens: The diver is stopped before reaching Garo. Garo takes no damage and keeps firing.
+                <br>Setup: Real match footage.</li>
+              <li>Passive target — shield heroes: Garo fires a basic attack or skill at Liu Bei or Menki while they have a shield active. Two damage numbers appear.
+                <br><br>What happens: The bonus passive damage visibly doubles the punishment on the shielded target.
+                <br>Setup: Real match footage or custom game.</li>
+              <li>Counter clip — assassin dive: Prince of Lanling or Guiguzi appears behind Garo's line and dives her directly. She has no immediate escape.
+                <br><br>What happens: The assassin reaches Garo from an unexpected angle, illustrating the danger.
+                <br>Setup: Real match footage. This is the DANGER example — mark with a DANGER or WATCH OUT overlay.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Synergy clips: ally hero portrait must be readable on screen. Passive target: both damage numbers must be visible. Counter clip: the assassin's approach direction must be clear — show they came from behind Garo's line.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">1–2 takes of each clip from real match recordings.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- F.) Closing -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">F.) Closing</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Montage of Garo plays — prioritise clips showing: (1) a long-range kill from extreme distance, (2) a kiting chase where an enemy cannot close in, (3) a teamfight where she outputs safely from behind the frontline. End on a hold of Garo's hero portrait or splash art as the desert setting fades.
+                <br><br>What happens: The montage summarises the three pillars taught in the guide — range, kiting, and safe positioning.
+                <br>Setup: Curate from existing match recordings. Leave room for the end-screen / subscribe card.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Each clip must be clean and deliberate — no accidental kills or messy plays. The final hero portrait hold must be at least 2 seconds to allow the end-screen overlay to render.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">3–5 clips curated from existing footage. 1 hero portrait / splash art hold.</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>GARO · THE PIERCING ARROW — HOK GLOBAL HERO GUIDE · EP. 29</footer>
+
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const views = document.querySelectorAll('.view');
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('active'));
+    views.forEach(v => v.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.view).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }));
+</script>
+</body>
+</html>
