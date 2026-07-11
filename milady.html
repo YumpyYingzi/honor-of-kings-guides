@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Milady — Mechaboss · Guide Script & Screenplay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<script defer src="shared.js"></script>
+<style>
+  :root{
+    --void:#05060b;
+    --ink:#0b0e1a;
+    --panel:#10142400;
+    --panel-solid:#0e1326;
+    --edge:#3a2f1a;
+    --edge-soft:#2a2010;
+    --bolt:#d4a843;
+    --bolt-bright:#e8d8a0;
+    --volt:#c96a28;
+    --gold:#e8c96a;
+    --gold-soft:#c9a23a;
+    --paper:#e9ecf5;
+    --paper-dim:#9aa3bd;
+    --paper-faint:#69718e;
+    --danger:#ff7a8a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Spectral',Georgia,serif;
+    background:
+      radial-gradient(1200px 700px at 50% -10%, rgba(201,106,40,.15), transparent 60%),
+      radial-gradient(900px 600px at 85% 8%, rgba(212,168,67,.12), transparent 55%),
+      linear-gradient(180deg,#05060b 0%, #0a0805 45%, #05060b 100%);
+    color:var(--paper);
+    line-height:1.7;
+    min-height:100vh;
+    padding:0 0 80px;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4;
+    background-image:
+      linear-gradient(rgba(212,168,67,.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,168,67,.03) 1px, transparent 1px);
+    background-size:46px 46px;
+    mask-image:radial-gradient(1000px 800px at 50% 0%, #000 30%, transparent 80%);
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+  /* ---------- MASTHEAD ---------- */
+  header.mast{text-align:center;padding:64px 0 30px;position:relative;}
+  .kicker{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.42em;
+    text-transform:uppercase;color:var(--bolt);opacity:.85;margin-bottom:22px;
+  }
+  .mast h1{
+    font-family:'Cinzel',serif;font-weight:900;line-height:.98;
+    font-size:clamp(48px,11vw,104px);letter-spacing:.02em;
+    background:linear-gradient(180deg,#fff 0%, var(--bolt-bright) 38%, var(--volt) 105%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 60px rgba(201,106,40,.25);
+  }
+  .mast .epithet{
+    font-family:'Cinzel',serif;font-weight:600;font-size:clamp(15px,3.6vw,22px);
+    letter-spacing:.5em;text-transform:uppercase;color:var(--gold);
+    margin-top:10px;padding-left:.5em;
+  }
+  .mast .sub{
+    margin-top:20px;color:var(--paper-dim);font-style:italic;font-size:16px;
+    max-width:560px;margin-left:auto;margin-right:auto;
+  }
+  .bolt-rule{
+    width:120px;height:2px;margin:30px auto 0;
+    background:linear-gradient(90deg,transparent,var(--bolt),var(--volt),transparent);
+    box-shadow:0 0 18px rgba(212,168,67,.6);
+  }
+  .runtime{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--paper-faint);
+    letter-spacing:.2em;margin-top:18px;
+  }
+
+  /* ---------- TABS ---------- */
+  .tabs{
+    position:sticky;top:0;z-index:20;display:flex;gap:8px;justify-content:center;
+    padding:14px 0 12px;margin:18px 0 8px;
+    background:linear-gradient(180deg,#05060bef 60%, transparent);
+    backdrop-filter:blur(4px);
+  }
+  .tab{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;
+    letter-spacing:.18em;text-transform:uppercase;cursor:pointer;
+    color:var(--paper-dim);background:var(--panel-solid);
+    border:1px solid var(--edge);padding:11px 20px;border-radius:2px;
+    transition:.22s;
+  }
+  .tab:hover{color:var(--paper);border-color:var(--bolt)}
+  .tab.active{
+    color:#060912;background:linear-gradient(180deg,var(--bolt-bright),var(--bolt));
+    border-color:var(--bolt);box-shadow:0 0 22px rgba(212,168,67,.45);
+  }
+  .view{display:none;animation:fade .4s ease}
+  .view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ---------- SCRIPT BLOCKS ---------- */
+  .block{
+    position:relative;margin:30px 0;padding:26px 28px 26px 30px;
+    background:linear-gradient(180deg,rgba(20,14,5,.72),rgba(10,8,3,.72));
+    border:1px solid var(--edge-soft);border-left:none;border-radius:3px;
+    overflow:hidden;
+  }
+  .block::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:linear-gradient(180deg,var(--bolt),var(--volt));
+    box-shadow:0 0 16px rgba(212,168,67,.5);
+  }
+  .block .ts{
+    display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:12px;letter-spacing:.12em;color:#060912;
+    background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+    padding:4px 12px;border-radius:2px;margin-bottom:6px;
+  }
+  .block h2{
+    font-family:'Cinzel',serif;font-weight:700;font-size:clamp(20px,4vw,28px);
+    color:var(--bolt-bright);letter-spacing:.04em;margin:8px 0 4px;line-height:1.15;
+    text-shadow:0 0 30px rgba(212,168,67,.2);
+  }
+  .block h2 .tail{font-size:.62em;color:var(--gold);letter-spacing:.08em;font-weight:600}
+  .vo{color:var(--paper);font-size:17px}
+  .vo p{margin:0 0 2px}
+  .vo .quote{display:block;margin:6px 0;padding-left:2px}
+  .skill{
+    font-family:'Cinzel',serif;font-weight:600;color:var(--gold);
+    letter-spacing:.03em;display:block;margin:14px 0 1px;font-size:16px;
+  }
+  .subhead{
+    font-family:'Cinzel',serif;font-weight:600;color:var(--bolt);
+    letter-spacing:.05em;display:block;margin:20px 0 4px;font-size:17px;
+    border-bottom:1px solid var(--edge-soft);padding-bottom:5px;
+  }
+  .lead{font-weight:600;color:var(--bolt-bright)}
+  .vo .spacer{height:9px}
+  .vo ul{list-style:none;margin:6px 0;padding:0}
+  .vo ul li{position:relative;padding-left:20px;margin:7px 0;}
+  .vo ul li::before{
+    content:"⚙";position:absolute;left:0;top:0;font-size:12px;color:var(--bolt);
+    filter:drop-shadow(0 0 4px rgba(212,168,67,.6));
+  }
+  em.note{color:var(--paper-dim)}
+
+  /* ---------- SCREENPLAY ---------- */
+  .sp-intro{
+    margin:26px 0 8px;color:var(--paper-dim);font-style:italic;font-size:15px;
+    border-left:2px solid var(--edge);padding-left:16px;
+  }
+  .scene{
+    margin:22px 0;border:1px solid var(--edge-soft);border-radius:3px;overflow:hidden;
+    background:linear-gradient(180deg,rgba(20,14,5,.7),rgba(10,8,3,.7));
+  }
+  .scene-head{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:12px 18px;background:rgba(212,168,67,.06);
+    border-bottom:1px solid var(--edge-soft);
+  }
+  .scene-head .ts{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;
+    color:#060912;background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+    padding:4px 11px;border-radius:2px;letter-spacing:.08em;
+  }
+  .scene-head .title{
+    font-family:'Cinzel',serif;font-weight:600;font-size:15px;color:var(--bolt-bright);
+    letter-spacing:.06em;text-transform:uppercase;
+  }
+  .scene-body{padding:6px 18px 16px}
+  .row{display:flex;gap:0;border-bottom:1px dashed var(--edge-soft);padding:12px 0}
+  .row:last-child{border-bottom:none}
+  .row .lab{
+    flex:0 0 116px;font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    padding-top:3px;
+  }
+  .row.record .lab{color:var(--bolt)}
+  .row.show .lab{color:var(--volt)}
+  .row.reps .lab{color:var(--gold-soft)}
+  .row .val{flex:1;font-size:15.5px;color:var(--paper)}
+  .row .val .ost-text{
+    font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--bolt-bright);
+    background:rgba(212,168,67,.08);border:1px solid var(--edge-soft);
+    padding:2px 8px;border-radius:2px;display:inline-block;margin:2px 4px 2px 0;
+  }
+  .row .val .none{color:var(--paper-faint);font-style:italic}
+  .row .val ul{list-style:none;margin:4px 0;padding:0}
+  .row .val ul li{position:relative;padding-left:16px;margin:6px 0;font-size:15px}
+  .row .val ul li::before{content:"·";position:absolute;left:0;color:var(--bolt)}
+
+  /* ---------- NOTE BAR ---------- */
+  .notebar{
+    margin:34px 0 0;padding:16px 20px;border:1px dashed var(--edge);border-radius:3px;
+    background:rgba(212,168,67,.04);color:var(--paper-dim);font-size:14px;
+  }
+  .notebar b{color:var(--gold);font-family:'Cinzel',serif;letter-spacing:.04em}
+  footer{
+    text-align:center;margin-top:50px;color:var(--paper-faint);
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;
+  }
+
+  /* ---------- PRINT ---------- */
+  @media print{
+    body{background:#fff;color:#111}
+    body::before{display:none}
+    .tabs{display:none}
+    .view{display:block!important}
+    .view + .view{page-break-before:always}
+    .mast h1{color:#3a2000;-webkit-text-fill-color:#3a2000}
+    .mast .epithet{color:#8a6a14}
+    .block,.scene{background:#fff;border-color:#bbb;break-inside:avoid}
+    .block h2,.scene-head .title{color:#3a2000}
+    .vo,.row .val{color:#111}
+    .skill{color:#8a6a14}
+    .block .ts,.scene-head .ts{background:#3a2000;color:#fff}
+  }
+  @media (max-width:600px){
+    .row{flex-direction:column;gap:3px}
+    .row .lab{flex:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker">Honor of Kings · Global · Hero Guide</div>
+    <h1>MILADY</h1>
+    <div class="epithet">The Mechaboss</div>
+    <p class="sub">"My artificial servants ensure that the world bends to my will."</p>
+    <div class="bolt-rule"></div>
+    <div class="runtime">FULL RUNTIME · 0:00 — 4:50</div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-view="script">📜 Full Script</button>
+    <button class="tab" data-view="screenplay">🎬 Screenplay</button>
+  </nav>
+
+  <!-- ============================== FULL SCRIPT ============================== -->
+  <section class="view active" id="script">
+
+    <div class="block">
+      <h2>A.) Hook &amp; Identity</h2>
+      <div class="vo">
+        <span class="quote">"Every consul has a throne. Milady built hers out of gears and obedience.</span>
+        <span class="quote">She doesn't chase enemies down the lane — she floods it with mechanical minions, clears it faster than anyone on the map, and quietly dismantles towers while you're looking somewhere else.</span>
+        <span class="quote">That's the Mechaboss. Not a brawler. Not a burst mage waiting for a single perfect combo. A machine of attrition — and in this guide, I'll show you how to make the whole map bend to her will."</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>B.) Skill Showcase</h2>
+      <div class="vo">
+        <p>"Milady's entire kit is built around one thing: her mechanical minions.</p>
+        <span class="skill">Passive – Mechanical Minions</span>
+        <p>Every kill by Milady or her minions summons a new mechanical minion that auto-attacks nearby enemies for 6 seconds. At the end of its timer, it merges with a nearby same-level minion and upgrades — up to Level 3. No merge? It self-destructs for area magic damage. All minion stats scale with ability power, and up to 7 minions can exist across all three tiers.</p>
+        <span class="skill">Skill 1 – Air Superiority</span>
+        <p>An aircraft flies forward, hitting enemies multiple times. After every two hits it fires a bonus missile. Tap the skill again mid-flight to split into two smaller aircraft — enemies hit by both are slowed for 1.5 seconds. One aircraft for burst; split for poke and slow.</p>
+        <span class="skill">Skill 2 – Forced Invasion</span>
+        <p>Milady airdrops 2 mechanical minions at a target location, dealing magic damage on landing, then activating after 1 second to attack nearby enemies. She stocks 1 charge every 12 to 15 seconds, up to 3 charges. Your primary minion engine.</p>
+        <span class="skill">Ultimate – Chaos Field</span>
+        <p>Milady marks a target enemy or structure for 3 seconds. Non-structure targets are stunned for 0.75 seconds, then slowed and damaged repeatedly. At expiry, the mark detonates for bonus damage equal to 25% of all damage dealt during it. Kill a marked target and 3 minions spawn instantly. While active, nearby allied minions gain 100% attack speed and rush the target — cast it directly on a tower and watch them rip it apart."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>C.) Core Resource &amp; Combo</h2>
+      <div class="vo">
+        <p>"Milady's only real currency is minion count. Never let your cap sit empty. Use Forced Invasion constantly, let minions get the kill, and harvest new ones. The more you accumulate, the stronger every fight and push.</p>
+        <p>The kill combo is Skill 2 – Ultimate – Skill 1 – Skill 2: pre-stage minions, stun and supercharge with Chaos Field, slow with Air Superiority, drop a second wave if the target survives. From a brush, always deploy minions outside first so they're active before you fire Chaos Field.</p>
+        <p>The tower combo is Skill 2 – Ultimate – Skill 2 – Skill 1: minions at the tower, supercharge with Chaos Field, add a second Forced Invasion under the buff, Air Superiority to clear blocking minions — then leave.</p>
+        <p>Skill priority: max Forced Invasion first, then Air Superiority, upgrade Chaos Field on cooldown. For your spell: Flash is standard — your only escape when assassins dive. Teleport is the split-push pick: cut the lane, push the tower, and be gone before anyone responds."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>D.) Advanced Mechanics</h2>
+      <div class="vo">
+        <p>"Here's what separates a Milady who wins lanes from one who wins games.</p>
+
+        <span class="subhead">Minion Scouting</span>
+        <p>Minions don't reveal your position when attacking — they're invisible operatives. Deploy Forced Invasion into any unseen brush and your minions walk in and reveal it without you moving. Do this before every roam.</p>
+
+        <span class="subhead">Minion Blocking</span>
+        <p>Minions intercept skillshots. Drop Forced Invasion between yourself and a hook or long-range CC and your minions become a physical wall. Walk inside your own formation when roaming to stop getting sniped in the fog.</p>
+
+        <span class="subhead">Remote Tower Pressure</span>
+        <p>Milady's deadliest trait. Her minions deal tower damage without revealing her position. When your team fights on one side of the map, send minions to a far tower off-screen and walk away. No minion wave needed — and the enemy has to defend everywhere.</p>
+
+        <span class="subhead">Roaming Discipline</span>
+        <p>After taking mid tower, cycle lanes. Clear mid — drop minions in a side lane and leave — return — repeat. When a teamfight ends and enemies are respawning, immediately fire Chaos Field on the nearest tower and flood it with minions. Dead enemies mean free structures.</p>
+
+        <span class="subhead">When to Push vs. Join</span>
+        <p>If your team is winning a 5v5, push the exposed side tower instead of adding a body to a won fight. If your team needs the swing, join: your Chaos Field stun and minion burst can turn a losing exchange."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>E.) Best Teammates &amp; Tough Matchups</h2>
+      <div class="vo">
+        <ul>
+          <li>For a tower-push comp, <span class="lead">Liu Shan</span> and <span class="lead">Fang</span> are Milady's best partners — their crowd control combined with Chaos Field and a minion swarm dismantles structures faster than almost any trio. Against slow wave-clear mages like <span class="lead">Lady Zhen</span> she thrives on lane dominance; against immobile mages like <span class="lead">Dr Bian</span>, a Chaos Field burst before they reposition is a near-certain kill.</li>
+          <li>Watch out for <span class="lead">Heino</span> and <span class="lead">Ziya</span> — both turn your minions against you. Heino boosts his Skill 1 with them, and Ziya leeches their kills to level up far faster than normal. CC-immune fighters like <span class="lead">Mulan</span> shrug off everything she throws and beat her in the trade. <span class="lead">Prince of Lanling</span> and <span class="lead">Shangguan</span> burst before minions activate; if either has spent their dash, that's your window — if not, stay far.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>F.) Closing &amp; Retention Hook</h2>
+      <div class="vo">
+        <span class="quote">"Milady doesn't win by being the best fighter on the field.</span>
+        <span class="quote">She wins because while you were fighting, her machines were tearing the map apart.</span>
+        <span class="quote">Build the stack. Push the tower. Let the army work.</span>
+        <span class="quote">The Mechaboss doesn't need to be the loudest one — just the last one standing.</span>
+        <span class="quote">And I'll see you in the next episode."</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================== SCREENPLAY ============================== -->
+  <section class="view" id="screenplay">
+
+    <p class="sp-intro">Shooting screenplay broken into production beats. <b>Record</b> = what to film. <b>Show</b> = the specific detail that must be visible and legible on screen. <b>Reps</b> = number of takes and filming environment.</p>
+
+    <!-- A HOOK -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">A.) Hook &amp; Identity</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Cold open: Milady stands still at mid lane while an enemy wave crashes in. She does nothing — just lets the mechanical minions already on the field attack and kill automatically, rippling through the wave without her touching a button. Hold for 3–4 seconds.
+                <br><em>What happens:</em> minions auto-attack and kill every enemy minion while Milady's portrait is still and composed — the contrast between her calm and the minions' work is the opening image.
+                <br><em>Setup:</em> Custom game or real match footage. Must have at least 3–4 active minions visible. Milady must not move or cast anything during this clip.</li>
+              <li>Cut immediately to a full kill combo ending in a tower fall — Chaos Field stun, minions swarming, tower crumbling.
+                <br><em>What happens:</em> tower destruction animation plays and a kill or assist notification is visible.
+                <br><em>Setup:</em> Real match footage preferred for energy. Tower must fully fall within the clip.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">First clip: minion auto-attack animations and kill numbers must be clearly visible while Milady stands idle. Second clip: the tower HP bar must reach zero and play its destruction animation on screen.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 clean takes of the idle minion clip. 1 clean take of the tower-fall clip. Curate from existing match recordings if available.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B SKILL SHOWCASE -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">B.) Skill Showcase — Passive: Mechanical Minions</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Practice range: kill an enemy minion with a basic attack. A mechanical minion spawns and begins auto-attacking.
+                <br><em>What happens:</em> the minion spawn animation plays immediately after the kill.
+                <br><em>Setup:</em> Practice range. Start with 0 minions on field so the spawn is isolated and clear.</li>
+              <li>Let a Level-1 minion's timer run out while a second Level-1 minion is nearby. The two merge and a Level-2 minion appears.
+                <br><em>What happens:</em> merge animation plays; the resulting minion is visibly larger with a silver indicator.
+                <br><em>Setup:</em> Practice range. You need exactly two Level-1 minions alive at the same time — kill two minions rapidly so both Level-1 minions are active simultaneously.</li>
+              <li>Show a minion self-destructing when there is no nearby same-level minion to merge with — it explodes and deals area damage to nearby dummies.
+                <br><em>What happens:</em> explosion animation plays and damage numbers appear on nearby targets.
+                <br><em>Setup:</em> Practice range. Place minion so it expires next to a dummy with no other same-level minion nearby.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Spawn clip: the minion count UI or the minion itself must be clearly visible appearing. Merge clip: both the pre-merge minions and the resulting larger Level-2 minion must be visible in the same frame. Self-destruct clip: the damage number from the explosion must be readable on the dummy target.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 takes of each clip. All filmed in the practice range.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">B.) Skill Showcase — Skill 1: Air Superiority</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Use Skill 1 without tapping it a second time. The aircraft flies forward hitting enemies multiple times; after two hits it fires a missile for higher damage.
+                <br><em>What happens:</em> multiple hit numbers appear on the target, with a noticeably larger number from the missile hit.
+                <br><em>Setup:</em> Practice range with a stationary dummy in a straight line ahead.</li>
+              <li>Use Skill 1 again and immediately tap the skill button a second time mid-flight to split the aircraft into two. Both smaller aircraft fly into the same enemy dummy.
+                <br><em>What happens:</em> the aircraft visibly splits into two on screen; both aircraft strike the same target and a slow icon appears on the dummy.
+                <br><em>Setup:</em> Practice range. Tap the second activation early enough that the split happens before the aircraft reaches the target so the split animation is clearly visible.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Single aircraft clip: the larger missile damage number must be clearly distinguishable from the regular hit numbers. Split clip: the aircraft splitting animation must be on screen, and the slow icon on the target must be visible immediately after.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 takes each. Practice range.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">B.) Skill Showcase — Skill 2: Forced Invasion</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Target a location on the ground. Two minions drop in, the landing damage numbers appear, then after a 1-second pause the minions activate and begin attacking nearby enemies.
+                <br><em>What happens:</em> landing damage numbers appear immediately on drop, then there is a visible 1-second delay before the minions start moving and attacking.
+                <br><em>Setup:</em> Practice range with dummies nearby. Capture from a side angle so the drop trajectory and activation delay both read clearly.</li>
+              <li>Show the charge stock icon refilling over time — let one charge deplete, then let the camera linger on the icon as a new charge slowly stocks back up.
+                <br><em>What happens:</em> the charge counter increments from 2 to 3 as the stock interval completes.
+                <br><em>Setup:</em> Any game mode where Skill 2 UI is visible. Keep UI in frame throughout.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Drop clip: both the landing damage and the 1-second activation pause must be visible — the minions must not start moving until the delay is over. Charge clip: the charge counter UI must be legible and the increment from 2→3 must be visible.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 takes of the drop clip. 1 take of the charge refill clip. Practice range.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">B.) Skill Showcase — Ultimate: Chaos Field</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Cast the Ultimate on an enemy hero. The target is stunned for 0.75 seconds, then slowed and takes repeated damage ticks for 3 seconds. Nearby minions instantly rush the marked target at high speed. At the end of the mark, the detonation hits the target and nearby enemies.
+                <br><em>What happens:</em> stun animation on the target, damage ticks during the mark, minions visibly accelerating toward the target, and a final explosion at mark expiry with a damage number.
+                <br><em>Setup:</em> Custom game or real match. Target must be a non-structure enemy. Have at least 2 minions already active before casting so the rush animation is visible.</li>
+              <li>Cast the Ultimate directly on a tower structure. Show minions rushing the tower and attacking it at high speed while the mark is active.
+                <br><em>What happens:</em> no stun animation on the tower, but minions visibly accelerate and deal damage to the tower. Tower HP bar drops visibly during the mark.
+                <br><em>Setup:</em> Custom game. Must have at least 3 minions active before casting on the tower. Tower must not already be at low HP — start at roughly 50% HP so the damage is visible without the tower immediately dying.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Enemy hero clip: the stun animation, periodic damage ticks, minion rush, and final detonation damage number must all be visible. Tower clip: the minion speed boost and the tower HP bar dropping must both be readable on screen.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 takes of the enemy cast clip. 2 takes of the tower cast clip. Custom game preferred for control.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- C CORE RESOURCE -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">C.) Core Resource &amp; Combo — Minion Accumulation</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Lane clip showing Milady using Forced Invasion in a minion wave, letting the dropped minions kill lane minions, and new mechanical minions spawning from those kills — building up a growing swarm naturally.
+                <br><em>What happens:</em> each kill from a mechanical minion spawns another one; the count of active minions on screen visibly grows over 15–20 seconds of farming.
+                <br><em>Setup:</em> Real match or custom game mid-lane. Must start with 0 or 1 active minions so the growth from accumulation reads clearly.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">The growing number of active mechanical minions on screen over time — the viewer should be able to count more minions at the end of the clip than at the start.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 takes. Real match footage preferred for natural lane pacing. Clip length: 15–20 seconds.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">C.) Core Resource &amp; Combo — Kill Combo (Skill 2 – Ult – Skill 1 – Skill 2)</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Execute the full kill combo in sequence on a real or training enemy: (1) Deploy Skill 2 near the target to pre-stage minions. (2) Immediately fire Ultimate on the target — minions rush in. (3) Use Skill 1 to add damage and apply slow. (4) Drop a second Skill 2 if the target is still alive. Capture the sequence as one continuous uncut clip.
+                <br><em>What happens:</em> stun from Ultimate, minions swarming the marked target, slow from Skill 1, and the kill notification appearing.
+                <br><em>Setup:</em> Custom game against a roughly equal-health target. Start the clip exactly when Skill 2 is first activated — not before.</li>
+              <li>Show the brush ambush variant: Milady is hiding in a brush. She deploys Skill 2 outside the brush so the minions walk in and are already active. Then she steps out and immediately fires Ultimate on the target — the minions are already in position.
+                <br><em>What happens:</em> minions are visibly already active and moving when Milady steps out, making the engage instant rather than delayed.
+                <br><em>Setup:</em> Custom game or real match. The pre-staged minions must be active (not just dropped) before Milady exits the brush.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Kill combo clip: the skill activation order must be visible in the skill icon UI — viewer should be able to follow Skill 2 → Ultimate → Skill 1 → Skill 2 from the ability icons. Brush ambush clip: the minions must visibly already be moving before Milady casts Ultimate — not spawning at the same time.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 clean takes of the standard kill combo. 2 takes of the brush ambush variant. Custom game for consistency.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">C.) Core Resource &amp; Combo — Tower Combo &amp; Spell Selection</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Execute the tower-push combo: (1) Drop Skill 2 at the tower. (2) Fire Ultimate on the structure — minions rush it. (3) Drop a second Skill 2 while Ultimate is still active. (4) Use Skill 1 to clear any enemy minions blocking. (5) Milady immediately walks away. Capture as one continuous clip.
+                <br><em>What happens:</em> tower takes rapid damage from the supercharged minion swarm, HP bar drops significantly, and Milady exits the area before any enemy arrives.
+                <br><em>Setup:</em> Custom game. Tower should start at roughly 60–70% HP so the damage during the combo is clearly visible without the tower necessarily dying.</li>
+              <li>Screen recording of the spell selection screen showing Flash selected. Then a brief clip of Flash being used to escape a diving assassin.
+                <br><em>What happens:</em> Flash teleports Milady a short distance away, creating separation from the assassin.
+                <br><em>Setup:</em> Spell select screen — record the UI. Flash escape — real match or custom game with an assassin.</li>
+              <li>Screen recording of the spell selection screen showing Teleport selected. Then a brief clip of Milady using Teleport to reach an allied structure in a side lane after pushing mid.
+                <br><em>What happens:</em> Teleport channels for 2 seconds and Milady appears at the side-lane tower.
+                <br><em>Setup:</em> Custom game or real match. Show Milady walking toward mid lane, then activating Teleport to the side lane — the lane switch must be visible.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Tower combo: the tower HP bar must visibly drop during the minion swarm, and Milady must be seen walking away before the clip ends. Spell clips: the spell name label must be visible on the spell selection screen. The escape and teleport effects must be clearly visible.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 takes of the tower combo. 1 take of each spell clip.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- D ADVANCED -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">D.) Advanced Mechanics — Minion Scouting</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Milady stands just outside a brush that contains an enemy. She deploys Skill 2 so the minions land outside the brush and then walk in. The minions reveal the enemy inside without Milady entering or casting anything else.
+                <br><em>What happens:</em> the enemy hero in the brush becomes visible on screen as the minions enter. Milady has not moved from her position outside.
+                <br><em>Setup:</em> Custom game with an enemy player or bot hiding in a river brush. Milady must not step past the brush boundary at any point during the clip.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">The enemy hero must become visible on screen as a direct result of the minions entering — not from Milady's position. Milady's position outside the brush must be visible at the same time.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 clean takes. Custom game. Enemy must be fully hidden before the minions are deployed.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">D.) Advanced Mechanics — Minion Blocking</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>A support enemy fires a long-range CC skillshot (hook or similar) at Milady. Milady has deployed Skill 2 between herself and the enemy so minions are positioned in the path of the skillshot. The skillshot hits a minion instead of Milady.
+                <br><em>What happens:</em> the CC projectile visibly collides with a mechanical minion and does not reach Milady. The minion may take the hit or the skillshot may stop on impact.
+                <br><em>Setup:</em> Custom game with a support hero known for a long-range hook or projectile CC. Milady must be positioned behind her own minions when the enemy fires. Film from a camera angle that shows the projectile path, the minions, and Milady all in the same frame.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">The skillshot projectile and the minion blocking it must both be visible in the same frame. Milady must be visibly safe behind the minion wall — she must not be hit or CC'd.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 clean takes. Custom game. The projectile intercept must be unambiguous — not a near-miss.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">D.) Advanced Mechanics — Remote Tower Pressure</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Show Milady off-screen from a tower. She deploys Skill 2 so the minions land at or near the tower, then Milady immediately walks away. The minions — without Milady present — attack the tower and deal damage.
+                <br><em>What happens:</em> tower HP bar drops while Milady is nowhere near it. No minimap indicator of Milady's presence near the tower.
+                <br><em>Setup:</em> Custom game or real match. Show the minimap in frame throughout so the viewer can confirm Milady is elsewhere on the map while the tower is being hit.</li>
+              <li>Optional: show a wide minimap view where Milady is fighting or standing on one side of the map while a tower HP bar on the opposite side of the minimap is dropping simultaneously.
+                <br><em>What happens:</em> the viewer can see both Milady's position and the tower taking damage at the same time.
+                <br><em>Setup:</em> Real match footage. This is a bonus clip — capture if available, don't manufacture.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">The tower HP bar must be visibly dropping while Milady is not present in the tower's area. The minimap must be visible and legible so the viewer can confirm her location. No enemy minion wave is required — mechanical minions alone must be doing the damage.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">2 takes of the core remote pressure clip. 1 take of the optional minimap wide-view if available from real match footage.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">D.) Advanced Mechanics — Roaming Discipline &amp; Post-Fight Push</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Show Milady's roaming cycle across 30–40 seconds of real match footage: she clears mid lane, drops Skill 2 in a side lane and walks away immediately, returns to mid to clear again. The minions are working autonomously in the side lane while she's back in mid.
+                <br><em>What happens:</em> Milady is never idle — she's always in transit between lanes, and minions are active in multiple locations simultaneously.
+                <br><em>Setup:</em> Real match footage. Use the minimap to verify she's visiting multiple lanes. Aim for a clip showing at least two different lane visits within 30 seconds.</li>
+              <li>Immediately after a teamfight win (enemies dead), Milady fires Chaos Field on the nearest tower and deploys Forced Invasion under the buff. The tower takes rapid damage during the respawn window.
+                <br><em>What happens:</em> enemy death timers are visible on screen (or the kill notification is fresh), and the tower HP bar drops rapidly during the window.
+                <br><em>Setup:</em> Real match footage. The transition from teamfight-ending kill to tower-push must be immediate — no hesitation.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Roaming cycle clip: the minimap must be visible so the viewer can track Milady's position across lanes. Post-fight clip: enemy death timers or kill notification must be visible in the same clip as the tower HP bar dropping.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">Curate both from real match footage. 1 clean take each.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">D.) Advanced Mechanics — When to Push vs. Join</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>CORRECT play: Milady's team is winning a 5v5 teamfight. Milady sees an exposed side tower and goes to push it with minions instead of joining the fight. The team wins the fight, Milady takes the tower — double result.
+                <br><em>What happens:</em> the 5v5 fight and Milady's tower push are happening simultaneously. Show the result: both the fight win and the tower falling.
+                <br><em>Setup:</em> Real match footage only — this must be an organic game situation.</li>
+              <li>CORRECT play: Milady's team is losing or in a close fight. Milady joins the fight and fires Chaos Field on a key enemy target to stun and swing the fight.
+                <br><em>What happens:</em> the stun from Chaos Field visibly stops the key enemy and the fight dynamic shifts — team survives or wins.
+                <br><em>Setup:</em> Real match footage.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Push clip: both the teamfight result and the tower HP bar must be visible — ideally through a split-screen or quick cut between the minimap and the tower. Fight clip: the Chaos Field stun on the key target must be clearly visible and the turn in the fight must follow immediately.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">Curate both from real match footage. 1 clean take each. Do not stage these — only use organic match situations.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- E TEAMMATES -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">E.) Best Teammates &amp; Tough Matchups</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Tower-push synergy clip: Milady with Liu Shan working on a tower. Liu Shan uses his skills to slow and CC nearby enemies, preventing them from interfering, while also suppressing the tower's attacks — Milady fires Chaos Field on the structure and floods it with minions. Tower falls.
+                <br><em>What happens:</em> Liu Shan's CC visibly locks down enemies near the tower and the tower's attack animation stops during his suppression, while Milady's minion swarm deals damage. Tower HP bar drops rapidly.
+                <br><em>Setup:</em> Custom game or real match with Liu Shan as ally. Must show both the enemy CC and the tower suppression in the same clip — not just one or the other. Tower must take visible damage from Milady's minions during Liu Shan's suppression window.</li>
+              <li>Tower-push synergy clip: Milady with Fang working on a tower. Fang deals high burst damage directly to the tower and nearby minions, while Milady's minion swarm adds sustained pressure on the structure simultaneously.
+                <br><em>What happens:</em> the tower HP bar drops sharply from Fang's burst hits, with Milady's minions contributing additional damage in the same window. The combined damage is visibly faster than either hero could achieve alone.
+                <br><em>Setup:</em> Custom game or real match with Fang as ally. Show Fang actively attacking the tower — not just standing nearby. Milady must have at least 3 minions active on the tower at the same time.</li>
+              <li>Easy matchup clip: Milady's minions flood Lady Zhen's lane alongside the regular minion wave. Lady Zhen attempts to clear the wave but struggles — the mechanical minions join the wave and overwhelm her clear, leaving her unable to keep the lane clean.
+                <br><em>What happens:</em> Lady Zhen's wave-clear tools are visibly insufficient — minions survive her clear and continue pushing, with the lane being pushed in toward her tower.
+                <br><em>Setup:</em> Custom game or real match against Lady Zhen. Milady must deploy Forced Invasion into the lane so minions join the wave before Lady Zhen clears. Do not show Chaos Field — this clip is specifically about minion wave pressure, not a kill.</li>
+              <li>Easy matchup clip: Milady versus Dr Bian. Chaos Field burst lands before Dr Bian can reposition — show the kill or near-kill.
+                <br><em>What happens:</em> Dr Bian takes the full stun and minion damage with no gap to move away. Kill or near-kill registers on screen.
+                <br><em>Setup:</em> Real match or custom game.</li>
+              <li>Enemy synergy hazard clip: an enemy Heino marks Milady's mechanical minions with his Passive, then fires Skill 1 again to hit the marked minions — each marked unit hit reduces his Skill 1 cooldown, allowing him to cast it again almost immediately.
+                <br><em>What happens:</em> Heino's Skill 1 cooldown visibly resets or refreshes rapidly after hitting the marked minions. Show him casting Skill 1 multiple times in quick succession because of the cooldown reduction from Milady's minions.
+                <br><em>Setup:</em> Custom game with Heino on the enemy team. Milady must have multiple active minions on the field before Heino marks and fires. Keep Heino's Skill 1 cooldown icon clearly in frame so the rapid refresh is readable.</li>
+              <li>Enemy synergy hazard clip: an enemy Ziya is nearby while Milady's mechanical minions are killing lane minions. Ziya gets bonus experience from each kill — either by landing the last hit himself or by having hit the unit within 4 seconds of it dying — and levels up faster than normal.
+                <br><em>What happens:</em> Ziya's level-up notification fires noticeably faster than expected. Ideally show Ziya's experience bar ticking up from minion kills that Milady's minions are finishing, with a level-up occurring sooner than it should.
+                <br><em>Setup:</em> Custom game with Ziya on the enemy team. Position Ziya near Milady's active minion swarm in a lane so he can tag minions before the mechanical minions finish them. Keep Ziya's experience bar or level counter visible in frame.</li>
+              <li>Counter matchup clip: Mulan engages Milady — CC-immune and closing the gap despite Milady's kit. Milady cannot stop her and loses the trade.
+                <br><em>What happens:</em> Mulan shrugs off or ignores Milady's crowd control and beats her in the 1v1.
+                <br><em>Setup:</em> Custom game. Must clearly show Mulan's CC immunity or gap-close overcoming Milady's tools.</li>
+              <li>Counter matchup clip: Prince of Lanling or Shangguan dashes onto Milady before her minions can activate. Milady takes heavy burst damage before minions deal meaningful damage in return.
+                <br><em>What happens:</em> assassin closes gap instantly; Milady takes burst damage while minions are still activating. Follow with Milady recognising the window when the assassin has already spent their dash on someone else, and acting.
+                <br><em>Setup:</em> Real match footage preferred.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">Liu Shan clip: the tower's attack suppression and the enemy CC must both be visible in the same clip, alongside Milady's minions dealing damage to the tower. Fang clip: Fang's burst damage hits on the tower and Milady's minions attacking simultaneously must both be readable — the tower HP bar must drop visibly faster than it would from either alone. Lady Zhen clip: Milady's mechanical minions must be clearly present in the wave and the lane must be visibly pushing toward Lady Zhen's tower. Dr Bian clip: stun landing and no repositioning must be clear. Heino clip: his Skill 1 cooldown icon must be in frame and the rapid reset after hitting marked minions must be readable. Ziya clip: Ziya's experience bar or level counter must be visible and the level-up must occur during or immediately after minion kills by Milady's minions. Mulan clip: her CC immunity or gap-close overcoming Milady must be unambiguous. Counter assassin clip: the gap-close and burst damage landing before minions activate must both be readable.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">1–2 takes of each. Liu Shan and Fang synergy clips, Mulan, and assassin counter clips from real match footage strongly preferred. Lady Zhen, Heino, Dr Bian, and Ziya clips captured in custom game for control over minion positioning and visibility.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- F CLOSING -->
+    <div class="scene">
+      <div class="scene-head"><span class="title">F.) Closing &amp; Retention Hook</span></div>
+      <div class="scene-body">
+        <div class="row record">
+          <div class="lab">Record</div>
+          <div class="val">
+            <ul>
+              <li>Slow outro montage: 3–4 clips showing towers falling, mechanical minions swarming objectives, and Milady standing at a distance — composed, unhurried — while the map crumbles around her. End on Milady's hero portrait or splash art as the minion swarm disperses.
+                <br><em>What happens:</em> the montage should feel inevitable — not frantic. Milady barely moves. The towers fall. End-screen / subscribe card follows.
+                <br><em>Setup:</em> Curate from the best clips across the session. Final hold frame must be clean — no mid-fight chaos, just Milady and the result.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row show">
+          <div class="lab">Show</div>
+          <div class="val">At least one tower destruction animation must appear in the montage. The final frame must be Milady's portrait or splash art — no active combat visible in the freeze frame.</div>
+        </div>
+        <div class="row reps">
+          <div class="lab">Reps</div>
+          <div class="val">Curate from existing session footage. Add end-screen overlay and subscribe prompt on the final hold frame.</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>MILADY · THE MECHABOSS — HOK GLOBAL HERO GUIDE · EP. 30</footer>
+
+</div>
+
+<script>
+  const tabs=document.querySelectorAll('.tab');
+  const views=document.querySelectorAll('.view');
+  tabs.forEach(t=>t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    views.forEach(v=>v.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.view).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }));
+</script>
+</body>
+</html>
