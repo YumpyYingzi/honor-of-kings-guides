@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOK Community Tournaments — Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e1118; --panel:#161b26; --panel-2:#1d2330; --line:#2a3343;
+    --gold:#d9a441; --gold-soft:#f0cd7e; --ink:#e9edf4; --muted:#8b95a7;
+  }
+  *{box-sizing:border-box;margin:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.6}
+
+  /* ---------- hero ---------- */
+  .hero{min-height:62vh;display:flex;flex-direction:column;justify-content:center;
+    align-items:center;text-align:center;padding:70px 20px 60px;position:relative;
+    background:
+      radial-gradient(800px 380px at 50% -120px, rgba(217,164,65,.16), transparent),
+      linear-gradient(180deg,#0e1118 0%, #121623 100%);}
+  .hero .eyebrow{letter-spacing:.28em;font-size:12px;color:var(--gold);
+    text-transform:uppercase;font-weight:600;margin-bottom:18px}
+  .hero h1{font-family:Cinzel,serif;font-weight:900;font-size:clamp(34px,6vw,62px);
+    color:var(--gold-soft);line-height:1.12}
+  .hero h1 span{display:block;color:var(--ink);font-size:.52em;font-weight:700;
+    letter-spacing:.08em;margin-top:10px}
+  .hero p{max-width:560px;color:var(--muted);margin-top:22px;font-size:16px}
+  .hero .rule{width:64px;height:2px;background:var(--gold);margin:30px auto 0}
+
+  /* ---------- layout ---------- */
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  section{padding:64px 0}
+  h2{font-family:Cinzel,serif;color:var(--gold-soft);font-size:26px;margin-bottom:6px}
+  .lead{color:var(--muted);margin-bottom:34px;max-width:640px}
+
+  /* ---------- lifecycle flow ---------- */
+  .flow{display:flex;flex-wrap:wrap;gap:0;justify-content:center;margin-top:10px}
+  .step{flex:1 1 130px;max-width:150px;text-align:center;padding:0 6px;position:relative}
+  .step .n{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 12px;
+    font-family:Cinzel,serif;font-weight:700;color:var(--gold);background:var(--panel)}
+  .step:not(:last-child)::after{content:"";position:absolute;top:22px;left:calc(50% + 26px);
+    width:calc(100% - 52px);height:1.5px;background:var(--line)}
+  .step b{display:block;font-size:13.5px;margin-bottom:3px}
+  .step small{color:var(--muted);font-size:12px;line-height:1.4;display:block}
+
+  /* ---------- cards ---------- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:22px 22px 20px}
+  .card h3{font-size:15.5px;color:var(--gold-soft);margin-bottom:9px;
+    display:flex;align-items:center;gap:9px}
+  .card h3 .ic{font-size:18px}
+  .card p{font-size:13.5px;color:var(--muted)}
+  .card ul{margin:8px 0 0 16px;font-size:13.5px;color:var(--muted)}
+  .card li{margin-bottom:5px}
+  .card li b{color:var(--ink);font-weight:600}
+
+  /* ---------- roles ---------- */
+  .roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+  .role{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;
+    padding:18px;border-top:3px solid var(--gold)}
+  .role b{font-family:Cinzel,serif;color:var(--gold-soft);font-size:15px;display:block;margin-bottom:6px}
+  .role span{font-size:13px;color:var(--muted)}
+
+  /* ---------- registration status strip ---------- */
+  .pills{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:16px}
+  .pill{padding:6px 14px;border-radius:999px;font-size:12.5px;font-weight:600;
+    border:1px solid var(--line);background:var(--panel);color:var(--muted)}
+  .pill.hot{border-color:var(--gold);color:var(--gold-soft)}
+  .arrow{color:var(--muted);font-size:13px}
+
+  /* ---------- highlight band ---------- */
+  .band{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .band .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:18px;padding-top:44px;padding-bottom:44px}
+  .stat b{font-family:Cinzel,serif;font-size:26px;color:var(--gold);display:block}
+  .stat span{font-size:13px;color:var(--muted)}
+
+  footer{padding:46px 20px 60px;text-align:center;color:var(--muted);font-size:13px}
+  footer b{color:var(--gold-soft);font-family:Cinzel,serif}
+
+  /* ── back button ── */
+  .back-btn {
+    position: fixed; top: 16px; left: 16px; z-index: 100;
+    font-family: Cinzel, serif; font-size: 11px; font-weight: 700;
+    letter-spacing: .18em; text-transform: uppercase;
+    color: var(--gold); text-decoration: none;
+    background: var(--panel); border: 1px solid var(--gold);
+    padding: 8px 16px; border-radius: 4px;
+    display: flex; align-items: center; gap: 8px;
+    transition: background .2s, color .2s, box-shadow .2s;
+    box-shadow: 0 2px 12px rgba(0,0,0,.4);
+  }
+  .back-btn:hover {
+    background: var(--gold); color: var(--bg);
+    box-shadow: 0 0 18px rgba(217,164,65,.35);
+  }
+
+  @media(max-width:640px){
+    .step:not(:last-child)::after{display:none}
+    .flow{gap:18px}
+    section{padding:46px 0}
+  }
+</style>
+</head>
+<body>
+<a class="back-btn" href="index.html">&#8592; Guide Library</a>
+
+<div class="hero">
+  <div class="eyebrow">HOK Global Community Platform · Proposal</div>
+  <h1>TOURNAMENTS<span>From Registration to Champion — One Platform</span></h1>
+  <p>A complete tournament system for our monthly themed cups: dedicated tournament pages,
+     smart registration, fair brackets, and verified results — built into our community web app.</p>
+  <div class="rule"></div>
+</div>
+
+<div class="wrap">
+
+<!-- ============ LIFECYCLE ============ -->
+<section>
+  <h2>How a Tournament Runs</h2>
+  <p class="lead">Every monthly cup follows one clean lifecycle. Each stage is handled inside the platform — no scattered forms, sheets, or DMs.</p>
+  <div class="flow">
+    <div class="step"><div class="n">1</div><b>Create</b><small>Lead sets name, theme, posters, dates, rules — a dedicated page is born</small></div>
+    <div class="step"><div class="n">2</div><b>Register</b><small>Teams sign up through a guided multi-step form</small></div>
+    <div class="step"><div class="n">3</div><b>Review</b><small>Staff verify details &amp; ID proofs; fix-ups requested inline</small></div>
+    <div class="step"><div class="n">4</div><b>Bracket</b><small>Approved teams shuffled into a fair, logged bracket</small></div>
+    <div class="step"><div class="n">5</div><b>Compete &amp; Resolve</b><small>Results with screenshot proof; complaints handled in-platform with live dispute status</small></div>
+    <div class="step"><div class="n">6</div><b>Champion</b><small>Rounds progress until one team takes the crown</small></div>
+  </div>
+</section>
+
+<!-- ============ ROLES ============ -->
+<section>
+  <h2>Who Does What</h2>
+  <p class="lead">Clear roles keep the tournament running smoothly and the data safe.</p>
+  <div class="roles">
+    <div class="role"><b>Admin</b><span>Platform-wide control. Creates tournaments, assigns leads.</span></div>
+    <div class="role"><b>Tournament Lead</b><span>Runs their tournament end-to-end: setup, approvals, brackets, results.</span></div>
+    <div class="role"><b>Match Manager</b><span>Enters match results and proof only — nothing else to break.</span></div>
+    <div class="role"><b>Community Member</b><span>Discovers tournaments, registers a team, tracks status, follows the bracket.</span></div>
+  </div>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section>
+  <h2>What's Inside</h2>
+  <p class="lead">The pieces that make it work — designed around problems every community tournament faces.</p>
+  <div class="grid">
+    <div class="card">
+      <h3><span class="ic">🏛️</span>Dedicated Tournament Pages</h3>
+      <p>Each cup gets its own page with logo, banner, posters, theme, prize pool, dates, and full rules. The main page lists every tournament with its live status.</p>
+    </div>
+    <div class="card">
+      <h3><span class="ic">📝</span>Smart Registration Forms</h3>
+      <ul>
+        <li>Built from an <b>Excel template</b> for quick setup, then fully <b>editable in-app</b></li>
+        <li>Multi-step: Team → Players → Documents → Review</li>
+        <li><b>Autosave drafts</b> — no lost progress</li>
+        <li><b>Duplicate ID check</b> — no player on two teams</li>
+        <li>ID-proof image uploads with preview</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="ic">✅</span>Fair, Fast Approvals</h3>
+      <ul>
+        <li>Staff panel filtered by tournament, month &amp; status</li>
+        <li>Flag <b>individual fields</b> with a comment ("ID blurry — re-upload")</li>
+        <li>On resubmit, <b>correct fields stay locked</b> — only fixes needed</li>
+        <li>Approved teams auto-mapped to the roster</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="ic">🎲</span>Transparent Brackets</h3>
+      <ul>
+        <li>One-click <b>shuffle</b> — logged &amp; permanent, no re-rolls</li>
+        <li>Odd team count? <b>101 teams → 50 matches + 1 bye</b>, shown openly. Even counts need none</li>
+        <li>Handles fields from 8 to 512 teams with ease</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="ic">🔍</span>Brackets Anyone Can Read</h3>
+      <ul>
+        <li>Scroll &amp; zoom — comfortable even at 128 teams</li>
+        <li><b>Round tabs</b> (R1 · QF · SF · Final) to jump stages</li>
+        <li><b>"Find my team"</b> — jumps straight to your match</li>
+        <li>Simple list view for "who do I play &amp; when"</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="ic">📸</span>Verified Results</h3>
+      <ul>
+        <li>Winner can't be set until a <b>victory screenshot</b> is uploaded</li>
+        <li>Round rules on every match card: <b>Bo3 · Global Ban · Recording</b></li>
+        <li>No-shows handled fairly: wait window → auto reminder → <b>walkover</b>, shown openly on the bracket</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="ic">⚖️</span>Dispute Resolution, Built In</h3>
+      <ul>
+        <li>Either team can raise a complaint — <b>cheating, contested result, rule violation</b> — right from their match</li>
+        <li>Evidence uploads supported</li>
+        <li><b>Live status</b> visible to both teams: Raised → Under Review → Resolved</li>
+        <li>Outcomes recorded: result stands, overturned, replay, or disqualification</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="ic">💬</span>Match Lobbies — Built for 256 at Once</h3>
+      <ul>
+        <li>Every match gets a <b>private chat</b>: both team POCs + their assigned Match Manager</li>
+        <li>Built-in <b>/flip coin toss</b> — server-side, logged, no arguments</li>
+        <li>Handles <b>all 256 Round-1 matches simultaneously</b> at 512 teams — no connection limits, no extra cost</li>
+        <li>No-show reminders land here <b>and</b> by email</li>
+        <li>Temporary by design — <b>wiped when the tournament closes</b></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="ic">🎧</span>Match Manager Console</h3>
+      <ul>
+        <li>Managers are <b>assigned their own set of matches</b> (e.g. 256 ÷ 16 managers = 16 each)</li>
+        <li><b>"My Matches"</b> view: assemble → toss → play → document → close</li>
+        <li>Lead's <b>overview board</b> shows every match by status — stuck matches spotted instantly</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="ic">⚙️</span>Per-Round Rules</h3>
+      <p>Each stage carries its own schedule, Best-of format, global-ban setting, and recording requirements — with tool links and instructions shown right where players need them.</p>
+    </div>
+    <div class="card">
+      <h3><span class="ic">🔔</span>Nobody Left Guessing</h3>
+      <p>In-app + email notifications for the moments that matter: registration received, fix-up requested, approved, match scheduled, result posted.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATUS TRACKER ============ -->
+<section>
+  <h2>Every Team Knows Where They Stand</h2>
+  <p class="lead">Registration status is visible on the tournament page the whole way through — no more "did our form go through?" messages.</p>
+  <div class="pills">
+    <span class="pill">Submitted</span><span class="arrow">→</span>
+    <span class="pill">Under Review</span><span class="arrow">→</span>
+    <span class="pill hot">Needs Update</span><span class="arrow">→</span>
+    <span class="pill">Resubmitted</span><span class="arrow">→</span>
+    <span class="pill hot">Approved ✓</span>
+  </div>
+</section>
+
+</div>
+
+<!-- ============ BAND ============ -->
+<div class="band">
+  <div class="wrap">
+    <div class="stat"><b>512</b><span>teams · 256 simultaneous Round-1 matches</span></div>
+    <div class="stat"><b>1</b><span>platform — pages, forms, brackets, lobbies, results</span></div>
+    <div class="stat"><b>0</b><span>hosting cost — runs on our existing free stack</span></div>
+    <div class="stat"><b>100%</b><span>results backed by screenshot proof</span></div>
+  </div>
+</div>
+
+<footer>
+  <b>HOK Global Community Platform</b><br>
+  Tournaments Module · Proposal · July 2026
+</footer>
+
+</body>
+</html>
