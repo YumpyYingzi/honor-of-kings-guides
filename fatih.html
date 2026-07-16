@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fatih — Mighty Conqueror · Guide Script & Screenplay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<script defer src="shared.js"></script>
+<style>
+  :root{
+    --void:#05060b;
+    --ink:#0b0e1a;
+    --panel-solid:#0e1008;
+    --edge:#3d2e0f;
+    --edge-soft:#261d0a;
+    --bolt:#d4922a;
+    --bolt-bright:#e8c97a;
+    --volt:#c03a2b;
+    --gold:#e8c97a;
+    --gold-soft:#c9a245;
+    --paper:#f0ead8;
+    --paper-dim:#a89878;
+    --paper-faint:#6b5e3e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Spectral',Georgia,serif;
+    background:
+      radial-gradient(1200px 700px at 50% -10%, rgba(192,58,43,.16), transparent 60%),
+      radial-gradient(900px 600px at 85% 8%, rgba(212,146,42,.12), transparent 55%),
+      linear-gradient(180deg,#05060b 0%, #0a0905 45%, #05060b 100%);
+    color:var(--paper);
+    line-height:1.7;
+    min-height:100vh;
+    padding:0 0 80px;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.45;
+    background-image:
+      linear-gradient(rgba(212,146,42,.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,146,42,.03) 1px, transparent 1px);
+    background-size:46px 46px;
+    mask-image:radial-gradient(1000px 800px at 50% 0%, #000 30%, transparent 80%);
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+  header.mast{text-align:center;padding:64px 0 30px;position:relative;}
+  .kicker{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--bolt);opacity:.85;margin-bottom:22px;}
+  .mast h1{font-family:'Cinzel',serif;font-weight:900;line-height:.98;font-size:clamp(48px,11vw,104px);letter-spacing:.02em;background:linear-gradient(180deg,#fff 0%, var(--bolt-bright) 38%, var(--volt) 105%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 60px rgba(192,58,43,.22);}
+  .mast .epithet{font-family:'Cinzel',serif;font-weight:600;font-size:clamp(15px,3.6vw,22px);letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-top:10px;padding-left:.5em;}
+  .mast .sub{margin-top:20px;color:var(--paper-dim);font-style:italic;font-size:16px;max-width:560px;margin-left:auto;margin-right:auto;}
+  .bolt-rule{width:120px;height:2px;margin:30px auto 0;background:linear-gradient(90deg,transparent,var(--bolt),var(--volt),transparent);box-shadow:0 0 18px rgba(212,146,42,.5);}
+  .runtime{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--paper-faint);letter-spacing:.2em;margin-top:18px;}
+
+  .tabs{position:sticky;top:0;z-index:20;display:flex;gap:8px;justify-content:center;padding:14px 0 12px;margin:18px 0 8px;background:linear-gradient(180deg,#05060bef 60%, transparent);backdrop-filter:blur(4px);}
+  .tab{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;color:var(--paper-dim);background:var(--panel-solid);border:1px solid var(--edge);padding:11px 20px;border-radius:2px;transition:.22s;}
+  .tab:hover{color:var(--paper);border-color:var(--bolt)}
+  .tab.active{color:#060912;background:linear-gradient(180deg,var(--bolt-bright),var(--bolt));border-color:var(--bolt);box-shadow:0 0 22px rgba(212,146,42,.45);}
+  .view{display:none;animation:fade .4s ease}
+  .view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .block{position:relative;margin:30px 0;padding:26px 28px 26px 30px;background:linear-gradient(180deg,rgba(20,15,5,.72),rgba(10,8,2,.72));border:1px solid var(--edge-soft);border-left:none;border-radius:3px;overflow:hidden;}
+  .block::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--bolt),var(--volt));box-shadow:0 0 16px rgba(212,146,42,.5);}
+  .block h2{font-family:'Cinzel',serif;font-weight:700;font-size:clamp(20px,4vw,28px);color:var(--bolt-bright);letter-spacing:.04em;margin:0 0 14px;line-height:1.15;}
+  .block h2 .tail{font-size:.62em;color:var(--gold);letter-spacing:.08em;font-weight:600}
+  .vo{color:var(--paper);font-size:17px}
+  .vo p{margin:0 0 10px}
+  .vo .quote{display:block;margin:6px 0;padding-left:2px}
+  .skill{font-family:'Cinzel',serif;font-weight:600;color:var(--gold);letter-spacing:.03em;display:block;margin:16px 0 4px;font-size:16px;}
+  .subhead{font-family:'Cinzel',serif;font-weight:600;color:var(--bolt);letter-spacing:.05em;display:block;margin:20px 0 6px;font-size:17px;border-bottom:1px solid var(--edge-soft);padding-bottom:5px;}
+  .lead{font-weight:600;color:var(--bolt-bright)}
+  .vo ul{list-style:none;margin:6px 0;padding:0}
+  .vo ul li{position:relative;padding-left:20px;margin:8px 0;}
+  .vo ul li::before{content:"⚔";position:absolute;left:0;top:0;font-size:12px;color:var(--bolt);filter:drop-shadow(0 0 4px rgba(212,146,42,.6));}
+
+  .sp-intro{margin:26px 0 8px;color:var(--paper-dim);font-style:italic;font-size:15px;border-left:2px solid var(--edge);padding-left:16px;}
+  .scene{margin:22px 0;border:1px solid var(--edge-soft);border-radius:3px;overflow:hidden;background:linear-gradient(180deg,rgba(18,12,4,.7),rgba(8,6,2,.7));}
+  .scene-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 18px;background:rgba(212,146,42,.07);border-bottom:1px solid var(--edge-soft);}
+  .scene-head .title{font-family:'Cinzel',serif;font-weight:600;font-size:15px;color:var(--bolt-bright);letter-spacing:.06em;text-transform:uppercase;}
+  .scene-body{padding:6px 18px 16px}
+  .row{display:flex;gap:0;border-bottom:1px dashed var(--edge-soft);padding:12px 0}
+  .row:last-child{border-bottom:none}
+  .row .lab{flex:0 0 116px;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding-top:3px;}
+  .row.rec .lab{color:var(--bolt)}
+  .row.show .lab{color:var(--bolt-bright)}
+  .row.reps .lab{color:var(--gold)}
+  .row .val{flex:1;font-size:15.5px;color:var(--paper)}
+  .row .val ul{list-style:disc;padding-left:20px;color:var(--paper)}
+  .row .val ul li{margin:10px 0;line-height:1.6}
+  .row .val ul li em{color:var(--paper-dim);font-style:italic}
+
+  footer{text-align:center;margin-top:50px;color:var(--paper-faint);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;}
+
+  @media print{
+    body{background:#fff;color:#111}
+    body::before{display:none}
+    .tabs{display:none}
+    .view{display:block!important}
+    .view + .view{page-break-before:always}
+    .mast h1{color:#3d1a00;-webkit-text-fill-color:#3d1a00}
+    .block,.scene{background:#fff;border-color:#bbb;break-inside:avoid}
+    .block h2,.scene-head .title{color:#3d1a00}
+    .vo,.row .val{color:#111}
+    .skill{color:#8a5a14}
+  }
+  @media (max-width:600px){.row{flex-direction:column;gap:3px}.row .lab{flex:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker">Honor of Kings · Global · Hero Guide · Episode 31</div>
+    <h1>FATIH</h1>
+    <div class="epithet">The Mighty Conqueror</div>
+    <p class="sub">"They called him the urchin prince. He answered with cannons."</p>
+    <div class="bolt-rule"></div>
+    <div class="runtime">FULL RUNTIME · 0:00 — 4:50</div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-view="script">📜 Full Script</button>
+    <button class="tab" data-view="screenplay">🎬 Screenplay</button>
+  </nav>
+
+  <!-- SCRIPT -->
+  <section class="view active" id="script">
+
+    <div class="block">
+      <h2>A.) Hook &amp; Identity</h2>
+      <div class="vo">
+        <span class="quote">"They wrote him off as the urchin prince — exiled, forgotten, easy to ignore.</span>
+        <span class="quote">He came back with cannons.</span>
+        <span class="quote">Fatih, the Mighty Conqueror, doesn't fight for survival — he fights to make history.</span>
+        <span class="quote">In this guide, I'll show you how to stack your passive, chain your combos, and become the kind of threat that earns a new name."</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>B.) Skill Showcase</h2>
+      <div class="vo">
+        <p>"Fatih's kit runs on one loop: use skills, earn enhanced attacks, spend them to deal damage and stay alive.</p>
+        <span class="skill">Passive — Only the Strong</span>
+        <p>Each skill use grants one enhanced basic attack, up to five stacks. Enhanced attacks have extended range and higher attack speed than a normal basic. Stacks decay — the first drops after five seconds, each after that every two and a half seconds. Cast a skill to refresh the timer before they fall.</p>
+        <span class="skill">Skill 1 — Overlord's Charge</span>
+        <p>Fatih dashes forward up to three times. The third dash launches enemies airborne. Every unused slash cuts the cooldown by thirty-five percent — fire one charge and let the others lapse, and you're back in about one and a half seconds. Gap-closer, crowd control, wall-crosser, and escape in one slot.</p>
+        <span class="skill">Skill 2 — Unfettered Will</span>
+        <p>A blade wave that slows enemies and heals Fatih per hit — halved on minions and monsters. Every basic attack reduces the cooldown, so auto-attacking between casts fires it far more often than the base timer suggests. Sustain in the jungle; poke and stack generator in lane.</p>
+        <span class="skill">Ultimate — Blood Soaked Legend</span>
+        <p>Instantly removes all crowd control, restores missing health, and boosts Physical Attack and Tenacity. Maximum health scales with nearby enemies, so diving deep into a group makes you harder to kill. Enhanced attacks and Skill 2 are strengthened while active, and every hit heals. Use it going in, not after the damage has already hit."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>C.) Core Resource &amp; Combo</h2>
+      <div class="vo">
+        <p>"Everything runs through the passive. No stacks means no damage.</p>
+        <p>The key trick: you don't need all three Skill 1 charges. Fire one, let the others expire, and the cooldown returns in under two seconds. That keeps stacks rolling without overcommitting. When stacks are about to fall, Skill 2 is your filler — fast, healing, and shortened by every auto you land.</p>
+        <p>Before a fight, build four stacks then pop your ultimate — it grants one stack on cast, pushing you to five instantly. The loop: enhanced attack, Skill 2, enhanced attack, Skill 1, enhanced attack — weave autos throughout to keep Skill 2 ticking and stacks refreshing. Never open with your ult from full health; pre-load your stacks, then activate on contact.</p>
+        <p>Skill priority: Ultimate first, Skill 2 second, Skill 1 last. Spell: Smite as jungler, Flash as solo laner — Execute works if you want kill-finishing power over repositioning."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>D.) Advanced Mechanics <span class="tail">— Offense, Jungle &amp; Teamfight</span></h2>
+      <div class="vo">
+        <p>"Here's what separates a dangerous Fatih from a dead one.</p>
+
+        <span class="subhead">Animation Cancelling</span>
+        <p>Every skill and enhanced attack has a back-swing. Hold the movement joystick as you cast to cancel it — critical on Skill 1, which stalls if tapped passively. Chain skill casts off enhanced attack hits before the recovery finishes. Tight cancels mean more damage inside the ultimate window.</p>
+
+        <span class="subhead">Skill 1 Wall Mechanics</span>
+        <p>All three charges pass through thin walls — but you must press against the wall before casting. This creates flanks and escapes the enemy can't predict, and lets you dart through terrain to contest objectives then dash back out before anyone arrives.</p>
+
+        <span class="subhead">Lane Rhythm</span>
+        <p>Fire Skill 2 into the wave early for free healing and pressure. Fatih is not a first-in hero: wait for the enemy to spend their crowd control, then Skill 1 in and activate. Going in at full health into CC that's still available is how you die before the healing starts.</p>
+
+        <span class="subhead">Jungle Rhythm</span>
+        <p>Skill 2 healing makes camps sustainable after level 4, and three gap-close charges with a knock-up make ganks threatening. Pre-load two Skill 1 stacks before clearing a camp. Gank through walls — dash over terrain into lane from an angle they won't expect. The third charge knock-up is your lockdown.</p>
+
+        <span class="subhead">Teamfight</span>
+        <p>Enter second. Let your frontline absorb the first CC wave, then flank. Activate your ultimate the moment you engage — the max-health bonus scales with nearby enemies, so going deep is your strongest state. Three Skill 1 dashes bypass the frontline; knock-up the carry and let the stack loop burn them down. When your health bar of recovery is spent, Skill 1 out, re-stack, and come back in."</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>E.) Best Teammates &amp; Tough Matchups</h2>
+      <div class="vo">
+        <ul>
+          <li><span class="lead">Best teammates</span> — Lian Po and Zhang Fei lock down multiple enemies so Fatih can clean up freely. Sun Bin's healing stacks on top of Fatih's own recovery to make him nearly unkillable in sustained fights. Dolia's ultimate can reset Blood Soaked Legend — a second ult in one fight is brutal.</li>
+          <li><span class="lead">Tough matchups</span> — Anti-heal effects are Fatih's hard counter; his kit lives on recovery, and grievous wounds cuts it in half. Highly mobile assassins like Prince of Lanling can burst and disengage before the stack loop gets rolling — save a Skill 1 charge for escape rather than burning all three on a chase.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>F.) Closing &amp; Retention Hook</h2>
+      <div class="vo">
+        <span class="quote">"They wrote him off once. They won't make that mistake again.</span>
+        <span class="quote">Stack the passive. Enter second. Make them remember the name.</span>
+        <span class="quote">I'll see you in the next episode."</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- SCREENPLAY -->
+  <section class="view" id="screenplay">
+
+    <p class="sp-intro">Shooting screenplay in section order matching the script. Record is the primary instruction — written for anyone, regardless of game knowledge.</p>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">A.) Hook &amp; Identity</span></div>
+      <div class="scene-body">
+        <div class="row rec"><div class="lab">Record</div><div class="val"><ul>
+          <li>Open cold on Fatih completely still on a dark battlefield while enemies surround him — hold for 2–3 seconds with no action.<br><em>What happens:</em> A lone hero holds his ground in chaos.<br><em>Setup:</em> Real match or highlight footage. A 2-second idle moment mid-fight is enough.</li>
+          <li>Cut to Fatih activating Blood Soaked Legend — the activation visual burst plays — then dashing into the enemy team, landing his third Skill 1 charge (the knock-up) on an enemy carry, and getting the kill.<br><em>What happens:</em> Kill notification banner appears on screen.<br><em>Setup:</em> Real match footage. The kill must be deliberate. Ideally the dive comes through a wall for visual impact.</li>
+          <li>End on a freeze frame of Fatih standing amid the aftermath — or cut to his hero splash art held for a beat.<br><em>Setup:</em> In-game portrait or splash art, or a still from the kill clip.</li>
+        </ul></div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">Kill-notification banner must be visible. The stillness contrast with the explosive dive is the hook's point — both clips must be clear enough that the viewer feels the shift.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">2 takes of the opening still. 1–2 clean kill/dive clips. Curate from existing recordings.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">B.) Skill Showcase — Passive: Only the Strong</span></div>
+      <div class="scene-body">
+        <div class="row rec"><div class="lab">Record</div><div class="val"><ul>
+          <li>Practice range: cast any skill and watch the passive stack counter appear on Fatih's HUD. Cast again to show stacks building toward 5.<br><em>What happens:</em> Each skill cast adds one glowing stack indicator.<br><em>Setup:</em> Practice range. Keep the passive stack icon clearly in frame.</li>
+          <li>Let the stacks decay without casting — show the first stack disappearing at 5 seconds, then the next at 2.5 seconds.<br><em>What happens:</em> The counter visibly decrements at those intervals.<br><em>Setup:</em> Practice range. Keep timer and stack counter in frame.</li>
+          <li>With 2–3 stacks, show an enhanced basic attack hitting a dummy placed at the edge of Fatih's normal auto range — demonstrating the extended reach.<br><em>What happens:</em> The enhanced attack connects where a normal auto would not.<br><em>Setup:</em> Practice range. Place the dummy at the far edge of normal auto range.</li>
+        </ul></div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">Stack counter must be readable in every clip. Decay clip: counter must visibly decrement. Enhanced attack clip: the attack must connect beyond normal auto range.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">2 clean takes each. All in practice range.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">B.) Skill Showcase — Skill 1: Overlord's Charge</span></div>
+      <div class="scene-body">
+        <div class="row rec"><div class="lab">Record</div><div class="val"><ul>
+          <li>Full three-charge sequence: Fatih dashes three times toward a dummy. The third dash sends the dummy airborne.<br><em>What happens:</em> Three distinct dashes, the third knocking the dummy into the air.<br><em>Setup:</em> Practice range. Film from a side angle so all three dashes and the knock-up are in one frame.</li>
+          <li>Cooldown reduction: Fatih casts Skill 1 once, then waits for the remaining two charges to expire without casting them. Watch the Skill 1 icon reset much faster than after a full three-charge use.<br><em>What happens:</em> The Skill 1 icon returns in roughly 1–2 seconds instead of the full cooldown.<br><em>Setup:</em> Practice range. Keep the Skill 1 cooldown icon clearly in frame.</li>
+          <li>Wall pass-through: Fatih presses against a thin wall and casts Skill 1 — he passes cleanly through to the other side.<br><em>What happens:</em> Fatih enters the wall and exits on the other side.<br><em>Setup:</em> Custom game or practice range with a thin wall. Fatih must visibly touch the wall before casting.</li>
+        </ul></div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">Knock-up: dummy airborne animation must be clearly visible. Cooldown clip: Skill 1 icon must be in frame and fast reset must be readable — slow-mo if necessary. Wall clip: both sides of the wall visible in one shot, no jump cuts.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">2 clean takes each. Practice range or custom game.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">B.) Skill Showcase — Skill 2: Unfettered Will</span></div>
+      <div class="scene-body">
+        <div class="row rec"><div class="lab">Record</div><div class="val"><ul>
+          <li>Fire Skill 2 into a group of 2–3 practice dummies. Show Fatih's health bar recovering after the wave hits.<br><em>What happens:</em> Heal numbers pop above Fatih's health bar from each hit.<br><em>Setup:</em> Practice range. Dummies lined up so the wave hits multiple targets. Zoom in on Fatih's health bar.</li>
+          <li>After firing Skill 2, land 2–3 basic attacks on a dummy. Watch the Skill 2 icon tick down faster with each auto.<br><em>What happens:</em> The Skill 2 cooldown bar visibly shrinks with each basic attack landing.<br><em>Setup:</em> Practice range. Keep Skill 2 cooldown icon in frame throughout.</li>
+        </ul></div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">Heal clip: green heal numbers above Fatih's health bar must be readable. CDR clip: the Skill 2 cooldown bar must visibly shorten with each auto — slow-mo if subtle.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">2 clean takes each. Practice range.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">B.) Skill Showcase — Ultimate: Blood Soaked Legend</span></div>
+      <div class="scene-body">
+        <div class="row rec"><div class="lab">Record</div><div class="val"><ul>
+          <li>Full ultimate sequence against enemy heroes: Fatih activates his Ultimate mid-fight — show the CC-cleanse visual on activation, then show him tanking damage while continuously healing via enhanced attacks and Skill 2.<br><em>What happens:</em> Activation visual plays, Fatih's health bar recovers continuously, and heal numbers appear throughout.<br><em>Setup:</em> Custom game with 2–3 enemy heroes or real match footage.</li>
+          <li>CC cleanse demo: Fatih is hit by a stun or slow, then immediately activates his Ultimate — the debuff icon disappears instantly.<br><em>What happens:</em> The CC icon on Fatih's character vanishes the moment Blood Soaked Legend is cast.<br><em>Setup:</em> Custom game. Use a hero with a simple stun (e.g. Zhang Fei) to apply CC first.</li>
+        </ul></div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">Sustain clip: heal numbers and health bar recovery must be visible during combat. Cleanse clip: CC icon must visibly disappear when Ultimate is cast.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">2 clean takes of sustain. 1 clean cleanse demo.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">C.) Core Resource &amp; Combo — Stack Management &amp; Pre-fight Setup</span></div>
+      <div class="scene-body">
+        <div class="row rec"><div class="lab">Record</div><div class="val"><ul>
+          <li>Single-charge Skill 1 loop: Fatih casts Skill 1 once (first charge only), lets the remaining two charges expire, and immediately re-casts on the fast cooldown reset. Repeat 3–4 times to show the rhythm.<br><em>What happens:</em> Fatih fires one short dash on a very fast loop. Passive stack counter stays at 3–5 throughout.<br><em>Setup:</em> Practice range. Keep both the Skill 1 cooldown icon and the passive stack counter in frame.</li>
+          <li>Pre-fight stack setup: Fatih uses Skill 2 and one Skill 1 charge to build 2–3 stacks, then activates his Ultimate (gaining one more stack on cast), reaching 4–5 stacks before the first enhanced attack lands.<br><em>What happens:</em> Passive stack counter climbs from 0 → 2–3 → 5 after Ultimate activation.<br><em>Setup:</em> Practice range. Keep the passive counter in frame throughout.</li>
+        </ul></div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">Single-charge clip: Skill 1 fast cooldown reset must be visible — show the icon going grey and returning quickly. Pre-fight clip: passive counter must hit 5 stacks at or just after Ultimate activation.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">2 clean takes each. Practice range.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">C.) Core Resource &amp; Combo — Stack Loop, Skill Priority &amp; Spell Selection</span></div>
+      <div class="scene-body">
+        <div class="row rec"><div class="lab">Record</div><div class="val"><ul>
+          <li>Record the sustained damage loop against a tanky custom-game enemy: Enhanced attack → Skill 2 → Enhanced attack → Skill 1 (first charge only) → Enhanced attack. Show one full rotation with healing numbers visible.<br><em>What happens:</em> Damage numbers on the enemy and heal numbers on Fatih fire continuously. Passive stack counter stays at 3–5.<br><em>Setup:</em> Custom game. Use a tanky hero as target so the rotation can complete without the target dying quickly.</li>
+          <li>Spell selection screen: show Smite highlighted and selected (jungler build). Then cut to the same screen with Flash selected (solo laner). Two separate clips.<br><em>Setup:</em> Pre-game hero select or settings screen.</li>
+          <li>Skill-up menu: show the skill level-up priority — Ultimate first, then Skill 2, then Skill 1 last.<br><em>Setup:</em> In-game skill-up screen during a real match or practice.</li>
+        </ul></div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">Loop combo: damage numbers on enemy and heal numbers on Fatih must both be visible simultaneously. Spell clips: the Smite and Flash icons must be clearly readable. Skill-up clip: priority order must be visually clear from what is leveled.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">2 takes of the loop combo. 1 take each of spell clips and skill-up clip.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">D.) Advanced — Animation Cancelling</span></div>
+      <div class="scene-body">
+        <div class="row rec"><div class="lab">Record</div><div class="val"><ul>
+          <li>WRONG: Fatih casts Skill 1 without holding the movement joystick — the animation stalls with a visible pause before and after the dash.<br><em>What happens:</em> The skill fires sluggishly. A noticeable delay before the dash begins and another after it ends.<br><em>Setup:</em> Practice range. Tap Skill 1 while Fatih is standing still with no joystick input.</li>
+          <li>RIGHT: Fatih casts Skill 1 while holding the movement joystick — the cast is clean and immediate with no stall.<br><em>What happens:</em> The dash fires instantly and Fatih moves fluidly afterward.<br><em>Setup:</em> Practice range. Hold joystick in any direction while casting Skill 1.</li>
+          <li>Enhanced attack into Skill 2 cancel: Fatih fires an enhanced basic attack, then casts Skill 2 before the basic attack's recovery animation completes.<br><em>What happens:</em> The enhanced attack connects and Skill 2 fires before Fatih's weapon returns to rest position.<br><em>Setup:</em> Practice range. Cast Skill 2 the instant the enhanced attack hit registers.</li>
+        </ul></div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">WRONG clip: the stall must be visible — slow to 50% speed if subtle. RIGHT clip at normal speed to show fluidity. Cancel clip: both the attack landing and Skill 2 firing must be in the same short moment.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">2 takes each of WRONG and RIGHT (practice range). 2 takes of the basic attack cancel.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">D.) Advanced — Skill 1 Wall Mechanics</span></div>
+      <div class="scene-body">
+        <div class="row rec"><div class="lab">Record</div><div class="val"><ul>
+          <li>Fatih presses against a thin wall and dashes through it with Skill 1 — he enters one side and exits the other.<br><em>What happens:</em> Fatih passes completely through the wall. Both sides are visible in one shot.<br><em>Setup:</em> Custom game or practice range with a suitable thin wall. Fatih must be visibly touching the wall before the cast. Record from an angle that shows both entry and exit.</li>
+          <li>Objective steal or contest: Fatih uses a Skill 1 wall-dash to appear inside an objective area from an unexpected angle, contests or deals damage to the objective, then dashes back out.<br><em>What happens:</em> Fatih appears suddenly in the objective area and exits via another Skill 1 dash.<br><em>Setup:</em> Real match footage. Curate from existing recordings if available.</li>
+        </ul></div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">Wall-through: both sides of the wall must be in frame, no jump cuts. Objective clip: the unexpected entry angle must be clearly visible — that's the point, not just the damage.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">2 clean wall-dash takes (custom game). 1 objective clip from real match footage.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">D.) Advanced — Lane &amp; Jungle Rhythm</span></div>
+      <div class="scene-body">
+        <div class="row rec"><div class="lab">Record</div><div class="val"><ul>
+          <li>Lane sustain: Fatih fires Skill 2 into the minion wave and his health bar visibly recovers.<br><em>What happens:</em> Small heal numbers appear. Health bar moves upward.<br><em>Setup:</em> Real match laning phase with Fatih at reduced HP so the heal is visible.</li>
+          <li>Dive timing: enemy laners use their CC skill — Fatih waits for it to fire, then immediately Skill 1 dashes in, activates his Ultimate, and wins the trade with healing numbers visible throughout.<br><em>What happens:</em> The enemy's CC skill fires before Fatih engages. Heal numbers appear during the fight.<br><em>Setup:</em> Real match or custom game.</li>
+          <li>Jungle gank through terrain: Fatih (as jungler) uses a Skill 1 charge to dash through or over terrain into lane from a non-standard angle, then lands the third charge knock-up on the enemy laner.<br><em>What happens:</em> Fatih appears from an unexpected direction. The knock-up connects on the target.<br><em>Setup:</em> Real match jungle footage. The terrain-entry angle must be visible — not a standard river approach.</li>
+        </ul></div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">Sustain: heal numbers from Skill 2 hitting minions must be readable. Dive: the enemy CC firing before Fatih's entry must be clear. Gank: the non-standard wall-crossing entry angle must be the focus of the clip.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">1–2 takes each from real match footage.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">D.) Advanced — Teamfight</span></div>
+      <div class="scene-body">
+        <div class="row rec"><div class="lab">Record</div><div class="val"><ul>
+          <li>Late-entry teamfight: Fatih holds back while his frontline engages and the enemy team uses their CC abilities — then he dives in from the flank, activates his Ultimate on entry, targets the carry, and gets a kill while healing continuously.<br><em>What happens:</em> Fatih's entry is noticeably later than his teammates'. His Ultimate activates the moment he reaches the fight. Kill notification appears.<br><em>Setup:</em> Real match teamfight footage. The gap between frontline entry and Fatih's entry must be visible in the same uncut clip.</li>
+          <li>Re-engage: Fatih takes heavy damage, uses a Skill 1 dash to briefly exit the fight, fires Skill 2 to recover, then re-enters for a second round of damage.<br><em>What happens:</em> Fatih is seen leaving the fight with a dash, pausing 1–2 seconds to heal, then re-entering. The full exit-and-return arc is in one continuous clip.<br><em>Setup:</em> Real match footage. Must be one continuous clip without a cut.</li>
+        </ul></div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">Late-entry: frontline engagement and Fatih's delayed entry must be in the same uncut clip. Re-engage: the full exit-and-return arc in one continuous clip — no cuts between leaving and returning.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">Curate from real match recordings. 2+ candidates for each clip.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">E.) Best Teammates &amp; Tough Matchups</span></div>
+      <div class="scene-body">
+        <div class="row rec"><div class="lab">Record</div><div class="val"><ul>
+          <li>Synergy clip — Lian Po or Zhang Fei: the tank lands multi-target CC, and within 1–2 seconds Fatih dashes in with Skill 1, knocks up the enemy carry, and gets the kill.<br><em>What happens:</em> The CC from the tank and Fatih's dash happen in quick succession. The carry dies.<br><em>Setup:</em> Real match footage. Curate from recordings where this combination occurred naturally.</li>
+          <li>Counter matchup: Fatih tries to engage an anti-heal or high-mobility opponent — his sustain is visibly reduced or the enemy escapes his knock-up. Pair with the correct response: Fatih pulling back and poking from range instead of diving.<br><em>What happens:</em> The enemy escapes or out-sustains. Fatih retreats and shifts to ranged Skill 2 poke.<br><em>Setup:</em> Real match footage or custom game.</li>
+        </ul></div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">Synergy: the CC landing and Fatih's dash-in must be in the same uncut clip. Counter: the failed engage and the corrected poke response should be in the same clip or two clearly labelled cuts (WRONG / RIGHT).</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">1–2 clips each. Curate from real match footage.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-head"><span class="title">F.) Closing &amp; Retention Hook</span></div>
+      <div class="scene-body">
+        <div class="row rec"><div class="lab">Record</div><div class="val"><ul>
+          <li>Outro montage: Fatih surviving trades that should kill him, turning fights on enemies who overcommit, and landing decisive knock-ups on enemy carries. End on a wide hero portrait hold or a dramatic freeze on a fight-winning moment.<br><em>What happens:</em> A confident sequence of strong Fatih plays. Final shot holds on the hero's portrait or a freeze frame.<br><em>Setup:</em> Curate from existing match recordings. Leave visual breathing room at the end for the end-screen card (subscribe button, next-episode teaser).</li>
+        </ul></div></div>
+        <div class="row show"><div class="lab">Show</div><div class="val">Final frame must leave visible space for the end-screen overlay. Don't cut the montage too tight at the end.</div></div>
+        <div class="row reps"><div class="lab">Reps</div><div class="val">Curate from existing recordings. Aim for 15–20 seconds of montage material to trim from.</div></div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>FATIH · THE MIGHTY CONQUEROR — HOK GLOBAL HERO GUIDE · EP. 31</footer>
+
+</div>
+<script>
+  const tabs=document.querySelectorAll('.tab');
+  const views=document.querySelectorAll('.view');
+  tabs.forEach(t=>t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    views.forEach(v=>v.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.view).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }));
+</script>
+</body>
+</html>
